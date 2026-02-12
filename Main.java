@@ -26,7 +26,48 @@ group_counting_by_maximum_point : сгруппировать элементы к
 print_unique_author : вывести уникальные значения поля author всех элементов в коллекции
 print_field_descending_difficulty : вывести значения поля difficulty всех элементов в порядке убывания
 """);
-        
+        }
+        if ("info".equals(command)){
+
+        }
+        if ("show".equals(command)){
+
+        }
+        if ("insert null"){
+
+        }
+        if ("update id"){
+
+        }
+        if ("remove_key_null".equals(command)){
+
+        }
+        if ("clear".equals(command)){
+
+        }
+        if ("save".equals(command)){
+
+        }
+        if ("execute_script") {
+
+        }
+        if ("exit".equals(command)){
+
+        }
+        if ("replace_if_greater".equals(command)){
+
+        }
+        if ("replace_if_lower_key"){
+
+        }
+        if ("group_counting_by_maximum_point"){
+
+        }
+        if ("print_unique_author"){
+            
+        }
+        if ("print_field_descending_difficulty"){
+            
         }
 
         scanner.close();
