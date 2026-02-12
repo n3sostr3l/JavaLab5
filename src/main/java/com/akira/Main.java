@@ -1,3 +1,4 @@
+package com.akira;
 import java.util.Scanner; // Импортируем инструмент для чтения ввода
 
 public class Main {

@@ -1,3 +1,4 @@
+package com.akira;
 public enum Difficulty {
     EASY,
     HARD,

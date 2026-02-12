@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <userName>akira</userName>
+    <computerModel>IdeaPad Slim 3</computerModel>
+    <osFamily>Ubuntu Linux</osFamily>
+    <labNumber>5</labNumber>
+    <isCompleted>true</isCompleted>
+    <projectStatus>In Progress</projectStatus>
+</root>
