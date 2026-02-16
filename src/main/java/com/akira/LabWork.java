@@ -9,4 +9,21 @@ public class LabWork {
     private String description; //Поле может быть null
     private Difficulty difficulty; //Поле может быть null
     private Person author; //Поле не может быть null
+
+    @Override
+    public String toString(){
+        return String.format("""
+                LabWork{ 
+                id= %d , 
+                name= %s , 
+                coordinates = %s , 
+                creationDate= %t , 
+                minimalPoint= %d , 
+                maximumPoint= %d ,
+                description= %s ,
+                difficulty= %s ,
+                author= %s
+                }
+                """, id.longValue(), name, coordinates.toString(), creationDate, minimalPoint.floatValue(), maximumPoint, description, difficulty, author.toString());
+    }
 }
