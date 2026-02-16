@@ -1,4 +1,5 @@
 package com.akira;
+
 public class LabWork {
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -9,4 +10,21 @@ public class LabWork {
     private String description; //Поле может быть null
     private Difficulty difficulty; //Поле может быть null
     private Person author; //Поле не может быть null
+
+    @Override
+    public String toString() {
+        return String.format("""
+                LabWork{ 
+                id= %d , 
+                name= %s , 
+                coordinates = %s , 
+                creationDate= %t , 
+                minimalPoint= %d , 
+                maximumPoint= %d ,
+                description= %s ,
+                difficulty= %s ,
+                author= %s
+                }
+                """, id.longValue(), name, coordinates.toString(), creationDate, minimalPoint.floatValue(), maximumPoint, description, difficulty, author.toString());
+    }
 }
