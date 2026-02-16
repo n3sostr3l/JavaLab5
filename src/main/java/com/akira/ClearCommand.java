@@ -1,11 +1,9 @@
-package com.akira.command;
+package com.akira;
 
-import com.akira.CollectionManager;
-
-public class ClearCommand implements Command{
+public class ClearCommand implements Command {
 
     @Override
-    public void execute(){
+    public void execute() {
         CollectionManager.clear();
     }
 
@@ -13,8 +11,9 @@ public class ClearCommand implements Command{
     public void describe() {
         System.out.println("clear : очистить коллекцию");
     }
+
     @Override
-    public int numberArgsRequired(){
+    public int numberArgsRequired() {
         return 0;
     }
 }

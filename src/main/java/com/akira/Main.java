@@ -1,11 +1,13 @@
 package com.akira;
-import com.akira.command.Invoker;
-
-import java.util.Hashtable;
-import java.util.Scanner; // Импортируем инструмент для чтения ввода
 
 public class Main {
     public static void main(String[] args) {
+
+//        System.out.println("сук");
+
+        CommandInvoker commandInvoker = new CommandInvoker();
+        commandInvoker.run();
+
 //        Scanner scanner = new Scanner(System.in);
 //        System.out.println("Привет! Для вывода списка команд напиши help");
 //
@@ -87,7 +89,5 @@ public class Main {
 //        }
 //        scanner.close();
 
-        Invoker invoker = new Invoker();
-        invoker.run();
     }
 }

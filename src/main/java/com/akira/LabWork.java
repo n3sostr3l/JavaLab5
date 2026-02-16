@@ -1,4 +1,5 @@
 package com.akira;
+
 public class LabWork {
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -11,7 +12,7 @@ public class LabWork {
     private Person author; //Поле не может быть null
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("""
                 LabWork{ 
                 id= %d , 

@@ -1,27 +1,27 @@
-package com.akira.command;
-import com.akira.command.Command;
+package com.akira;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class HelpCommand implements Command{
+public class HelpCommand implements Command {
 
     @Override
-    public void execute(){
+    public void execute() {
         ArrayList<Command> allCommands = new ArrayList<>();
         allCommands.add(new HelpCommand());
         allCommands.add(new ClearCommand());
 
-        for(Command c: allCommands){
+        for (Command c : allCommands) {
             c.describe();
         }
     }
+
     @Override
-    public void describe(){
+    public void describe() {
         System.out.println("help : вывести справку по доступным командам");
     }
+
     @Override
-    public int numberArgsRequired(){
+    public int numberArgsRequired() {
         return 0;
     }
 }

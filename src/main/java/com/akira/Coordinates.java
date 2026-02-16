@@ -5,7 +5,7 @@ public class Coordinates {
     private Long y; //Поле не может быть null
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("Coordinates{ x= %d , y= %d }", this, x.intValue(), y.longValue());
     }
 }
