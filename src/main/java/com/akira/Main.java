@@ -2,6 +2,7 @@ package com.akira;
 import java.util.Scanner; // Импортируем инструмент для чтения ввода
 import com.fasterxml.jackson.dataformat.xml.XmlManager;
 
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

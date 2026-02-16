@@ -11,9 +11,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 
 public class FileEditor{
-    public static void main(String[] args) {
-        XmlMapper xmlMapper = new XmlMapper();
-        
+    XmlMapper xmlMapper = new XmlMapper();
+    public Hashtable<String, Object> openfile() throws IOException, FileNotFoundException{
         try {
             // Читаем XML файл прямо в Hashtable
 
@@ -22,16 +21,28 @@ public class FileEditor{
             try (InputStream inputStream = new FileInputStream(file);
                 InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8")) {
                     Hashtable<String, Object> result = xmlMapper.readValue(reader, Hashtable.class);
-                System.out.println("Данные из XML: " + result);
+                return result;
             }
             catch (FileNotFoundException e){
                 System.err.println("Файл не найден");
+                throw e;
             }
             
-            // И наоборот: запись из Hashtable в XML
 
         } catch (IOException e) {
-            System.err.println("Ошибка работы с файлом: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    public void savefile(Hashtable<String, Object> table) {
+        try {
+            // Создаем файл для записи
+            File file = new File("data.xml");
+            
+            // Сериализуем Hashtable в XML и записываем в файл
+            xmlMapper.writeValue(file, table);
+        } catch (IOException e) {
+            System.err.println("Ошибка записи в файл: " + e.getMessage());
             e.printStackTrace();
         }
     }
