@@ -1,0 +1,12 @@
+com/akira/CollectionManager.class
+com/akira/CommandInvoker.class
+com/akira/LabWork.class
+com/akira/Person.class
+com/akira/Command.class
+com/akira/Difficulty.class
+com/akira/Coordinates.class
+com/akira/Location.class
+com/akira/ClearCommand.class
+com/akira/Modable.class
+com/akira/HelpCommand.class
+com/akira/Main.class
