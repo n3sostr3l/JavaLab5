@@ -1,8 +1,10 @@
-package com.akira;
+package com.akira.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import com.akira.Modable;
 
 public class CommandInvoker {
     public CommandInvoker() {

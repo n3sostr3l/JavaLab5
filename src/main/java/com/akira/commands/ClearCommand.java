@@ -1,4 +1,6 @@
-package com.akira;
+package com.akira.commands;
+
+import com.akira.CollectionManager;
 
 public class ClearCommand implements Command {
 
