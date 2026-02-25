@@ -5,7 +5,6 @@
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/LabWork.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/Location.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/Main.java
-/home/omewa/itmo/JavaLab5/src/main/java/com/akira/Modable.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/Person.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/ClearCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/Command.java
@@ -15,6 +14,7 @@
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/HelpCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/InfoCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/InsertCommand.java
+/home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/Modable.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/RemoveCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/RemoveLowerElementsCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/ReplaceGreatestCommand.java

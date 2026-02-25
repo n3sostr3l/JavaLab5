@@ -36,7 +36,7 @@ public class LabWork implements Comparable<LabWork>{
 
     @Override
     public int compareTo(LabWork labWork) {
-        return Long.compare(this.id, labWork.id);
+        return Long.compare(this.maximumPoint, labWork.maximumPoint);
     }
 
     public void setCoordinates(Coordinates coordinates) throws IOError{
