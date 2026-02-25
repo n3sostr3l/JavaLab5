@@ -5,8 +5,6 @@ import com.akira.commands.CommandInvoker;
 public class Main {
     public static void main(String[] args) {
 
-//        System.out.println("сук");
-
         CommandInvoker commandInvoker = new CommandInvoker();
         commandInvoker.run();
 

@@ -14,7 +14,7 @@ public class LabWork implements Comparable<LabWork>{
     private Person author; //Поле не может быть null
 
     public LabWork(){
-        this.id = FileEditor.()+1;
+        this.id = (long) FileEditor.getCollection().size();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LabWork implements Comparable<LabWork>{
 
     @Override
     public int compareTo(LabWork labWork) {
-        return Integer.compare()
+        return Long.compare(this.id, labWork.id);
     }
 
     public void setCoordinates(Coordinates coordinates) throws IOError{

@@ -9,6 +9,7 @@ public class HelpCommand implements Command {
         ArrayList<Command> allCommands = new ArrayList<>();
         allCommands.add(new HelpCommand());
         allCommands.add(new ClearCommand());
+        allCommands.add(new InfoCommand());
 
         for (Command c : allCommands) {
             c.describe();

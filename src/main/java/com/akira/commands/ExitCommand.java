@@ -2,8 +2,8 @@ package com.akira.commands;
 
 public class ExitCommand implements Command{
     @Override
-    public void execute(CommandInvoker i) {
-        i.stop();
+    public void execute() {
+        CommandInvoker.stop();
     }
 
     @Override
