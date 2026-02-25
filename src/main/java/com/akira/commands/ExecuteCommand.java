@@ -1,5 +1,6 @@
 package com.akira.commands;
 
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ExecuteCommand implements Modable {
@@ -8,7 +9,9 @@ public class ExecuteCommand implements Modable {
 
     @Override
     public void execute() {
+        String fileName = args.get(0);
 
+        contents = new InputStreamReader(S)
     }
 
     @Override

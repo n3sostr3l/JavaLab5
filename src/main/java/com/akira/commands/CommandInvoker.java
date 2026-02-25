@@ -35,7 +35,10 @@ public class CommandInvoker {
             }
             Command command = commands.get(commandName);
             if (command instanceof Modable) {
-                ((Modable) command).setArguments(args);
+                if(args.size()==command.numberArgsRequired())
+                    ((Modable) command).setArguments(args);
+                else
+                    System.out.println("Слишком мало/много аргументов. Нужно %d аргументов.");
             }
             command.execute();
 
