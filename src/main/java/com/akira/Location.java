@@ -5,13 +5,25 @@ public class Location {
     private float y;
     private double z;
 
+    public void setX(Integer x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
+    }
+
     @Override
     public String toString() {
         return String.format("""
                 Location{
                 x= %d ,
-                y= %d ,
-                z= %d 
+                y= %f ,
+                z= %f 
                 }
                 """, x.intValue(), y, z);
     }

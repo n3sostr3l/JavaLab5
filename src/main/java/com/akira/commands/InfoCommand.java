@@ -1,9 +1,5 @@
 package com.akira.commands;
 
-import com.akira.CollectionManager;
-
-import java.util.Collection;
-
 public class InfoCommand implements Command{
     @Override
     public void execute(){
@@ -12,10 +8,10 @@ public class InfoCommand implements Command{
                 """
                 Информация о коллекции:
                 Тип: %s
-                Дата создания: %t,
+                Дата создания: %s,
                 Количество элементов в коллекции: %d,
                 
-                """, CollectionManager.getCollection().toString(), CollectionManager.getCollectionCreationTime(), CollectionManager.getCollection().size()
+                """ // CollectionManager.getCollection().toString(), CollectionManager.getCollectionCreationTime(), CollectionManager.getCollection().size()
         );
     }
 

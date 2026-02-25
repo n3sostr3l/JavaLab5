@@ -19,11 +19,13 @@ public class CommandInvoker {
         commands.put("show", new ShowCommand());
         commands.put("exit", new ExitCommand());
         commands.put("execute_file", new ExecuteCommand());
+        commands.put("insert", new InsertCommand());
+        commands.put("update", new UpdateCommand());
     }
     public static void stop(){
 
     }
-    public static void run() {
+    public void run() {
         while (sc.hasNext()) {
             String line = sc.nextLine();
             runParticularCommand(line);
@@ -44,6 +46,10 @@ public class CommandInvoker {
         }catch(Exception e){
 
         }
+    }
+
+    public static Scanner getScanner() {
+        return sc;
     }
 
     private static void runParticularCommand(String line){

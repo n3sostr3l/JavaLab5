@@ -24,14 +24,14 @@ public class LabWork implements Comparable<LabWork>{
                 id= %d , 
                 name= %s , 
                 coordinates = %s , 
-                creationDate= %t , 
-                minimalPoint= %d , 
+                creationDate= %s , 
+                minimalPoint= %s , 
                 maximumPoint= %d ,
                 description= %s ,
                 difficulty= %s ,
                 author= %s
                 }
-                """, id.longValue(), name, coordinates.toString(), creationDate, minimalPoint.floatValue(), maximumPoint, description, difficulty, author.toString());
+                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author);
     }
 
     @Override
@@ -65,5 +65,33 @@ public class LabWork implements Comparable<LabWork>{
 
     public void setMinimalPoint(Float minimalPoint) {
         this.minimalPoint = minimalPoint;
+    }
+
+    public void setCreationDate(java.util.Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public java.util.Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getMaximumPoint() {
+        return maximumPoint;
+    }
+
+    public Person getAuthor() {
+        return author;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 }
