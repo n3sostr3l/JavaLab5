@@ -18,7 +18,7 @@ public class CommandInvoker {
         commands.put("info", new InfoCommand()); // done
         commands.put("show", new ShowCommand()); // done
         commands.put("exit", new ExitCommand()); // done
-        commands.put("execute_file", new ExecuteCommand()); // ????????????????
+        commands.put("execute_file", new ExecuteCommand()); // done
         commands.put("insert", new InsertCommand()); // done
         commands.put("update", new UpdateCommand()); // done
         commands.put("print_unique_author", new UniqueAuthorCommand()); // done
