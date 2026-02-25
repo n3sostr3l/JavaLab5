@@ -1,33 +1,34 @@
 package com.akira;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.Collection;
+
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.UUID;
 
 public class CollectionManager {
-    private static Hashtable<Integer, LabWork> labworks = new Hashtable<Integer, LabWork>();
+    private static Hashtable<String, LabWork> labworks = new Hashtable<String, LabWork>();
     private static Date collectionCreationTime = null;
 
-    public static Hashtable<Integer, LabWork> add(LabWork lab) {
-        labworks.put(Integer.valueOf(labworks.size()), lab);
+    public static Hashtable<String, LabWork> add(LabWork lab) {
+        UUID id = UUID.randomUUID();
+        String s = id.toString();
+        labworks.put(s, lab);
         try{
             collectionCreationTime = FileEditor.getCollectionCreationTime();
         }catch(Exception e){
-
+            System.err.println("");
         }
         if(collectionCreationTime == null) collectionCreationTime = new Date();
 
         return labworks;
     }
 
-    public static Hashtable<Integer, LabWork> clear() {
+    public static Hashtable<String, LabWork> clear() {
         labworks.clear();
         return labworks;
     }
 
-    public static Hashtable<Integer, LabWork> getCollection(){
+    public static Hashtable<String, LabWork> getCollection(){
         return labworks;
     }
 
