@@ -1,3 +1,7 @@
 .idea/
 .vscode/
 .claude/
+target/
+*.iml
+*.log
+*.class
