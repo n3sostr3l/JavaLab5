@@ -3,6 +3,7 @@ package com.akira;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,14 +44,14 @@ public class FileEditor {
     }
 
     public static void updateCollection(Hashtable<String, Object> coll) {
-        try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(Path.of(DATA_FILE_NAME)), StandardCharsets.UTF_8)) {
+        try (FileWriter writer = new FileWriter(DATA_FILE_NAME, StandardCharsets.UTF_8)) {
             xmlMapper.writeValue(writer, coll);
         } catch (IOException e) {
             System.err.println("Ошибка записи в файл");
         }
     }
 
-    public static Date getCollectionCreationTime() {
+    public static Date getCollectionCreateTime() {
         try {
             BasicFileAttributes fileAttributes = Files.readAttributes(Path.of(DATA_FILE_NAME), BasicFileAttributes.class);
             return new Date(fileAttributes.creationTime().toMillis());
