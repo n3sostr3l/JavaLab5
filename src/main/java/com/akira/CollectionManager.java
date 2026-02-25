@@ -18,6 +18,7 @@ public class CollectionManager {
     }
     public static boolean update(Integer id, LabWork lab){
         if (labworks.containsKey(id)){
+            lab.setId(labworks.get(id).getId());
             labworks.put(id, lab);
             return true;
         }
@@ -51,6 +52,7 @@ public class CollectionManager {
     public static boolean updateById(Long labId, LabWork newLab) {
         for (var entry : labworks.entrySet()) {
             if (entry.getValue().getId() != null && entry.getValue().getId().equals(labId)) {
+                newLab.setId(entry.getValue().getId());
                 newLab.setCreationDate(entry.getValue().getCreationDate());
                 labworks.put(entry.getKey(), newLab);
                 return true;
