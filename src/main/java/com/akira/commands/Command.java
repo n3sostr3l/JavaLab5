@@ -1,4 +1,4 @@
-package com.akira;
+package com.akira.commands;
 
 public interface Command {
     public void execute();

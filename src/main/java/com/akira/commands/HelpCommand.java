@@ -1,4 +1,4 @@
-package com.akira;
+package com.akira.commands;
 
 import java.util.ArrayList;
 

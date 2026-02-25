@@ -1,20 +1,29 @@
-package com.akira;
+package com.akira.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import com.akira.Modable;
+
 public class CommandInvoker {
+    private static Scanner sc = new Scanner(System.in);
+
     public CommandInvoker() {
     }
+    public static void stop(){
 
-    public void run() {
+    }
+    public static void run() {
 
         HashMap<String, Command> commands = new HashMap<String, Command>();
-        commands.put("help", new HelpCommand());
-        commands.put("clear", new ClearCommand());
+        commands.put("help", new HelpCommand()); //done
+        commands.put("clear", new ClearCommand()); //done
+        commands.put("info", new InfoCommand());
+        commands.put("show", new ShowCommand());
+        commands.put("exit", new ExitCommand());
 
-        Scanner sc = new Scanner(System.in);
+
 
         while (sc.hasNext()) {
             String line = sc.nextLine();
