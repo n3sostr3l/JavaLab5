@@ -21,14 +21,14 @@ public class FileEditor {
     private static final String DATA_FILE_NAME = "data.xml";
     private static final XmlMapper xmlMapper = new XmlMapper();
 
-    public static Hashtable<String, Object> getCollection() {
+    public static Hashtable<String, LabWork> getCollection() {
 
         try {
             File file = new File(DATA_FILE_NAME);
 
             try (InputStream inputStream = new FileInputStream(file);
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-                Hashtable<String, Object> result = xmlMapper.readValue(reader, Hashtable.class);
+                Hashtable<String, LabWork> result = xmlMapper.readValue(reader, Hashtable.class);
                 System.out.println("Данные из XML: " + result);
                 return result;
             } catch (FileNotFoundException e) {
@@ -42,7 +42,7 @@ public class FileEditor {
         }
     }
 
-    public static void updateCollection(Hashtable<String, Object> coll) {
+    public static void updateCollection(Hashtable<String, LabWork> coll) {
         try (FileWriter writer = new FileWriter(DATA_FILE_NAME, StandardCharsets.UTF_8)) {
             xmlMapper.writeValue(writer, coll);
         } catch (IOException e) {
