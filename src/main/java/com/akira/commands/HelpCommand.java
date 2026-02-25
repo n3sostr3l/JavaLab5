@@ -20,6 +20,7 @@ public class HelpCommand implements Command {
         allCommands.add(new RemoveCommand());
         allCommands.add(new GroupCountingByMaximumPointCommand());
         allCommands.add(new PrintFieldDescendingDifficultyCommand());
+        allCommands.add(new RemoveLowerElementsCommand());
         for (Command c : allCommands) {
             c.describe();
         }

@@ -74,4 +74,17 @@ public class CollectionManager {
         labworks.remove(key);
     }
 
+    public static int removeLowerKeys(Integer key) {
+        var keysToRemove = new java.util.ArrayList<Integer>();
+        for (Integer k : labworks.keySet()) {
+            if (k < key) {
+                keysToRemove.add(k);
+            }
+        }
+        for (Integer k : keysToRemove) {
+            labworks.remove(k);
+        }
+        return keysToRemove.size();
+    }
+
 }
