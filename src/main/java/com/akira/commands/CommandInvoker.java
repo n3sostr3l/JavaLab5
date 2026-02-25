@@ -15,15 +15,12 @@ public class CommandInvoker {
     public CommandInvoker() {
         commands.put("help", new HelpCommand()); //done
         commands.put("clear", new ClearCommand()); //done
-        commands.put("info", new InfoCommand());
+        commands.put("info", new InfoCommand()); // done
         commands.put("show", new ShowCommand());
-        commands.put("exit", new ExitCommand());
+        commands.put("exit", new ExitCommand()); // done
         commands.put("execute_file", new ExecuteCommand());
-        commands.put("insert", new InsertCommand());
-        commands.put("update", new UpdateCommand());
-    }
-    public static void stop(){
-
+        commands.put("insert", new InsertCommand()); // done
+        commands.put("update", new UpdateCommand()); // done
     }
     public void run() {
         while (sc.hasNext()) {
@@ -62,11 +59,17 @@ public class CommandInvoker {
             }
         }
         Command command = commands.get(commandName);
+        if (command == null) {
+            System.out.println("Неизвестная команда: " + commandName);
+            return;
+        }
         if (command instanceof Modable) {
             if(args.size()==command.numberArgsRequired())
                 ((Modable) command).setArguments(args);
-            else
-                System.out.println("Слишком мало/много аргументов. Нужно %d аргументов.");
+            else {
+                System.out.println("Слишком мало/много аргументов. Нужно " + command.numberArgsRequired() + " аргументов.");
+                return;
+            }
         }
         command.execute();
     }

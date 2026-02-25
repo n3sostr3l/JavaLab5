@@ -3,12 +3,12 @@ package com.akira.commands;
 public class ExitCommand implements Command{
     @Override
     public void execute() {
-        CommandInvoker.stop();
+        System.exit(200);
     }
 
     @Override
     public void describe() {
-
+        System.out.println("exit : завершить программу (без сохранения в файл)");
     }
 
     @Override
