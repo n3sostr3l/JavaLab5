@@ -1,6 +1,7 @@
 package com.akira.commands;
 
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class ExecuteCommand implements Modable {
@@ -10,8 +11,12 @@ public class ExecuteCommand implements Modable {
     @Override
     public void execute() {
         String fileName = args.get(0);
-
-        contents = new InputStreamReader(S)
+        File file = new File(fileName);
+        try{
+            CommandInvoker.runFile(file);
+        }catch (Exception e){
+            System.out.println("Ошибка чтения файла. Убедитесь, что файл находится по указанному вами пути относительно рабочей директории.");
+        }
     }
 
     @Override

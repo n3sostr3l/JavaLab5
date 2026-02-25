@@ -10,7 +10,6 @@ com/akira/commands/ReplaceGreatestCommand.class
 com/akira/commands/ExecuteCommand.class
 com/akira/commands/CommandInvoker.class
 com/akira/Coordinates.class
-com/akira/Modable.class
 com/akira/commands/ShowCommand.class
 com/akira/FileEditor.class
 com/akira/commands/UniqueAuthorCommand.class
@@ -20,6 +19,7 @@ com/akira/Difficulty.class
 com/akira/Location.class
 com/akira/commands/ReplaceLowestCommand.class
 com/akira/commands/InfoCommand.class
+com/akira/commands/Modable.class
 com/akira/LabWork.class
 com/akira/commands/RemoveCommand.class
 com/akira/Main.class
