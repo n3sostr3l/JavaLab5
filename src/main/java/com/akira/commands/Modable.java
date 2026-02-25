@@ -1,7 +1,7 @@
-package com.akira;
+package com.akira.commands;
 
 import java.util.ArrayList;
 
-public interface Modable {
+public interface Modable extends Command {
     public void setArguments(ArrayList<String> args);
 }

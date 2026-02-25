@@ -14,7 +14,7 @@ public class LabWork implements Comparable<LabWork>{
     private Person author; //Поле не может быть null
 
     public LabWork(){
-        this.id = (long) FileEditor.getCollection().size();
+        this.id = (long) FileEditor.getCollection().size()+CollectionManager.getCollection().size();
     }
 
     @Override
