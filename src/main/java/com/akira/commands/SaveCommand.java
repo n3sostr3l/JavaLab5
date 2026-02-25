@@ -1,14 +1,22 @@
 package com.akira.commands;
 
-public class SaveCommand {
+import com.akira.FileEditor;
+import com.akira.LabWork;
+
+import java.util.Hashtable;
+
+import com.akira.CollectionManager;
+
+public class SaveCommand implements Command{
     @Override
     public void execute() {
-        
+        Hashtable<String, LabWork> coll = CollectionManager.getCollection();
+        FileEditor.saveCollection(coll);
     }
 
     @Override
     public void describe() {
-
+        System.out.println("save : сохранить коллекцию в файл");
     }
 
     @Override

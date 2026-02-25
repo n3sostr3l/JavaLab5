@@ -3,11 +3,10 @@ package com.akira;
 
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.UUID;
 import com.akira.LabWork;
 
 public class CollectionManager {
-    private static Hashtable<String, LabWork> labworks = new Hashtable<String, LabWork>();
+    private static Hashtable<String, LabWork> labworks = FileEditor.getCollection();
     private static Date collectionCreationTime;
 
     static {
@@ -17,20 +16,6 @@ public class CollectionManager {
             collectionCreationTime = null;
         }
         if (collectionCreationTime == null) collectionCreationTime = new Date();
-    }
-
-    public static Hashtable<String, LabWork> add(LabWork lab) {
-        UUID id = UUID.randomUUID();
-        String s = id.toString();
-        labworks.put(s, lab);
-        try{
-            collectionCreationTime = FileEditor.getCollectionCreationTime();
-        }catch(Exception e){
-            System.err.println("");
-        }
-        if(collectionCreationTime == null) collectionCreationTime = new Date();
-
-        return labworks;
     }
     public static boolean update(String id, LabWork lab){
         if (labworks.containsKey(id)){
@@ -85,6 +70,9 @@ public class CollectionManager {
             }
             if (collectionCreationTime == null) collectionCreationTime = new Date();
         }
+    }
+    public static void removeByKey(String key){
+        labworks.remove(key);
     }
 
 }

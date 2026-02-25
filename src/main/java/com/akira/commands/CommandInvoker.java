@@ -16,11 +16,17 @@ public class CommandInvoker {
         commands.put("help", new HelpCommand()); //done
         commands.put("clear", new ClearCommand()); //done
         commands.put("info", new InfoCommand()); // done
-        commands.put("show", new ShowCommand());
+        commands.put("show", new ShowCommand()); // done
         commands.put("exit", new ExitCommand()); // done
-        commands.put("execute_file", new ExecuteCommand());
+        commands.put("execute_file", new ExecuteCommand()); // ????????????????
         commands.put("insert", new InsertCommand()); // done
         commands.put("update", new UpdateCommand()); // done
+        commands.put("print_unique_author", new UniqueAuthorCommand()); // done
+        commands.put("save", new SaveCommand()); // done
+        commands.put("remove_key", new RemoveCommand()); // done
+        commands.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommand()); // done
+        commands.put("group_counting_by_maximum_point", new GroupCountingByMaximumPointCommand()); // done
+
     }
     public void run() {
         while (sc.hasNext()) {

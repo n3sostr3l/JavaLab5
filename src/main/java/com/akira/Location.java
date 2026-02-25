@@ -21,10 +21,10 @@ public class Location {
     public String toString() {
         return String.format("""
                 Location{
-                x= %d ,
+                x= %s ,
                 y= %f ,
                 z= %f 
                 }
-                """, x.intValue(), y, z);
+                """, x, y, z);
     }
 }
