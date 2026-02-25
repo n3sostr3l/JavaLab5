@@ -26,7 +26,9 @@ public class CommandInvoker {
         commands.put("remove_key", new RemoveCommand()); // done
         commands.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommand()); // done
         commands.put("group_counting_by_maximum_point", new GroupCountingByMaximumPointCommand()); // done
-         commands.put("remove_lower_key", new RemoveLowerElementsCommand()); // done
+        commands.put("remove_lower_key", new RemoveLowerElementsCommand()); // done
+        commands.put("replace_if_greater", new ReplaceGreatestCommand()); // done
+        commands.put("replace_if_lower", new ReplaceLowestCommand()); // done
 
     }
     public void run() {
