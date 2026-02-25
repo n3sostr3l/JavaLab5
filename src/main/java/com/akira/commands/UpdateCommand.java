@@ -1,20 +1,22 @@
 package com.akira.commands;
 
-import com.akira.FileEditor;
 import com.akira.CollectionManager;
 import com.akira.LabWork;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-
-import com.akira.commands.Modable;
 
 public class UpdateCommand implements Command, Modable{
     private ArrayList<String> args = new ArrayList<String>();
 
     public void execute(){
-        Hashtable<String, LabWork> coll = CollectionManager.getCollection();
+        LabWork lab = new LabWork();
+        boolean is_success = CollectionManager.update(args.get(0), lab);
+        if (is_success){
+            System.out.println("Обновление успешно!");
+        }
+        else{
+            System.out.println("Не удалось обновить");
+        }
     }
 
     public void describe(){

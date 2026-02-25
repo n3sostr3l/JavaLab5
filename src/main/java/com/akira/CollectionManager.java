@@ -4,6 +4,7 @@ package com.akira;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.UUID;
+import com.akira.LabWork;
 
 public class CollectionManager {
     private static Hashtable<String, LabWork> labworks = new Hashtable<String, LabWork>();
@@ -21,6 +22,15 @@ public class CollectionManager {
         if(collectionCreationTime == null) collectionCreationTime = new Date();
 
         return labworks;
+    }
+    public static boolean update(String id, LabWork lab){
+        if (labworks.containsKey(id)){
+            labworks.put(id, lab);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public static Hashtable<String, LabWork> clear() {
