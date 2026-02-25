@@ -3,10 +3,10 @@ package com.akira;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,9 +19,9 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class FileEditor {
     private static final String DATA_FILE_NAME = "data.xml";
-    private final XmlMapper xmlMapper = new XmlMapper();
+    private static final XmlMapper xmlMapper = new XmlMapper();
 
-    public Hashtable<String, Object> getCollection() {
+    public static Hashtable<String, Object> getCollection() {
 
         try {
             File file = new File(DATA_FILE_NAME);
@@ -42,15 +42,15 @@ public class FileEditor {
         }
     }
 
-    public void updateCollection(Hashtable<String, Object> coll) {
-        try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(Path.of(DATA_FILE_NAME)), StandardCharsets.UTF_8)) {
+    public static void updateCollection(Hashtable<String, Object> coll) {
+        try (FileWriter writer = new FileWriter(DATA_FILE_NAME, StandardCharsets.UTF_8)) {
             xmlMapper.writeValue(writer, coll);
         } catch (IOException e) {
             System.err.println("Ошибка записи в файл");
         }
     }
 
-    public Date getCollectionCreateTime() {
+    public static Date getCollectionCreateTime() {
         try {
             BasicFileAttributes fileAttributes = Files.readAttributes(Path.of(DATA_FILE_NAME), BasicFileAttributes.class);
             return new Date(fileAttributes.creationTime().toMillis());
