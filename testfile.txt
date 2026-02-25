@@ -1,4 +1,1 @@
 help
-help
-info
-execute testfile.txt
