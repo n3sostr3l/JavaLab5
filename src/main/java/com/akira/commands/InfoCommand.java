@@ -12,7 +12,7 @@ public class InfoCommand implements Command{
                 """
                 Информация о коллекции:
                 Тип: %s
-                Дата создания: %t,
+                Дата создания: %tF,
                 Количество элементов в коллекции: %d,
                 
                 """, CollectionManager.getCollection().toString(), CollectionManager.getCollectionCreationTime(), CollectionManager.getCollection().size()

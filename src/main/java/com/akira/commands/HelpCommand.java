@@ -10,6 +10,7 @@ public class HelpCommand implements Command {
         allCommands.add(new HelpCommand());
         allCommands.add(new ClearCommand());
         allCommands.add(new InfoCommand());
+        allCommands.add(new ExecuteCommand());
 
         for (Command c : allCommands) {
             c.describe();
