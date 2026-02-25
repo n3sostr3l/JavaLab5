@@ -4,16 +4,16 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-import com.akira.Person;
 import com.akira.CollectionManager;
 import com.akira.LabWork;
+import com.akira.Person;
 
 public class UniqueAuthorCommand implements Command{
     Set<Person> unique_authors = new HashSet<>();
 
     @Override
     public void execute() {
-        Hashtable<String, LabWork> coll = CollectionManager.getCollection();
+        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
         for (LabWork lab : coll.values()){
             unique_authors.add(lab.getAuthor());
         }

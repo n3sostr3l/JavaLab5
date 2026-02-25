@@ -1,14 +1,20 @@
 package com.akira.commands;
 
 import java.util.ArrayList;
+
 import com.akira.CollectionManager;
 
 public class RemoveCommand implements Command, Modable{
     private ArrayList<String> args;
     @Override
     public void execute() {
-        CollectionManager.removeByKey(args.get(0));
-        System.out.println("Коллекция стала свободнее!");
+        try {
+            Integer key = Integer.parseInt(args.get(0));
+            CollectionManager.removeByKey(key);
+            System.out.println("Коллекция стала свободнее!");
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: ключ должен быть целым числом.");
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/FileEditor.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/UniqueAuthorCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/SaveCommand.java
+/home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/PrintFieldDescendingDifficultyCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/CommandInvoker.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/Coordinates.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/Main.java
@@ -18,6 +19,7 @@
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/ReplaceGreatestCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/Command.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/Person.java
+/home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/GroupCountingByMaximumPointCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/ReplaceLowestCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/InfoCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/ShowCommand.java

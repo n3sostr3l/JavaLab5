@@ -10,10 +10,14 @@ public class InsertCommand implements Command, Modable{
     private ArrayList<String> args = new ArrayList<String>();
 
     public void execute() {
-        String key = args.get(0);
-        LabWork lab = LabWorkReader.readLabWork();
-        CollectionManager.insert(key, lab);
-        System.out.println("Элемент успешно добавлен с ключом: " + key);
+        try {
+            Integer key = Integer.parseInt(args.get(0));
+            LabWork lab = LabWorkReader.readLabWork();
+            CollectionManager.insert(key, lab);
+            System.out.println("Элемент успешно добавлен с ключом: " + key);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: ключ должен быть целым числом.");
+        }
     }
 
     public void describe() {

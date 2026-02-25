@@ -12,10 +12,10 @@ public class PrintFieldDescendingDifficultyCommand implements Command {
 
     @Override
     public void execute() {
-        Hashtable<String, LabWork> coll = CollectionManager.getCollection();
-        List<Map.Entry<String, LabWork>> entries = new ArrayList<>();
+        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
+        List<Map.Entry<Integer, LabWork>> entries = new ArrayList<>();
 
-        for (Map.Entry<String, LabWork> entry : coll.entrySet()) {
+        for (Map.Entry<Integer, LabWork> entry : coll.entrySet()) {
             if (entry.getValue().getDifficulty() != null) {
                 entries.add(entry);
             }
@@ -23,7 +23,7 @@ public class PrintFieldDescendingDifficultyCommand implements Command {
 
         entries.sort((a, b) -> b.getValue().getDifficulty().compareTo(a.getValue().getDifficulty()));
 
-        for (Map.Entry<String, LabWork> entry : entries) {
+        for (Map.Entry<Integer, LabWork> entry : entries) {
             System.out.println(entry.getValue().getDifficulty() + " - id: " + entry.getValue().getId());
         }
     }

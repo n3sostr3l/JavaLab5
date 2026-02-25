@@ -29,7 +29,7 @@ public class FileEditor {
         xmlMapper.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
     }
 
-    public static Hashtable<String, LabWork> getCollection() {
+    public static Hashtable<Integer, LabWork> getCollection() {
 
         try {
             File file = new File(DATA_FILE_NAME);
@@ -38,9 +38,10 @@ public class FileEditor {
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
                 Hashtable<String, LabWork> raw = xmlMapper.readValue(reader,
                         xmlMapper.getTypeFactory().constructMapType(Hashtable.class, String.class, LabWork.class));
-                Hashtable<String, LabWork> result = new Hashtable<>();
+                Hashtable<Integer, LabWork> result = new Hashtable<>();
                 for (var e : raw.entrySet()) {
-                    result.put(e.getKey().startsWith("k_") ? e.getKey().substring(2) : e.getKey(), e.getValue());
+                    String keyStr = e.getKey().startsWith("k_") ? e.getKey().substring(2) : e.getKey();
+                    result.put(Integer.parseInt(keyStr), e.getValue());
                 }
                 return result;
             } catch (FileNotFoundException e) {
@@ -54,7 +55,7 @@ public class FileEditor {
         }
     }
 
-    public static void saveCollection(Hashtable<String, LabWork> coll) {
+    public static void saveCollection(Hashtable<Integer, LabWork> coll) {
         try (FileWriter writer = new FileWriter(DATA_FILE_NAME, StandardCharsets.UTF_8)) {
             Hashtable<String, LabWork> wrapped = new Hashtable<>();
             for (var e : coll.entrySet()) {

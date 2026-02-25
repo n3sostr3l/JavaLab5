@@ -11,7 +11,7 @@ public class GroupCountingByMaximumPointCommand implements Command {
 
     @Override
     public void execute() {
-        Hashtable<String, LabWork> coll = CollectionManager.getCollection();
+        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
         Map<Long, Integer> groups = new TreeMap<>();
 
         for (LabWork lab : coll.values()) {

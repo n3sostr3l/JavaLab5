@@ -3,10 +3,9 @@ package com.akira;
 
 import java.util.Date;
 import java.util.Hashtable;
-import com.akira.LabWork;
 
 public class CollectionManager {
-    private static Hashtable<String, LabWork> labworks = FileEditor.getCollection();
+    private static Hashtable<Integer, LabWork> labworks = FileEditor.getCollection();
     private static Date collectionCreationTime;
 
     static {
@@ -17,7 +16,7 @@ public class CollectionManager {
         }
         if (collectionCreationTime == null) collectionCreationTime = new Date();
     }
-    public static boolean update(String id, LabWork lab){
+    public static boolean update(Integer id, LabWork lab){
         if (labworks.containsKey(id)){
             labworks.put(id, lab);
             return true;
@@ -27,12 +26,12 @@ public class CollectionManager {
         }
     }
 
-    public static Hashtable<String, LabWork> clear() {
+    public static Hashtable<Integer, LabWork> clear() {
         labworks.clear();
         return labworks;
     }
 
-    public static Hashtable<String, LabWork> getCollection(){
+    public static Hashtable<Integer, LabWork> getCollection(){
         return labworks;
     }
 
@@ -60,7 +59,7 @@ public class CollectionManager {
         return false;
     }
 
-    public static void insert(String key, LabWork lab) {
+    public static void insert(Integer key, LabWork lab) {
         labworks.put(key, lab);
         if (collectionCreationTime == null) {
             try {
@@ -71,7 +70,7 @@ public class CollectionManager {
             if (collectionCreationTime == null) collectionCreationTime = new Date();
         }
     }
-    public static void removeByKey(String key){
+    public static void removeByKey(Integer key){
         labworks.remove(key);
     }
 
