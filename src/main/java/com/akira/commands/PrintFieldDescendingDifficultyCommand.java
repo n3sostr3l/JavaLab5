@@ -8,8 +8,22 @@ import java.util.Map;
 import com.akira.CollectionManager;
 import com.akira.LabWork;
 
+/**
+ * Команда вывода значений сложности в порядке убывания.
+ * <p>
+ * Выводит значения поля difficulty всех элементов коллекции
+ * в порядке убывания. Элементы без значения сложности пропускаются.
+ * </p>
+ */
 public class PrintFieldDescendingDifficultyCommand implements Command {
 
+    /**
+     * Выполняет команду print_field_descending_difficulty.
+     * <p>
+     * Извлекает элементы с установленной сложностью, сортирует их
+     * по убыванию сложности и выводит в консоль.
+     * </p>
+     */
     @Override
     public void execute() {
         Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
@@ -28,11 +42,19 @@ public class PrintFieldDescendingDifficultyCommand implements Command {
         }
     }
 
+    /**
+     * Выводит описание команды.
+     */
     @Override
     public void describe() {
         System.out.println("print_field_descending_difficulty : вывести значения поля difficulty всех элементов в порядке убывания");
     }
 
+    /**
+     * Возвращает количество требуемых аргументов.
+     *
+     * @return 0 — команда не требует аргументов
+     */
     @Override
     public int numberArgsRequired() {
         return 0;

@@ -7,13 +7,30 @@ import java.util.Scanner;
 
 import com.akira.commands.CommandInvoker;
 
+/**
+ * Класс для интерактивного чтения данных лабораторной работы из консоли.
+ * <p>
+ * Предоставляет методы для поэтапного ввода всех полей объекта {@link LabWork}
+ * с валидацией пользовательского ввода.
+ * </p>
+ */
 public class LabWorkReader {
+    /** Формат для парсинга даты рождения */
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
     static {
         DATE_FORMAT.setLenient(false);
     }
 
+    /**
+     * Читает данные для создания нового объекта LabWork из консоли.
+     * <p>
+     * Метод запрашивает у пользователя ввод всех необходимых полей
+     * с постраничной валидацией.
+     * </p>
+     *
+     * @return новый объект LabWork с данными, введёнными пользователем
+     */
     public static LabWork readLabWork() {
         Scanner sc = CommandInvoker.getScanner();
         LabWork lab = new LabWork();
@@ -30,6 +47,12 @@ public class LabWorkReader {
         return lab;
     }
 
+    /**
+     * Читает название лабораторной работы.
+     *
+     * @param sc сканер для чтения ввода
+     * @return непустая строка с названием
+     */
     private static String readName(Scanner sc) {
         while (true) {
             System.out.print("Введите name (String, не пустое): ");
@@ -41,6 +64,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает координаты лабораторной работы.
+     *
+     * @param sc сканер для чтения ввода
+     * @return объект Coordinates с введёнными значениями
+     */
     private static Coordinates readCoordinates(Scanner sc) {
         Coordinates coords = new Coordinates();
         coords.setX(readCoordinateX(sc));
@@ -48,6 +77,12 @@ public class LabWorkReader {
         return coords;
     }
 
+    /**
+     * Читает координату X.
+     *
+     * @param sc сканер для чтения ввода
+     * @return целое число больше -881
+     */
     private static Integer readCoordinateX(Scanner sc) {
         while (true) {
             System.out.print("Введите coordinates.x (Integer, > -881): ");
@@ -64,6 +99,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает координату Y.
+     *
+     * @param sc сканер для чтения ввода
+     * @return целое число (Long)
+     */
     private static Long readCoordinateY(Scanner sc) {
         while (true) {
             System.out.print("Введите coordinates.y (Long): ");
@@ -76,6 +117,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает минимальный балл.
+     *
+     * @param sc сканер для чтения ввода
+     * @return число больше 0 или null
+     */
     private static Float readMinimalPoint(Scanner sc) {
         while (true) {
             System.out.print("Введите minimalPoint (Float, > 0, пустая строка — null): ");
@@ -95,6 +142,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает максимальный балл.
+     *
+     * @param sc сканер для чтения ввода
+     * @return число больше 0
+     */
     private static long readMaximumPoint(Scanner sc) {
         while (true) {
             System.out.print("Введите maximumPoint (long, > 0): ");
@@ -111,12 +164,24 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает описание лабораторной работы.
+     *
+     * @param sc сканер для чтения ввода
+     * @return строка описания или null
+     */
     private static String readDescription(Scanner sc) {
         System.out.print("Введите description (String, пустая строка — null): ");
         String line = sc.nextLine().trim();
         return line.isEmpty() ? null : line;
     }
 
+    /**
+     * Читает уровень сложности лабораторной работы.
+     *
+     * @param sc сканер для чтения ввода
+     * @return значение Difficulty или null
+     */
     private static Difficulty readDifficulty(Scanner sc) {
         while (true) {
             System.out.println("Доступные значения Difficulty: EASY, HARD, VERY_HARD, INSANE");
@@ -133,6 +198,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает данные автора лабораторной работы.
+     *
+     * @param sc сканер для чтения ввода
+     * @return объект Person с данными автора
+     */
     private static Person readPerson(Scanner sc) {
         Person person = new Person();
         person.setName(readAuthorName(sc));
@@ -141,6 +212,12 @@ public class LabWorkReader {
         return person;
     }
 
+    /**
+     * Читает имя автора.
+     *
+     * @param sc сканер для чтения ввода
+     * @return непустая строка с именем автора
+     */
     private static String readAuthorName(Scanner sc) {
         while (true) {
             System.out.print("Введите author.name (String, не пустое): ");
@@ -152,6 +229,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает дату рождения автора.
+     *
+     * @param sc сканер для чтения ввода
+     * @return дата рождения или null
+     */
     private static Date readBirthday(Scanner sc) {
         while (true) {
             System.out.print("Введите author.birthday (дд.мм.гггг, пустая строка — null): ");
@@ -167,10 +250,20 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает местоположение автора.
+     * <p>
+     * Спрашивает пользователя, хочет ли он ввести местоположение.
+     * При согласии запрашивает координаты X, Y, Z.
+     * </p>
+     *
+     * @param sc сканер для чтения ввода
+     * @return объект Location или null, если пользователь отказался от ввода
+     */
     private static Location readLocation(Scanner sc) {
-        System.out.print("Хотите ввести author.location? (пустая строка — null, любой текст — да): ");
+        System.out.print("Хотите ввести author.location? (да/нет): ");
         String line = sc.nextLine().trim();
-        if (line.isEmpty()) {
+        if (!line.equalsIgnoreCase("да")) {
             return null;
         }
         Location loc = new Location();
@@ -180,6 +273,12 @@ public class LabWorkReader {
         return loc;
     }
 
+    /**
+     * Читает координату X местоположения.
+     *
+     * @param sc сканер для чтения ввода
+     * @return целое число — координата X
+     */
     private static Integer readLocationX(Scanner sc) {
         while (true) {
             System.out.print("Введите location.x (Integer): ");
@@ -192,6 +291,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает координату Y местоположения.
+     *
+     * @param sc сканер для чтения ввода
+     * @return число с плавающей точкой — координата Y
+     */
     private static float readLocationY(Scanner sc) {
         while (true) {
             System.out.print("Введите location.y (float): ");
@@ -204,6 +309,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает координату Z местоположения.
+     *
+     * @param sc сканер для чтения ввода
+     * @return число с плавающей точкой двойной точности — координата Z
+     */
     private static double readLocationZ(Scanner sc) {
         while (true) {
             System.out.print("Введите location.z (double): ");
