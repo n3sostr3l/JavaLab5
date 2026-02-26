@@ -1,5 +1,6 @@
 package com.akira;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -26,7 +28,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  */
 public class FileEditor {
     /** Имя файла для хранения данных коллекции */
-    private static final String DATA_FILE_NAME = "data.xml";
+    private static final String DATA_FILE_NAME = resolveDataFileName();
     /** XML-маппер для сериализации и десериализации */
     private static final XmlMapper xmlMapper = new XmlMapper();
 
@@ -34,6 +36,58 @@ public class FileEditor {
         xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         xmlMapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
         xmlMapper.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
+    }
+
+    private static String resolveDataFileName() {
+        String fromEnv = System.getenv("DATA_FILE_NAME");
+        if (fromEnv != null && !fromEnv.isBlank()) {
+            return fromEnv;
+        }
+
+        String fromDotEnvFile = readFromDotEnvFile();
+        if (fromDotEnvFile != null && !fromDotEnvFile.isBlank()) {
+            return fromDotEnvFile;
+        }
+
+        String fromDotEnvResource = readFromDotEnvResource();
+        if (fromDotEnvResource != null && !fromDotEnvResource.isBlank()) {
+            return fromDotEnvResource;
+        }
+
+        return "data.xml";
+    }
+
+    private static String readFromDotEnvFile() {
+        Path dotEnvPath = Path.of(".env");
+        if (Files.notExists(dotEnvPath)) {
+            return null;
+        }
+
+        try (BufferedReader bufferedReader = Files.newBufferedReader(dotEnvPath, StandardCharsets.UTF_8)) {
+            return readDataFileNameFromReader(bufferedReader);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static String readFromDotEnvResource() {
+        try (InputStream inputStream = FileEditor.class.getClassLoader().getResourceAsStream(".env")) {
+            if (inputStream == null) {
+                return null;
+            }
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                return readDataFileNameFromReader(bufferedReader);
+            }
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static String readDataFileNameFromReader(BufferedReader reader) throws IOException {
+        Properties properties = new Properties();
+        properties.load(reader);
+        String value = properties.getProperty("DATA_FILE_NAME");
+        return value == null ? null : value.trim();
     }
 
     /**
