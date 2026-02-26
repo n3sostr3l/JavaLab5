@@ -1,0 +1,137 @@
+@startuml
+!theme plain
+
+title JavaLab5 — UML (основные связи)
+left to right direction
+
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam roundcorner 12
+skinparam dpi 170
+skinparam ClassAttributeIconSize 0
+skinparam defaultTextAlignment left
+skinparam ArrowColor #334155
+skinparam ArrowThickness 1.2
+skinparam ClassBorderColor #1E293B
+skinparam ClassBackgroundColor #F8FAFC
+skinparam PackageBorderColor #6B7280
+skinparam PackageBackgroundColor #FFFFFF
+skinparam InterfaceBorderColor #0F766E
+skinparam InterfaceBackgroundColor #ECFEFF
+skinparam EnumBorderColor #7C3AED
+skinparam EnumBackgroundColor #F5F3FF
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteBorderColor #F59E0B
+
+package "com.akira" {
+  class Main {
+    +main(args: String[]): void
+  }
+
+  class CollectionManager {
+    -labworks: Hashtable<Integer, LabWork>
+    +getCollection(): Hashtable<Integer, LabWork>
+  }
+
+  class FileEditor {
+    +getCollection(): Hashtable<Integer, LabWork>
+    +saveCollection(coll: Hashtable<Integer, LabWork>): void
+  }
+
+  class LabWork {
+    -id: Long
+    -name: String
+    -coordinates: Coordinates
+    -maximumPoint: long
+    -difficulty: Difficulty
+    -author: Person
+  }
+
+  class LabWorkReader {
+    +readLabWork(): LabWork
+  }
+
+  class Coordinates {
+    -x: Integer
+    -y: Long
+  }
+
+  class Person {
+    -name: String
+    -location: Location
+  }
+
+  class Location {
+    -x: Integer
+    -y: float
+    -z: double
+  }
+
+  enum Difficulty {
+    EASY
+    HARD
+    VERY_HARD
+    INSANE
+  }
+}
+
+package "com.akira.commands" {
+  interface Command {
+    +execute(): void
+  }
+
+  interface Modable {
+    +setArguments(args: ArrayList<String>): void
+  }
+
+  class CommandInvoker {
+    -commands: HashMap<String, Command>
+    +run(): void
+  }
+
+  class HelpCommand
+  class ClearCommand
+  class InfoCommand
+  class ShowCommand
+  class SaveCommand
+
+  class InsertCommand
+  class UpdateCommand
+  class RemoveCommand
+}
+
+' ==== Основные связи ====
+Main --> CommandInvoker : starts
+CommandInvoker --> "*" Command : stores
+
+Modable -|> Command
+
+HelpCommand ..|> Command
+ClearCommand ..|> Command
+InfoCommand ..|> Command
+ShowCommand ..|> Command
+SaveCommand ..|> Command
+
+InsertCommand ..|> Modable
+UpdateCommand ..|> Modable
+RemoveCommand ..|> Modable
+
+CollectionManager --> "*" LabWork : manages
+CollectionManager ..> FileEditor : load/save
+FileEditor ..> LabWork : serialize
+
+LabWork *-- Coordinates
+LabWork *-- Person
+LabWork --> Difficulty
+Person *-- Location
+
+LabWorkReader ..> CommandInvoker : scanner
+
+note right of CommandInvoker
+  Показаны только ключевые стрелки.
+  Второстепенные зависимости команд
+  скрыты для лучшей читаемости.
+end note
+
+@enduml

@@ -65,6 +65,7 @@ public class CommandInvoker {
         commands.put("remove_lower_key", new RemoveLowerElementsCommand()); // done
         commands.put("replace_if_greater", new ReplaceGreatestCommand()); // done
         commands.put("replace_if_lower", new ReplaceLowestCommand()); // done
+        commands.put("add_random", new AddRandomCommand()); // done
 
     }
 

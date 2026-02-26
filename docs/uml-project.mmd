@@ -1,0 +1,259 @@
+classDiagram
+  direction TB
+
+  namespace com.akira {
+    class Main {
+      +main(args: String[]): void
+    }
+
+    class CollectionManager {
+      -labworks: Hashtable~Integer, LabWork~
+      -collectionCreationTime: Date
+      +update(id: Integer, lab: LabWork): boolean
+      +clear(): Hashtable~Integer, LabWork~
+      +getCollection(): Hashtable~Integer, LabWork~
+      +getCollectionCreationTime(): Date
+      +existsById(labId: Long): boolean
+      +updateById(labId: Long, newLab: LabWork): boolean
+      +insert(key: Integer, lab: LabWork): void
+      +removeByKey(key: Integer): void
+      +removeLowerKeys(key: Integer): int
+    }
+
+    class FileEditor {
+      -DATA_FILE_NAME: String
+      -xmlMapper: XmlMapper
+      +getCollection(): Hashtable~Integer, LabWork~
+      +saveCollection(coll: Hashtable~Integer, LabWork~): void
+      +getCollectionCreationTime(): Date
+    }
+
+    class LabWork {
+      -idCounter: long
+      -id: Long
+      -name: String
+      -coordinates: Coordinates
+      -creationDate: Date
+      -minimalPoint: Float
+      -maximumPoint: long
+      -description: String
+      -difficulty: Difficulty
+      -author: Person
+      +compareTo(other: LabWork): int
+      +toString(): String
+      +getId(): Long
+      +setId(id: Long): void
+      +getName(): String
+      +getMaximumPoint(): long
+      +getAuthor(): Person
+      +getDifficulty(): Difficulty
+    }
+
+    class LabWorkReader {
+      -DATE_FORMAT: SimpleDateFormat
+      +readLabWork(): LabWork
+      -readName(sc: Scanner): String
+      -readCoordinates(sc: Scanner): Coordinates
+      -readCoordinateX(sc: Scanner): Integer
+      -readCoordinateY(sc: Scanner): Long
+      -readMinimalPoint(sc: Scanner): Float
+      -readMaximumPoint(sc: Scanner): long
+      -readDescription(sc: Scanner): String
+      -readDifficulty(sc: Scanner): Difficulty
+      -readPerson(sc: Scanner): Person
+      -readAuthorName(sc: Scanner): String
+      -readBirthday(sc: Scanner): Date
+      -readLocation(sc: Scanner): Location
+      -readLocationX(sc: Scanner): Integer
+      -readLocationY(sc: Scanner): float
+      -readLocationZ(sc: Scanner): double
+    }
+
+    class Coordinates {
+      -x: Integer
+      -y: Long
+      +setX(x: Integer): void
+      +setY(y: Long): void
+      +toString(): String
+    }
+
+    class Person {
+      -name: String
+      -birthday: Date
+      -location: Location
+      +setName(name: String): void
+      +setBirthday(birthday: Date): void
+      +setLocation(location: Location): void
+      +getName(): String
+      +toString(): String
+    }
+
+    class Location {
+      -x: Integer
+      -y: float
+      -z: double
+      +setX(x: Integer): void
+      +setY(y: float): void
+      +setZ(z: double): void
+      +toString(): String
+    }
+
+    class Difficulty {
+      <<enumeration>>
+      EASY
+      HARD
+      VERY_HARD
+      INSANE
+    }
+  }
+
+  namespace com.akira.commands {
+    class Command {
+      <<interface>>
+      +execute(): void
+      +describe(): void
+      +numberArgsRequired(): int
+    }
+
+    class Modable {
+      <<interface>>
+      +setArguments(args: ArrayList~String~): void
+    }
+
+    class CommandInvoker {
+      -sc: Scanner
+      -commands: HashMap~String, Command~
+      +run(): void
+      +runFile(f: File): void
+      +getScanner(): Scanner
+      -runParticularCommand(line: String): void
+    }
+
+    class HelpCommand
+    class ClearCommand
+    class InfoCommand
+    class ShowCommand
+    class ExitCommand
+    class ExecuteCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+    class InsertCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+    class UpdateCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+    class SaveCommand
+    class RemoveCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+    class UniqueAuthorCommand
+    class PrintFieldDescendingDifficultyCommand
+    class GroupCountingByMaximumPointCommand
+    class RemoveLowerElementsCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+    class ReplaceGreatestCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+    class ReplaceLowestCommand {
+      -args: ArrayList~String~
+      +setArguments(args: ArrayList~String~): void
+    }
+  }
+
+  %% Interface hierarchy
+  com.akira.commands.Modable --|> com.akira.commands.Command
+
+  %% Command implementations
+  com.akira.commands.HelpCommand ..|> com.akira.commands.Command
+  com.akira.commands.ClearCommand ..|> com.akira.commands.Command
+  com.akira.commands.InfoCommand ..|> com.akira.commands.Command
+  com.akira.commands.ShowCommand ..|> com.akira.commands.Command
+  com.akira.commands.ExitCommand ..|> com.akira.commands.Command
+  com.akira.commands.SaveCommand ..|> com.akira.commands.Command
+  com.akira.commands.UniqueAuthorCommand ..|> com.akira.commands.Command
+  com.akira.commands.PrintFieldDescendingDifficultyCommand ..|> com.akira.commands.Command
+  com.akira.commands.GroupCountingByMaximumPointCommand ..|> com.akira.commands.Command
+
+  com.akira.commands.ExecuteCommand ..|> com.akira.commands.Modable
+  com.akira.commands.InsertCommand ..|> com.akira.commands.Modable
+  com.akira.commands.UpdateCommand ..|> com.akira.commands.Modable
+  com.akira.commands.RemoveCommand ..|> com.akira.commands.Modable
+  com.akira.commands.RemoveLowerElementsCommand ..|> com.akira.commands.Modable
+  com.akira.commands.ReplaceGreatestCommand ..|> com.akira.commands.Modable
+  com.akira.commands.ReplaceLowestCommand ..|> com.akira.commands.Modable
+
+  %% Core architecture dependencies
+  com.akira.Main --> com.akira.commands.CommandInvoker : starts
+  com.akira.commands.CommandInvoker --> "*" com.akira.commands.Command : stores
+  com.akira.commands.CommandInvoker ..> com.akira.commands.Modable : configures args
+
+  com.akira.CollectionManager --> "*" com.akira.LabWork : manages
+  com.akira.CollectionManager ..> com.akira.FileEditor : load/save source
+
+  com.akira.FileEditor --> "*" com.akira.LabWork : serializes
+
+  %% Domain composition
+  com.akira.LabWork *-- com.akira.Coordinates
+  com.akira.LabWork *-- com.akira.Person
+  com.akira.LabWork --> com.akira.Difficulty
+  com.akira.Person *-- com.akira.Location
+
+  %% Reader dependencies
+  com.akira.LabWorkReader ..> com.akira.commands.CommandInvoker : uses scanner
+  com.akira.LabWorkReader ..> com.akira.LabWork
+  com.akira.LabWorkReader ..> com.akira.Coordinates
+  com.akira.LabWorkReader ..> com.akira.Person
+  com.akira.LabWorkReader ..> com.akira.Location
+  com.akira.LabWorkReader ..> com.akira.Difficulty
+
+  %% Command-to-core dependencies
+  com.akira.commands.ClearCommand ..> com.akira.CollectionManager
+  com.akira.commands.InfoCommand ..> com.akira.CollectionManager
+  com.akira.commands.ShowCommand ..> com.akira.CollectionManager
+  com.akira.commands.SaveCommand ..> com.akira.CollectionManager
+  com.akira.commands.SaveCommand ..> com.akira.FileEditor
+  com.akira.commands.ExecuteCommand ..> com.akira.commands.CommandInvoker
+
+  com.akira.commands.InsertCommand ..> com.akira.LabWorkReader
+  com.akira.commands.InsertCommand ..> com.akira.CollectionManager
+  com.akira.commands.UpdateCommand ..> com.akira.LabWorkReader
+  com.akira.commands.UpdateCommand ..> com.akira.CollectionManager
+  com.akira.commands.RemoveCommand ..> com.akira.CollectionManager
+  com.akira.commands.RemoveLowerElementsCommand ..> com.akira.CollectionManager
+  com.akira.commands.ReplaceGreatestCommand ..> com.akira.CollectionManager
+  com.akira.commands.ReplaceGreatestCommand ..> com.akira.LabWorkReader
+  com.akira.commands.ReplaceLowestCommand ..> com.akira.CollectionManager
+  com.akira.commands.ReplaceLowestCommand ..> com.akira.LabWorkReader
+
+  com.akira.commands.UniqueAuthorCommand ..> com.akira.CollectionManager
+  com.akira.commands.UniqueAuthorCommand ..> com.akira.Person
+  com.akira.commands.GroupCountingByMaximumPointCommand ..> com.akira.CollectionManager
+  com.akira.commands.GroupCountingByMaximumPointCommand ..> com.akira.LabWork
+  com.akira.commands.PrintFieldDescendingDifficultyCommand ..> com.akira.CollectionManager
+  com.akira.commands.PrintFieldDescendingDifficultyCommand ..> com.akira.Difficulty
+
+  %% Invoker creates concrete commands
+  com.akira.commands.CommandInvoker ..> com.akira.commands.HelpCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.ClearCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.InfoCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.ShowCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.ExitCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.ExecuteCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.InsertCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.UpdateCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.UniqueAuthorCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.SaveCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.RemoveCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.PrintFieldDescendingDifficultyCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.GroupCountingByMaximumPointCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.RemoveLowerElementsCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.ReplaceGreatestCommand : creates
+  com.akira.commands.CommandInvoker ..> com.akira.commands.ReplaceLowestCommand : creates

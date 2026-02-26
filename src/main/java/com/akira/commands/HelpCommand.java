@@ -36,6 +36,7 @@ public class HelpCommand implements Command {
         allCommands.add(new PrintFieldDescendingDifficultyCommand());
         allCommands.add(new RemoveLowerElementsCommand());
         allCommands.add(new ExecuteCommand());
+        allCommands.add(new AddRandomCommand());
         for (Command c : allCommands) {
             c.describe();
         }
