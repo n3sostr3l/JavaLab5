@@ -1,5 +1,6 @@
 package com.akira.commands;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -22,7 +23,6 @@ import java.util.Scanner;
 public class CommandInvoker {
     /** Сканер для чтения пользовательского ввода из консоли */
     private static Scanner sc = new Scanner(System.in);
-    /** Регистр доступных команд, где ключ — имя команды */
     private static HashMap<String, Command> commands = new HashMap<String, Command>();
 
     /**
