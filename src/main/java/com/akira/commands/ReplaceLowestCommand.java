@@ -14,7 +14,7 @@ import com.akira.LabWorkReader;
  * Сравнение выполняется по полю maximumPoint через метод {@link com.akira.LabWork#compareTo}.
  * </p>
  */
-public class ReplaceLowestCommand implements Command, Modable {
+public class ReplaceLowestCommand implements Modable {
     /** Список аргументов команды */
     private ArrayList<String> args = new ArrayList<>();
 

@@ -14,7 +14,7 @@ import com.akira.LabWorkReader;
  * Оригинальные id и дата создания элемента сохраняются.
  * </p>
  */
-public class UpdateCommand implements Command, Modable{
+public class UpdateCommand implements Modable{
     /** Список аргументов команды */
     private ArrayList<String> args = new ArrayList<String>();
 

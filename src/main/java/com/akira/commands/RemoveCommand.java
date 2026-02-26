@@ -10,7 +10,7 @@ import com.akira.CollectionManager;
  * Удаляет элемент из коллекции с указанным ключом.
  * </p>
  */
-public class RemoveCommand implements Command, Modable{
+public class RemoveCommand implements Modable{
     /** Список аргументов команды */
     private ArrayList<String> args;
 

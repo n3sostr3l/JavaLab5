@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 com/akira/CollectionManager.class
 com/akira/commands/HelpCommand.class
 com/akira/Person.class
@@ -29,4 +27,3 @@ com/akira/commands/Modable.class
 com/akira/LabWork.class
 com/akira/commands/RemoveCommand.class
 com/akira/Main.class
->>>>>>> 6f85a8ecd6d1ccb52ab963a26240e5c7b9958463

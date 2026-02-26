@@ -10,7 +10,7 @@ import com.akira.CollectionManager;
  * Удаляет из коллекции все элементы, ключ которых меньше, чем заданный.
  * </p>
  */
-public class RemoveLowerElementsCommand implements Command, Modable {
+public class RemoveLowerElementsCommand implements Modable {
     /** Список аргументов команды */
     private ArrayList<String> args = new ArrayList<>();
 
