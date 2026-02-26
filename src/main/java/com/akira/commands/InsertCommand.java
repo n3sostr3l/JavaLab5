@@ -13,7 +13,7 @@ import com.akira.LabWorkReader;
  * Данные элемента запрашиваются у пользователя в интерактивном режиме.
  * </p>
  */
-public class InsertCommand implements Command, Modable{
+public class InsertCommand implements Modable{
     /** Список аргументов команды */
     private ArrayList<String> args = new ArrayList<String>();
 

@@ -1,12 +1,34 @@
 <Hashtable>
+  <k_7995>
+    <id>9</id>
+    <name>Линейная Алгебра 84</name>
+    <coordinates>
+      <x>-1</x>
+      <y>725</y>
+    </coordinates>
+    <creationDate>1772115653402</creationDate>
+    <minimalPoint>13.977809</minimalPoint>
+    <maximumPoint>85</maximumPoint>
+    <description>Практическая работа</description>
+    <difficulty>INSANE</difficulty>
+    <author>
+      <name>Author_382</name>
+      <birthday>1754043497900</birthday>
+      <location>
+        <x>-65</x>
+        <y>264.05496</y>
+        <z>-370.4191532831768</z>
+      </location>
+    </author>
+  </k_7995>
   <k_600>
-    <id>25670</id>
+    <id>15</id>
     <name>Кибербезопасность</name>
     <coordinates>
       <x>600</x>
       <y>17000</y>
     </coordinates>
-    <creationDate>1772111051842</creationDate>
+    <creationDate>1772115709274</creationDate>
     <minimalPoint>21.0</minimalPoint>
     <maximumPoint>320</maximumPoint>
     <description>Защита от веб-угроз</description>
@@ -18,13 +40,13 @@
     </author>
   </k_600>
   <k_300>
-    <id>25667</id>
+    <id>12</id>
     <name>Многопоточность</name>
     <coordinates>
       <x>500</x>
       <y>14000</y>
     </coordinates>
-    <creationDate>1772111051839</creationDate>
+    <creationDate>1772115709086</creationDate>
     <minimalPoint>17.5</minimalPoint>
     <maximumPoint>280</maximumPoint>
     <description>Работа с потоками и синхронизация</description>
@@ -36,13 +58,13 @@
     </author>
   </k_300>
   <k_500>
-    <id>25669</id>
+    <id>14</id>
     <name>DevOps практики</name>
     <coordinates>
       <x>150</x>
       <y>13000</y>
     </coordinates>
-    <creationDate>1772111051840</creationDate>
+    <creationDate>1772115709272</creationDate>
     <minimalPoint>16.0</minimalPoint>
     <maximumPoint>260</maximumPoint>
     <description>CI/CD и контейнеризация</description>
@@ -57,76 +79,14 @@
       </location>
     </author>
   </k_500>
-  <k_3>
-    <id>25677</id>
-    <name>Третий проект</name>
-    <coordinates>
-      <x>-800</x>
-      <y>6000</y>
-    </coordinates>
-    <creationDate>1772111051847</creationDate>
-    <minimalPoint>9.0</minimalPoint>
-    <maximumPoint>120</maximumPoint>
-    <description>Средняя сложность</description>
-    <difficulty>VERY_HARD</difficulty>
-    <author>
-      <name>Елена Сидорова</name>
-      <birthday>974667600000</birthday>
-      <location>
-        <x>100</x>
-        <y>50.0</y>
-        <z>75.5</z>
-      </location>
-    </author>
-  </k_3>
-  <k_2>
-    <id>25676</id>
-    <name>Вторая работа</name>
-    <coordinates>
-      <x>200</x>
-      <y>7000</y>
-    </coordinates>
-    <creationDate>1772111051845</creationDate>
-    <minimalPoint>12.0</minimalPoint>
-    <maximumPoint>150</maximumPoint>
-    <description>Продвинутая работа</description>
-    <difficulty>HARD</difficulty>
-    <author>
-      <name>Анна Петрова</name>
-      <birthday>931118400000</birthday>
-      <location/>
-    </author>
-  </k_2>
-  <k_1>
-    <id>25675</id>
-    <name>Первая лабораторная</name>
-    <coordinates>
-      <x>100</x>
-      <y>5000</y>
-    </coordinates>
-    <creationDate>1772111051845</creationDate>
-    <minimalPoint>8.5</minimalPoint>
-    <maximumPoint>100</maximumPoint>
-    <description>Базовая лабораторная работа</description>
-    <difficulty>EASY</difficulty>
-    <author>
-      <name>Дмитрий Иванов</name>
-      <birthday>984344400000</birthday>
-      <location>
-        <x>45</x>
-        <y>15.5</y>
-        <z>25.3</z>
-      </location>
-    </author>
-  </k_1>
   <k_400>
-    <id>25668</id>
+    <id>13</id>
     <name>Тестирование ПО</name>
     <coordinates>
       <x>-500</x>
       <y>9000</y>
     </coordinates>
-    <creationDate>1772111051839</creationDate>
+    <creationDate>1772115709088</creationDate>
     <minimalPoint>11.0</minimalPoint>
     <maximumPoint>190</maximumPoint>
     <description>Unit и интеграционные тесты</description>
