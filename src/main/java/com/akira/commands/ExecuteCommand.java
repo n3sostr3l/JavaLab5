@@ -24,7 +24,7 @@ public class ExecuteCommand implements Modable {
      * Выполняет команду execute_file.
      * <p>
      * Читает имя файла из аргументов команды и передаёт его
-     * в {@link CommandInvoker#runFile(File)} для выполнения.
+    * в {@link CommandInvoker#runFile(Path)} для выполнения.
      * </p>
      */
     @Override
@@ -70,11 +70,19 @@ public class ExecuteCommand implements Modable {
     public void setArguments(ArrayList<String> args_) {
         args = args_;
     }
-
+    /**
+     * Возвращает аргументы
+     *
+     * @return args — аргументы
+     */
     public ArrayList<String> getArguments(){
         return args;
     }
-
+    /**
+     * Возвращает выполняемые файлы
+     *
+     * @return filesQuery — очередь выполнения файлов
+     */
     public static HashSet<String> getFilesQuery(){
         return filesQuery;
     }
