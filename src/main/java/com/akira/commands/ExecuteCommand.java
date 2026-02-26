@@ -34,8 +34,6 @@ public class ExecuteCommand implements Modable {
 
         filesQuery.add(path.toString());
 
-        System.out.println(filesQuery.toString());
-
         try{
             CommandInvoker.runFile(path);
         }catch (Exception e){
