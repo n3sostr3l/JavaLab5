@@ -1,3 +1,4 @@
+com/akira/CollectionManager.class
 com/akira/commands/HelpCommand.class
 com/akira/Person.class
 com/akira/commands/SaveCommand.class
@@ -10,6 +11,7 @@ com/akira/commands/ExecuteCommand.class
 com/akira/LabWorkReader.class
 com/akira/commands/GroupCountingByMaximumPointCommand.class
 com/akira/commands/CommandInvoker.class
+com/akira/Coordinates.class
 com/akira/commands/ShowCommand.class
 com/akira/FileEditor.class
 com/akira/commands/UniqueAuthorCommand.class
@@ -17,6 +19,7 @@ com/akira/commands/InsertCommand.class
 com/akira/commands/AddRandomCommand.class
 com/akira/commands/PrintFieldDescendingDifficultyCommand.class
 com/akira/commands/RemoveLowerElementsCommand.class
+com/akira/Difficulty.class
 com/akira/Location.class
 com/akira/commands/ReplaceLowestCommand.class
 com/akira/commands/InfoCommand.class

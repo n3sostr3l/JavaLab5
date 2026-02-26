@@ -6,4 +6,4 @@
 *.log
 *.class
 data.xml
-.env/
+.env
