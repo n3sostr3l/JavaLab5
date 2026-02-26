@@ -1,8 +1,9 @@
 package com.akira.commands;
 
 import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.akira.CollectionManager;
 import com.akira.LabWork;
@@ -26,16 +27,9 @@ public class UniqueAuthorCommand implements Command{
      */
     @Override
     public void execute() {
-        Set<Person> unique_authors = new HashSet<>();
-        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
-        for (LabWork lab : coll.values()){
-            unique_authors.add(lab.getAuthor());
-        }
-        for (Person author : unique_authors){
-            System.out.println(author);
-        }
+        Set<Person> uniqueAuthors = CollectionManager.getCollection().values().stream().map(LabWork::getAuthor).filter(Objects::nonNull).collect(Collectors.toSet());
+        uniqueAuthors.forEach(System.out::println);
     }
-
     /**
      * Выводит описание команды.
      */

@@ -13,6 +13,7 @@
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/SaveCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/PrintFieldDescendingDifficultyCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/CommandInvoker.java
+/home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/commands/AddRandomCommand.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/Coordinates.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/Main.java
 /home/akira/Projects/Java_LR5/JavaLab5/src/main/java/com/akira/Location.java
