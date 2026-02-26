@@ -19,7 +19,6 @@ public class InfoCommand implements Command{
      *   <li>дата создания</li>
      *   <li>количество элементов</li>
      * </ul>
-     * </p>
      */
     @Override
     public void execute(){

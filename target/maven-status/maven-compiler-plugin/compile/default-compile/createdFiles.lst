@@ -13,8 +13,13 @@ com/akira/commands/GroupCountingByMaximumPointCommand.class
 com/akira/commands/CommandInvoker.class
 com/akira/Coordinates.class
 com/akira/commands/ShowCommand.class
+<<<<<<< HEAD
 com/akira/FileEditor.class
 com/akira/commands/UniqueAuthorCommand.class
+=======
+com/akira/commands/UniqueAuthorCommand.class
+com/akira/FileEditor.class
+>>>>>>> 9bd1134398dc708893c2a4bf035842bd522459ea
 com/akira/commands/InsertCommand.class
 com/akira/commands/PrintFieldDescendingDifficultyCommand.class
 com/akira/commands/RemoveLowerElementsCommand.class

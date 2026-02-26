@@ -47,7 +47,6 @@ public class CommandInvoker {
      *   <li>replace_if_greater — замена при большем значении</li>
      *   <li>replace_if_lower — замена при меньшем значении</li>
      * </ul>
-     * </p>
      */
     public CommandInvoker() {
         commands.put("help", new HelpCommand()); //done 1
