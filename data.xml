@@ -1,1 +1,64 @@
-<Hashtable/>
+<Hashtable>
+  <k_3>
+    <id>3</id>
+    <name>Третий проект</name>
+    <coordinates>
+      <x>-800</x>
+      <y>6000</y>
+    </coordinates>
+    <creationDate>1772104671290</creationDate>
+    <minimalPoint>9.0</minimalPoint>
+    <maximumPoint>120</maximumPoint>
+    <description>Средняя сложность</description>
+    <difficulty>VERY_HARD</difficulty>
+    <author>
+      <name>Елена Сидорова</name>
+      <birthday>974667600000</birthday>
+      <location>
+        <x>100</x>
+        <y>50.0</y>
+        <z>75.5</z>
+      </location>
+    </author>
+  </k_3>
+  <k_2>
+    <id>2</id>
+    <name>Вторая работа</name>
+    <coordinates>
+      <x>200</x>
+      <y>7000</y>
+    </coordinates>
+    <creationDate>1772104671129</creationDate>
+    <minimalPoint>12.0</minimalPoint>
+    <maximumPoint>150</maximumPoint>
+    <description>Продвинутая работа</description>
+    <difficulty>HARD</difficulty>
+    <author>
+      <name>Анна Петрова</name>
+      <birthday>931118400000</birthday>
+      <location/>
+    </author>
+  </k_2>
+  <k_1>
+    <id>1</id>
+    <name>Первая лабораторная</name>
+    <coordinates>
+      <x>100</x>
+      <y>5000</y>
+    </coordinates>
+    <creationDate>1772104671119</creationDate>
+    <minimalPoint>8.5</minimalPoint>
+    <maximumPoint>100</maximumPoint>
+    <description>Базовая лабораторная работа</description>
+    <difficulty>EASY</difficulty>
+    <author>
+      <name>Дмитрий Иванов</name>
+      <birthday>984344400000</birthday>
+      <location>
+        <x>45</x>
+        <y>15.5</y>
+        <z>25.3</z>
+      </location>
+    </author>
+  </k_1>
+</Hashtable>
