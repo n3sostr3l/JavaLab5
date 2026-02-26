@@ -1,0 +1,50 @@
+help
+info
+show
+insert 1
+Первая лабораторная
+100
+5000
+8.5
+100
+Базовая лабораторная работа
+EASY
+Дмитрий Иванов
+12.03.2001
+да
+45
+15.5
+25.3
+insert 2
+Вторая работа
+200
+7000
+12.0
+150
+Продвинутая работа
+HARD
+Анна Петрова
+05.07.1999
+нет
+info
+show
+group_counting_by_maximum_point
+print_unique_author
+print_field_descending_difficulty
+save
+insert 3
+Третий проект
+-800
+6000
+9.0
+120
+Средняя сложность
+VERY_HARD
+Елена Сидорова
+20.11.2000
+да
+100
+50.0
+75.5
+show
+save
