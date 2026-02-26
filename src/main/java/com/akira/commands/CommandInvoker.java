@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -90,13 +92,12 @@ public class CommandInvoker {
      * Использует {@link java.io.InputStreamReader} для чтения в кодировке UTF-8.
      * </p>
      *
-     * @param f файл со скриптом команд для выполнения
+     * @param path Путь к файлу со скриптом команд для выполнения
      */
-    public static void runFile(File f) {
+    public static void runFile(Path path) {
         Scanner oldScanner = sc;
-        try (FileInputStream fis = new FileInputStream(f);
-             InputStreamReader isr = new InputStreamReader(fis, "UTF-8")) {
-            sc = new Scanner(isr);
+        try{
+            sc = new Scanner(path);
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 runParticularCommand(line);
@@ -132,7 +133,7 @@ public class CommandInvoker {
      * @param line строка с именем команды и её аргументами
      */
     private static void runParticularCommand(String line){
-        String[] tokens = line.split(" ");
+        String[] tokens = line.trim().replace("\n", "").split(" ");
         String commandName = tokens[0];
         ArrayList<String> args = new ArrayList<>();
         if (tokens.length > 1) {
@@ -140,11 +141,15 @@ public class CommandInvoker {
                 args.add(tokens[i]);
             }
         }
+
         Command command = commands.get(commandName);
         if (command == null) {
             System.out.println("Неизвестная команда: " + commandName);
             return;
         }
+
+
+
         if (command instanceof Modable) {
             if(args.size()==command.numberArgsRequired())
                 ((Modable) command).setArguments(args);
@@ -153,6 +158,19 @@ public class CommandInvoker {
                 return;
             }
         }
+
+        if(command instanceof ExecuteCommand){
+
+            if(ExecuteCommand.getFilesQuery().contains(((ExecuteCommand) (command)).getArguments().get(0))){
+                System.out.println(String.format("Ошибка, рекурсивный вызов файла %s", tokens[1]));
+                return;
+            }
+        }
+
+        if(tokens[0] == ""){
+            return;
+        }
+
         command.execute();
     }
 }

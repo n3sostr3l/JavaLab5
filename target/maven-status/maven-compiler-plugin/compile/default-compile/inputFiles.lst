@@ -7,6 +7,7 @@
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/Location.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/Main.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/Person.java
+/home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/AddRandomCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/ClearCommand.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/Command.java
 /home/omewa/itmo/JavaLab5/src/main/java/com/akira/commands/CommandInvoker.java

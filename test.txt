@@ -1,5 +1,2 @@
+execute_file testfile.txt
 execute_file test1.txt
-execute_file test1.txt
-execute_file test2.txt
-execute_file test3.txt
-execute_file test.txt

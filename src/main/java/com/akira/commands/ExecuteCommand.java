@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Команда выполнения команд из указанного файла.
@@ -17,6 +18,7 @@ public class ExecuteCommand implements Modable {
 
     /** Список аргументов команды */
     private ArrayList<String> args = new ArrayList<>();
+    private static HashSet<String> filesQuery = new HashSet<String>();
 
     /**
      * Выполняет команду execute_file.
@@ -28,12 +30,19 @@ public class ExecuteCommand implements Modable {
     @Override
     public void execute() {
         String fileName = args.get(0);
-        Path path= Paths.get(fileName);
+        Path path = Paths.get(fileName);
+
+        filesQuery.add(path.toString());
+
+        System.out.println(filesQuery.toString());
+
         try{
             CommandInvoker.runFile(path);
         }catch (Exception e){
             System.out.println("Ошибка чтения файла. Убедитесь, что файл находится по указанному вами пути относительно рабочей директории.");
         }
+
+        filesQuery.remove(path.toString());
     }
 
     /**
@@ -62,5 +71,13 @@ public class ExecuteCommand implements Modable {
     @Override
     public void setArguments(ArrayList<String> args_) {
         args = args_;
+    }
+
+    public ArrayList<String> getArguments(){
+        return args;
+    }
+
+    public static HashSet<String> getFilesQuery(){
+        return filesQuery;
     }
 }
