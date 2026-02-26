@@ -1,7 +1,6 @@
 package com.akira.commands;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +39,7 @@ public class ExecuteCommand implements Modable {
      */
     @Override
     public void describe() {
-        System.out.println("execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
+        System.out.println("execute_file file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
     }
 
     /**

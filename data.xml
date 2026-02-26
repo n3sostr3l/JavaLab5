@@ -1,12 +1,12 @@
 <Hashtable>
   <k_3>
-    <id>3</id>
+    <id>6</id>
     <name>Третий проект</name>
     <coordinates>
       <x>-800</x>
       <y>6000</y>
     </coordinates>
-    <creationDate>1772104671290</creationDate>
+    <creationDate>1772108597091</creationDate>
     <minimalPoint>9.0</minimalPoint>
     <maximumPoint>120</maximumPoint>
     <description>Средняя сложность</description>
@@ -22,13 +22,13 @@
     </author>
   </k_3>
   <k_2>
-    <id>2</id>
+    <id>5</id>
     <name>Вторая работа</name>
     <coordinates>
       <x>200</x>
       <y>7000</y>
     </coordinates>
-    <creationDate>1772104671129</creationDate>
+    <creationDate>1772108596919</creationDate>
     <minimalPoint>12.0</minimalPoint>
     <maximumPoint>150</maximumPoint>
     <description>Продвинутая работа</description>
@@ -40,13 +40,13 @@
     </author>
   </k_2>
   <k_1>
-    <id>1</id>
+    <id>4</id>
     <name>Первая лабораторная</name>
     <coordinates>
       <x>100</x>
       <y>5000</y>
     </coordinates>
-    <creationDate>1772104671119</creationDate>
+    <creationDate>1772108596912</creationDate>
     <minimalPoint>8.5</minimalPoint>
     <maximumPoint>100</maximumPoint>
     <description>Базовая лабораторная работа</description>
