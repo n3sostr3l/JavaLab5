@@ -1,6 +1,8 @@
 package com.akira.commands;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -26,9 +28,9 @@ public class ExecuteCommand implements Modable {
     @Override
     public void execute() {
         String fileName = args.get(0);
-        File file = new File(fileName);
+        Path path= Paths.get(fileName);
         try{
-            CommandInvoker.runFile(file);
+            CommandInvoker.runFile(path);
         }catch (Exception e){
             System.out.println("Ошибка чтения файла. Убедитесь, что файл находится по указанному вами пути относительно рабочей директории.");
         }

@@ -1,5 +1,4 @@
-help
-info
+
 show
 insert 1
 Первая лабораторная
