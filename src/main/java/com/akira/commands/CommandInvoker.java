@@ -15,13 +15,14 @@ public class CommandInvoker {
     public CommandInvoker() {
         commands.put("help", new HelpCommand()); //done
         commands.put("clear", new ClearCommand()); //done
-        commands.put("info", new InfoCommand());
-        commands.put("show", new ShowCommand());
-        commands.put("exit", new ExitCommand());
-        commands.put("execute_file", new ExecuteCommand());
+        commands.put("info", new InfoCommand()); //done
+        commands.put("show", new ShowCommand()); //
+        commands.put("exit", new ExitCommand()); //done
+        commands.put("execute_script", new ExecuteCommand()); //donegit
     }
     public static void stop(){
-
+        System.out.println("Выхожу...");
+        sc.close();
     }
     public static void run() {
         while (sc.hasNext()) {

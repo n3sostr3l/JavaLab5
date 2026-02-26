@@ -24,7 +24,7 @@ public class LabWork implements Comparable<LabWork>{
                 id= %d , 
                 name= %s , 
                 coordinates = %s , 
-                creationDate= %t , 
+                creationDate= %tF , 
                 minimalPoint= %d , 
                 maximumPoint= %d ,
                 description= %s ,
