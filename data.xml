@@ -1,12 +1,70 @@
 <Hashtable>
+  <k_600>
+    <id>25670</id>
+    <name>Кибербезопасность</name>
+    <coordinates>
+      <x>600</x>
+      <y>17000</y>
+    </coordinates>
+    <creationDate>1772111051842</creationDate>
+    <minimalPoint>21.0</minimalPoint>
+    <maximumPoint>320</maximumPoint>
+    <description>Защита от веб-угроз</description>
+    <difficulty>INSANE</difficulty>
+    <author>
+      <name>Игорь Новиков</name>
+      <birthday>947538000000</birthday>
+      <location/>
+    </author>
+  </k_600>
+  <k_300>
+    <id>25667</id>
+    <name>Многопоточность</name>
+    <coordinates>
+      <x>500</x>
+      <y>14000</y>
+    </coordinates>
+    <creationDate>1772111051839</creationDate>
+    <minimalPoint>17.5</minimalPoint>
+    <maximumPoint>280</maximumPoint>
+    <description>Работа с потоками и синхронизация</description>
+    <difficulty>VERY_HARD</difficulty>
+    <author>
+      <name>Виктория Романова</name>
+      <birthday>1036443600000</birthday>
+      <location/>
+    </author>
+  </k_300>
+  <k_500>
+    <id>25669</id>
+    <name>DevOps практики</name>
+    <coordinates>
+      <x>150</x>
+      <y>13000</y>
+    </coordinates>
+    <creationDate>1772111051840</creationDate>
+    <minimalPoint>16.0</minimalPoint>
+    <maximumPoint>260</maximumPoint>
+    <description>CI/CD и контейнеризация</description>
+    <difficulty>HARD</difficulty>
+    <author>
+      <name>Анна Кузнецова</name>
+      <birthday>1001102400000</birthday>
+      <location>
+        <x>-200</x>
+        <y>-100.0</y>
+        <z>-150.0</z>
+      </location>
+    </author>
+  </k_500>
   <k_3>
-    <id>6</id>
+    <id>25677</id>
     <name>Третий проект</name>
     <coordinates>
       <x>-800</x>
       <y>6000</y>
     </coordinates>
-    <creationDate>1772108597091</creationDate>
+    <creationDate>1772111051847</creationDate>
     <minimalPoint>9.0</minimalPoint>
     <maximumPoint>120</maximumPoint>
     <description>Средняя сложность</description>
@@ -22,13 +80,13 @@
     </author>
   </k_3>
   <k_2>
-    <id>5</id>
+    <id>25676</id>
     <name>Вторая работа</name>
     <coordinates>
       <x>200</x>
       <y>7000</y>
     </coordinates>
-    <creationDate>1772108596919</creationDate>
+    <creationDate>1772111051845</creationDate>
     <minimalPoint>12.0</minimalPoint>
     <maximumPoint>150</maximumPoint>
     <description>Продвинутая работа</description>
@@ -40,13 +98,13 @@
     </author>
   </k_2>
   <k_1>
-    <id>4</id>
+    <id>25675</id>
     <name>Первая лабораторная</name>
     <coordinates>
       <x>100</x>
       <y>5000</y>
     </coordinates>
-    <creationDate>1772108596912</creationDate>
+    <creationDate>1772111051845</creationDate>
     <minimalPoint>8.5</minimalPoint>
     <maximumPoint>100</maximumPoint>
     <description>Базовая лабораторная работа</description>
@@ -61,4 +119,26 @@
       </location>
     </author>
   </k_1>
+  <k_400>
+    <id>25668</id>
+    <name>Тестирование ПО</name>
+    <coordinates>
+      <x>-500</x>
+      <y>9000</y>
+    </coordinates>
+    <creationDate>1772111051839</creationDate>
+    <minimalPoint>11.0</minimalPoint>
+    <maximumPoint>190</maximumPoint>
+    <description>Unit и интеграционные тесты</description>
+    <difficulty>EASY</difficulty>
+    <author>
+      <name>Дмитрий Лебедев</name>
+      <birthday>924379200000</birthday>
+      <location>
+        <x>1000</x>
+        <y>500.0</y>
+        <z>750.0</z>
+      </location>
+    </author>
+  </k_400>
 </Hashtable>
