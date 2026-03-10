@@ -1,11 +1,11 @@
-package com.akira.server;
+package com.akira.general;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-import com.akira.commands.CommandInvoker;
+import com.akira.server.CommandInvoker;
 import com.akira.general.datas.Coordinates;
 import com.akira.general.datas.Difficulty;
 import com.akira.general.datas.LabWork;

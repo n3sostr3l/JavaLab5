@@ -1,36 +1,33 @@
 package com.akira.general.commands.interfaces;
 
+import com.akira.server.CollectionManager;
+import com.akira.general.network.Response;
+import java.io.Serializable;
+
 /**
  * Базовый интерфейс для всех команд приложения.
  * <p>
- * Определяет контракт, который должна реализовать каждая команда.
- * Все команды поддерживают выполнение, вывод описания и указание
- * количества требуемых аргументов.
+ * Реализует Serializable для передачи объекта команды между клиентом и сервером.
  * </p>
  */
-public interface Command {
+public interface Command extends Serializable {
     /**
-     * Выполняет команду.
-     * <p>
-     * Метод содержит основную логику работы команды.
-     * Реализация зависит от конкретной команды.
-     * </p>
+     * Выполняет команду на стороне сервера.
+     *
+     * @param collectionManager менеджер коллекции сервера
+     * @return объект Response с результатом выполнения
      */
-    public void execute();
+    public Response execute(CollectionManager collectionManager);
 
     /**
-     * Выводит описание команды в консоль.
-     * <p>
-     * Описание включает синтаксис вызова команды
-     * и краткое пояснение её назначения.
-     * </p>
+     * Выводит описание команды.
      */
     public void describe();
 
     /**
-     * Возвращает количество аргументов, требуемых команде.
+     * Возвращает количество требуемых строковых аргументов.
      *
-     * @return количество аргументов командной строки
+     * @return количество аргументов
      */
     public int numberArgsRequired();
 }

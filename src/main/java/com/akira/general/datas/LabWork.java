@@ -1,6 +1,7 @@
 package com.akira.general.datas;
 
 import java.io.IOError;
+import java.io.Serializable;
 
 /**
  * Класс, представляющий лабораторную работу.
@@ -10,7 +11,8 @@ import java.io.IOError;
  * по полю maximumPoint.
  * </p>
  */
-public class LabWork implements Comparable<LabWork>{
+public class LabWork implements Comparable<LabWork>, Serializable{
+    private static final long serialVersionUID = 1L;
     /** Счётчик для автоматической генерации уникальных идентификаторов */
     private static long idCounter = 1;
     /** Уникальный идентификатор лабораторной работы. Не может быть null, значение должно быть больше 0 */
@@ -156,21 +158,21 @@ public class LabWork implements Comparable<LabWork>{
     }
 
     /**
-     * Возвращает уникальный идентификатор лабораторной работы.
-     *
-     * @return идентификатор
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
      * Устанавливает уникальный идентификатор лабораторной работы.
      *
      * @param id идентификатор
      */
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * Возвращает уникальный идентификатор лабораторной работы.
+     *
+     * @return идентификатор
+     */
+    public Long getId() {
+        return id;
     }
 
     /**
@@ -207,5 +209,14 @@ public class LabWork implements Comparable<LabWork>{
      */
     public Difficulty getDifficulty() {
         return difficulty;
+    }
+
+    /**
+     * Возвращает координаты лабораторной работы.
+     *
+     * @return объект координат
+     */
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 }

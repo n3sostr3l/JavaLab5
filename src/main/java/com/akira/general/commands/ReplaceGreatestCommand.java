@@ -3,10 +3,10 @@ package com.akira.commands;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import com.akira.general.LabWorkReader;
 import com.akira.general.commands.interfaces.Modable;
 import com.akira.general.datas.LabWork;
 import com.akira.server.CollectionManager;
-import com.akira.server.LabWorkReader;
 
 /**
  * Команда замены элемента при большем значении.

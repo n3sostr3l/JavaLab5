@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import com.akira.general.commands.interfaces.Command;
 import com.akira.general.commands.interfaces.Modable;
+import com.akira.general.commands.*;
 
 /**
  * Класс для управления и выполнения команд приложения.

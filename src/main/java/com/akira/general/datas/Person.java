@@ -1,12 +1,15 @@
 package com.akira.general.datas;
 
+import java.io.Serializable;
+
 /**
  * Класс, представляющий автора лабораторной работы.
  * <p>
  * Содержит информацию о имени, дне рождения и местоположении автора.
  * </p>
  */
-public class Person {
+public class Person implements Serializable{
+    private static final long serialVersionUID = 1L;
     /** Имя автора. Не может быть null, строка не может быть пустой */
     private String name;
     /** Дата рождения автора. Может быть null */

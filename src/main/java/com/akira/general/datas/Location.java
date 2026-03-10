@@ -1,12 +1,15 @@
 package com.akira.general.datas;
 
+import java.io.Serializable;
+
 /**
  * Класс, представляющий местоположение.
  * <p>
  * Содержит трёхмерные координаты (X, Y, Z) для указания местоположения.
  * </p>
  */
-public class Location {
+public class Location implements Serializable{
+    private static final long serialVersionUID = 1L;
     /** Координата X. Не может быть null */
     private Integer x;
     /** Координата Y */

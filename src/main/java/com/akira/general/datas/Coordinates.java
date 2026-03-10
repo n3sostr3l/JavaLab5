@@ -1,16 +1,22 @@
 package com.akira.general.datas;
 
+import java.io.Serializable;
+
 /**
  * Класс, представляющий координаты лабораторной работы.
  * <p>
  * Содержит координаты X и Y для позиционирования объекта.
  * </p>
  */
-public class Coordinates {
+public class Coordinates implements Serializable{
+    /**  */
+    private static final long serialVersionUID = 1L;
     /** Координата X. Значение должно быть больше -881, не может быть null */
     private Integer x;
     /** Координата Y. Не может быть null */
     private Long y;
+
+    
 
     /**
      * Устанавливает координату X.
