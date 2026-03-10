@@ -16,11 +16,20 @@ public class NetworkManager {
     private DataOutputStream out;
     private DataInputStream in;
 
+    /**
+     * Конструктор менеджера сетевого взаимодействия.
+     * @param host адрес сервера (IP или доменное имя)
+     * @param port порт сервера
+     */
     public NetworkManager(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     * Устанавливает соединение с сервером через блокирующий сокет.
+     * @return {@code true}, если соединение установлено успешно, иначе {@code false}
+     */
     public boolean connect() {
         try {
             socket = new Socket(host, port);
@@ -32,6 +41,13 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Отправляет объект запроса на сервер и получает ответ.
+     * Автоматически пытается переподключиться при обрыве соединения.
+     * 
+     * @param request сериализуемый объект запроса
+     * @return объект {@link Response} от сервера или {@code null} при возникновении ошибки
+     */
     public Response sendAndReceive(Request request) {
         try {
             if (socket == null || socket.isClosed()) {
@@ -65,6 +81,9 @@ public class NetworkManager {
         }
     }
 
+    /**
+     * Закрывает все открытые сетевые ресурсы (сокеты и потоки).
+     */
     public void close() {
         try {
             if (out != null) out.close();

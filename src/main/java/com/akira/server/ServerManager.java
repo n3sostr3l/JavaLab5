@@ -21,12 +21,20 @@ public class ServerManager {
     private final CollectionManager collectionManager;
     private Selector selector;
 
+    /**
+     * Конструктор сервера.
+     * @param port порт для прослушивания входящих соединений
+     */
     public ServerManager(int port) {
         this.port = port;
         this.collectionManager = new CollectionManager();
         this.commandInvoker = new CommandInvoker();
     }
 
+    /**
+     * Запускает основной цикл сервера.
+     * Использует неблокирующий ввод-вывод (NIO) для обработки множества соединений в одном потоке.
+     */
     public void start() {
         try (ServerSocketChannel serverChannel = ServerSocketChannel.open()) {
             selector = Selector.open();
@@ -55,12 +63,22 @@ public class ServerManager {
         }
     }
 
+    /**
+     * Принимает входящее подключение и регистрирует его в селекторе на чтение.
+     * @param serverChannel серверный канал сокета
+     * @throws IOException если возникла ошибка при установке соединения
+     */
     private void acceptConnection(ServerSocketChannel serverChannel) throws IOException {
         SocketChannel clientChannel = serverChannel.accept();
         clientChannel.configureBlocking(false);
         clientChannel.register(selector, SelectionKey.OP_READ);
     }
 
+    /**
+     * Обрабатывает данные, поступившие от клиента.
+     * Считывает размер пакета, затем сам десериализованный объект запроса.
+     * @param key ключ выбора из селектора
+     */
     private void handleRead(SelectionKey key) {
         SocketChannel clientChannel = (SocketChannel) key.channel();
         try {
@@ -94,6 +112,14 @@ public class ServerManager {
         }
     }
 
+    /**
+     * Отправляет объект ответа клиенту.
+     * Сначала отправляется 4 байта (int) с размером ответа, затем сами байты объекта.
+     * 
+     * @param clientChannel канал связи с клиентом
+     * @param response объект ответа сервера
+     * @throws IOException если возникла ошибка при отправке данных
+     */
     private void sendResponse(SocketChannel clientChannel, Response response) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);

@@ -11,7 +11,10 @@ import com.akira.general.datas.LabWork;
  * </p>
  */
 public class CollectionManager {
+    /** Статическое хранилище коллекции лабораторных работ. Использует Hashtable для базовой потокобезопасности. */
     private static Hashtable<Integer, LabWork> labworks = FileEditor.getCollection();
+    
+    /** Дата и время инициализации коллекции. Используется для команды 'info'. */
     private static Date collectionCreationTime;
 
     static {
@@ -24,10 +27,12 @@ public class CollectionManager {
     }
 
     /**
-     * Обновляет элемент в коллекции.
-     * @param id ключ
-     * @param lab объект
-     * @return true если успешно
+     * Обновляет существующий элемент коллекции по его ID.
+     * При обновлении сохраняются оригинальный ID и дата создания.
+     * 
+     * @param id уникальный идентификатор (ключ в коллекции)
+     * @param lab новый объект LabWork с обновленными данными
+     * @return {@code true}, если объект был найден и успешно обновлен, иначе {@code false}
      */
     public static boolean update(Integer id, LabWork lab){
         if (labworks.containsKey(id)){
@@ -40,33 +45,35 @@ public class CollectionManager {
     }
 
     /**
-     * Очищает коллекцию.
+     * Полностью очищает текущую коллекцию объектов.
      */
     public static void clear() {
         labworks.clear();
     }
 
     /**
-     * Возвращает коллекцию.
-     * @return Hashtable
+     * Предоставляет доступ к объекту коллекции.
+     * @return Hashtable, содержащий все лабораторные работы
      */
     public static Hashtable<Integer, LabWork> getCollection(){
         return labworks;
     }
 
     /**
-     * Возвращает дату инициализации.
-     * @return Date
+     * Возвращает дату создания (инициализации) коллекции.
+     * @return объект {@link Date} с временем создания
      */
     public static Date getCollectionCreationTime(){
         return collectionCreationTime;
     }
 
     /**
-     * Вставляет элемент.
-     * @param key ключ
-     * @param lab объект
-     * @return true если успешно
+     * Вставляет новый элемент в коллекцию по заданному ключу.
+     * Если у объекта отсутствует ID или дата создания, они генерируются автоматически.
+     * 
+     * @param key ключ для вставки
+     * @param lab объект лабораторной работы
+     * @return {@code true}, если вставка прошла успешно, {@code false}, если ключ уже занят
      */
     public static boolean insert(Integer key, LabWork lab) {
         if (labworks.containsKey(key)) return false;
@@ -82,6 +89,10 @@ public class CollectionManager {
         return true;
     }
 
+    /**
+     * Генерирует следующий доступный уникальный ID на основе максимального ID в коллекции.
+     * @return новый уникальный идентификатор типа Long
+     */
     private static Long generateNextId() {
         return labworks.values().stream()
                 .mapToLong(LabWork::getId)
@@ -90,25 +101,26 @@ public class CollectionManager {
     }
 
     /**
-     * Удаляет по ключу.
-     * @param key ключ
+     * Удаляет объект из коллекции по его ключу.
+     * @param key ключ удаляемого объекта
      */
     public static void removeByKey(Integer key){
         labworks.remove(key);
     }
 
     /**
-     * Сохраняет коллекцию.
-     * @return true если успешно
+     * Сохраняет текущее состояние коллекции в файл через {@link FileEditor}.
+     * @return {@code true}, если сохранение прошло успешно
      */
     public static boolean save() {
         return FileEditor.saveCollection(labworks);
     }
 
     /**
-     * Удаляет элементы с ключами ниже заданного.
-     * @param key ключ
-     * @return кол-во удаленных
+     * Удаляет все элементы коллекции, ключи которых меньше заданного значения.
+     * 
+     * @param key пороговое значение ключа
+     * @return количество удаленных элементов
      */
     public static int removeLowerKeys(Integer key) {
         java.util.List<Integer> keysToRemove = labworks.keySet().stream()
