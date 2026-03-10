@@ -1,1 +1,82 @@
-<Hashtable/>
+<Hashtable>
+  <k_600>
+    <id>6</id>
+    <name>Кибербезопасность</name>
+    <coordinates>
+      <x>600</x>
+      <y>17000</y>
+    </coordinates>
+    <creationDate>1773164065256</creationDate>
+    <minimalPoint>21.0</minimalPoint>
+    <maximumPoint>320</maximumPoint>
+    <description>Защита от веб-угроз</description>
+    <difficulty>INSANE</difficulty>
+    <author>
+      <name>Игорь Новиков</name>
+      <birthday>947538000000</birthday>
+      <location/>
+    </author>
+  </k_600>
+  <k_300>
+    <id>3</id>
+    <name>Многопоточность</name>
+    <coordinates>
+      <x>500</x>
+      <y>14000</y>
+    </coordinates>
+    <creationDate>1773164064625</creationDate>
+    <minimalPoint>17.5</minimalPoint>
+    <maximumPoint>280</maximumPoint>
+    <description>Работа с потоками и синхронизация</description>
+    <difficulty>VERY_HARD</difficulty>
+    <author>
+      <name>Виктория Романова</name>
+      <birthday>1036443600000</birthday>
+      <location/>
+    </author>
+  </k_300>
+  <k_500>
+    <id>5</id>
+    <name>DevOps практики</name>
+    <coordinates>
+      <x>150</x>
+      <y>13000</y>
+    </coordinates>
+    <creationDate>1773164065207</creationDate>
+    <minimalPoint>16.0</minimalPoint>
+    <maximumPoint>260</maximumPoint>
+    <description>CI/CD и контейнеризация</description>
+    <difficulty>HARD</difficulty>
+    <author>
+      <name>Анна Кузнецова</name>
+      <birthday>1001102400000</birthday>
+      <location>
+        <x>-200</x>
+        <y>-100.0</y>
+        <z>-150.0</z>
+      </location>
+    </author>
+  </k_500>
+  <k_400>
+    <id>4</id>
+    <name>Тестирование ПО</name>
+    <coordinates>
+      <x>-500</x>
+      <y>9000</y>
+    </coordinates>
+    <creationDate>1773164064674</creationDate>
+    <minimalPoint>11.0</minimalPoint>
+    <maximumPoint>190</maximumPoint>
+    <description>Unit и интеграционные тесты</description>
+    <difficulty>EASY</difficulty>
+    <author>
+      <name>Дмитрий Лебедев</name>
+      <birthday>924379200000</birthday>
+      <location>
+        <x>1000</x>
+        <y>500.0</y>
+        <z>750.0</z>
+      </location>
+    </author>
+  </k_400>
+</Hashtable>
