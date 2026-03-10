@@ -71,10 +71,6 @@ public class Main {
                 continue;
             }
 
-            if (commandName.equals("save")) {
-                System.out.println("Ошибка: команда 'save' доступна только на сервере.");
-                continue;
-            }
 
             Request request;
             if (isObjectRequired(commandName)) {
