@@ -8,6 +8,11 @@ import com.akira.server.CollectionManager;
  * Команда завершения работы.
  */
 public class ExitCommand implements Command {
+    /**
+     * Конструктор по умолчанию.
+     */
+    public ExitCommand() {}
+
     @Override
     public Response execute(CollectionManager collectionManager) {
         return new Response("Завершение работы...", true);
