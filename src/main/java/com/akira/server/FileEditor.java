@@ -128,20 +128,18 @@ public class FileEditor {
 
     /**
      * Сохраняет коллекцию в XML-файл.
-     * <p>
-     * Ключи коллекции преобразуются в строковый формат с префиксом "k_"
-     * для корректной сериализации в XML.
-     * </p>
-     *
-     * @param coll коллекция для сохранения
+     * @param coll коллекция
+     * @return true если успешно
      */
-    public static void saveCollection(Hashtable<Integer, LabWork> coll) {
+    public static boolean saveCollection(Hashtable<Integer, LabWork> coll) {
         try (FileWriter writer = new FileWriter(DATA_FILE_NAME, StandardCharsets.UTF_8)) {
             Hashtable<String, LabWork> wrapped = new Hashtable<>();
             coll.forEach((key, value) -> wrapped.put("k_" + key, value));
             xmlMapper.writerWithDefaultPrettyPrinter().writeValue(writer, wrapped);
+            return true;
         } catch (IOException e) {
             System.err.println("Ошибка записи в файл");
+            return false;
         }
     }
 

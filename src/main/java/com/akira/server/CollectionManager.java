@@ -102,7 +102,7 @@ public class CollectionManager {
      * @return true если успешно
      */
     public static boolean save() {
-        return FileEditor.save(labworks);
+        return FileEditor.saveCollection(labworks);
     }
 
     /**

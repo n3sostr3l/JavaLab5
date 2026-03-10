@@ -4,6 +4,7 @@ import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 /**
  * Класс для управления сетевым взаимодействием на стороне клиента.
@@ -12,51 +13,58 @@ public class NetworkManager {
     private final String host;
     private final int port;
     private Socket socket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private DataOutputStream out;
+    private DataInputStream in;
 
     public NetworkManager(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
-    /**
-     * Устанавливает соединение с сервером.
-     * @return true, если соединение установлено
-     */
     public boolean connect() {
         try {
             socket = new Socket(host, port);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
             return true;
         } catch (IOException e) {
             return false;
         }
     }
 
-    /**
-     * Отправляет запрос на сервер и получает ответ.
-     * @param request объект запроса
-     * @return объект ответа или null при ошибке
-     */
     public Response sendAndReceive(Request request) {
         try {
             if (socket == null || socket.isClosed()) {
                 if (!connect()) return null;
             }
-            out.writeObject(request);
+            
+            // Сериализуем объект в массив байтов
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(request);
+            oos.flush();
+            byte[] data = baos.toByteArray();
+            
+            // Отправляем размер, затем данные
+            out.writeInt(data.length);
+            out.write(data);
             out.flush();
-            return (Response) in.readObject();
+            
+            // Читаем размер ответа
+            int size = in.readInt();
+            byte[] responseData = new byte[size];
+            in.readFully(responseData);
+            
+            ByteArrayInputStream bais = new ByteArrayInputStream(responseData);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return (Response) ois.readObject();
+            
         } catch (IOException | ClassNotFoundException e) {
             close();
             return null;
         }
     }
 
-    /**
-     * Закрывает соединение.
-     */
     public void close() {
         try {
             if (out != null) out.close();
