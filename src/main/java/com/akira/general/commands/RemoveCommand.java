@@ -11,6 +11,11 @@ import com.akira.server.CollectionManager;
 public class RemoveCommand implements Modable {
     private ArrayList<String> args = new ArrayList<>();
 
+    /**
+     * Конструктор по умолчанию.
+     */
+    public RemoveCommand() {}
+
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
