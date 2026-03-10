@@ -9,11 +9,6 @@ import java.util.ArrayList;
  * Команда вывода справки по доступным командам.
  */
 public class HelpCommand implements Command {
-    /**
-     * Конструктор по умолчанию.
-     */
-    public HelpCommand() {}
-
     @Override
     public Response execute(CollectionManager collectionManager) {
         StringBuilder result = new StringBuilder("Доступные команды:\n");

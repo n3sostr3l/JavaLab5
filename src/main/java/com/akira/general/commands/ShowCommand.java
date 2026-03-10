@@ -11,11 +11,6 @@ import java.util.stream.Collectors;
  * Команда вывода всех элементов коллекции.
  */
 public class ShowCommand implements Command {
-    /**
-     * Конструктор по умолчанию.
-     */
-    public ShowCommand() {}
-
     @Override
     public Response execute(CollectionManager collectionManager) {
         Hashtable<Integer, LabWork> collection = CollectionManager.getCollection();

@@ -8,11 +8,6 @@ import com.akira.server.CollectionManager;
  * Команда сохранения коллекции.
  */
 public class SaveCommand implements Command {
-    /**
-     * Конструктор по умолчанию.
-     */
-    public SaveCommand() {}
-
     @Override
     public Response execute(CollectionManager collectionManager) {
         if (CollectionManager.save()) {

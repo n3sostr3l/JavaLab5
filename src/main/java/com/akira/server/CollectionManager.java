@@ -24,11 +24,6 @@ public class CollectionManager {
     }
 
     /**
-     * Конструктор по умолчанию.
-     */
-    public CollectionManager() {}
-
-    /**
      * Обновляет элемент в коллекции.
      * @param id ключ
      * @param lab объект

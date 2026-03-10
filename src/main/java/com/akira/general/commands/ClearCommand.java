@@ -8,11 +8,6 @@ import com.akira.server.CollectionManager;
  * Команда очистки коллекции.
  */
 public class ClearCommand implements Command {
-    /**
-     * Конструктор по умолчанию.
-     */
-    public ClearCommand() {}
-
     @Override
     public Response execute(CollectionManager collectionManager) {
         CollectionManager.clear();

@@ -8,11 +8,6 @@ import com.akira.server.CollectionManager;
  * Команда вывода информации о коллекции.
  */
 public class InfoCommand implements Command {
-    /**
-     * Конструктор по умолчанию.
-     */
-    public InfoCommand() {}
-
     @Override
     public Response execute(CollectionManager collectionManager) {
         String result = String.format(

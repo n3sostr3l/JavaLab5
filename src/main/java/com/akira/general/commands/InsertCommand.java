@@ -14,11 +14,6 @@ public class InsertCommand implements Modable, ObjectModable {
     private ArrayList<String> args = new ArrayList<>();
     private LabWork labWork;
 
-    /**
-     * Конструктор по умолчанию.
-     */
-    public InsertCommand() {}
-
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
