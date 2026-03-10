@@ -3,10 +3,15 @@ package com.akira.general.commands;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
+
 import com.akira.general.commands.interfaces.Command;
+import com.akira.general.datas.Coordinates;
+import com.akira.general.datas.Difficulty;
+import com.akira.general.datas.LabWork;
+import com.akira.general.datas.Location;
+import com.akira.general.datas.Person;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
-import com.akira.general.datas.*;
 
 /**
  * Команда генерации случайной лабораторной работы.

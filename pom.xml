@@ -15,6 +15,7 @@
     </properties>
 
     <dependencies>
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -27,6 +28,7 @@
             <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- Jackson for XML/JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -37,7 +39,7 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>2.15.2</version>
         </dependency>
-        <!-- Log4j2 dependencies -->
+        <!-- Log4j2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -68,43 +70,20 @@
             </resource>
         </resources>
         <plugins>
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.akira.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
             </plugin>
+
+            <!-- Shade Plugin for multiple Fat JARs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.1</version>
                 <executions>
-                    <execution>
-                        <id>shade-general</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>general</finalName>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>com/akira/client/**</exclude>
-                                        <exclude>com/akira/server/**</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
+                    <!-- 1. Client JAR -->
                     <execution>
                         <id>shade-client</id>
                         <phase>package</phase>
@@ -129,6 +108,8 @@
                             </filters>
                         </configuration>
                     </execution>
+
+                    <!-- 2. Server JAR -->
                     <execution>
                         <id>shade-server</id>
                         <phase>package</phase>
@@ -153,8 +134,32 @@
                             </filters>
                         </configuration>
                     </execution>
+
+                    <!-- 3. General (Common) JAR -->
+                    <execution>
+                        <id>shade-general</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>general</finalName>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>com/akira/client/**</exclude>
+                                        <exclude>com/akira/server/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
+
+            <!-- Surefire Plugin for Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -162,5 +167,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

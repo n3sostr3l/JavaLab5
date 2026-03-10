@@ -2,6 +2,7 @@ package com.akira.general.commands;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+
 import com.akira.general.commands.interfaces.Modable;
 import com.akira.general.commands.interfaces.ObjectModable;
 import com.akira.general.datas.LabWork;
@@ -42,7 +43,7 @@ public class ReplaceLowestCommand implements Modable, ObjectModable {
 
     @Override
     public String describe() {
-        return "replace_if_lowe {key} {element} : заменить значение по ключу, если новое значение меньше старого";
+        return "replace_if_lower {key} {element} : заменить значение по ключу, если новое значение меньше старого";
     }
 
     @Override

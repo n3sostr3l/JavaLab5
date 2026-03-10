@@ -1,12 +1,16 @@
 package com.akira.client;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+
 import com.akira.general.LabWorkReader;
 import com.akira.general.datas.LabWork;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
 
 /**
  * Главный класс клиентского приложения.
@@ -126,6 +130,6 @@ public class Main {
         return commandName.equals("insert") || 
                commandName.equals("update") || 
                commandName.equals("replace_if_greater") || 
-               commandName.equals("replace_if_lowe");
+               commandName.equals("replace_if_lower");
     }
 }
