@@ -1,27 +1,17 @@
-package com.akira.commands;
-
-import java.util.ArrayList;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
+import com.akira.general.network.Response;
+import com.akira.server.CollectionManager;
+import java.util.ArrayList;
 
 /**
  * Команда вывода справки по доступным командам.
- * <p>
- * При выполнении выводит описание всех зарегистрированных команд
- * с указанием их синтаксиса и назначения.
- * </p>
  */
 public class HelpCommand implements Command {
-
-    /**
-     * Выполняет команду help.
-     * <p>
-     * Создаёт экземпляры всех доступных команд и вызывает метод {@code describe()}
-     * для каждой из них, выводя справочную информацию в консоль.
-     * </p>
-     */
     @Override
-    public void execute() {
+    public Response execute(CollectionManager collectionManager) {
+        StringBuilder result = new StringBuilder("Доступные команды:\n");
         ArrayList<Command> allCommands = new ArrayList<>();
         allCommands.add(new HelpCommand());
         allCommands.add(new ClearCommand());
@@ -36,27 +26,22 @@ public class HelpCommand implements Command {
         allCommands.add(new RemoveCommand());
         allCommands.add(new GroupCountingByMaximumPointCommand());
         allCommands.add(new PrintFieldDescendingDifficultyCommand());
+        allCommands.add(new ReplaceGreatestCommand());
+        allCommands.add(new ReplaceLowestCommand());
         allCommands.add(new RemoveLowerElementsCommand());
-        allCommands.add(new ExecuteCommand());
         allCommands.add(new AddRandomCommand());
-        for (Command c : allCommands) {
-            c.describe();
+
+        for (Command command : allCommands) {
+            result.append(command.describe()).append("\n");
         }
+        return new Response(result.toString(), true);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("help : вывести справку по доступным командам");
+    public String describe() {
+        return "help : вывести справку по доступным командам";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

@@ -1,80 +1,62 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-
-import com.akira.general.LabWorkReader;
 import com.akira.general.commands.interfaces.Modable;
+import com.akira.general.commands.interfaces.ObjectModable;
 import com.akira.general.datas.LabWork;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
  * Команда замены элемента при меньшем значении.
- * <p>
- * Заменяет значение по ключу, если новое значение меньше старого.
- * Сравнение выполняется по полю maximumPoint через метод {@link com.akira.general.datas.LabWork#compareTo}.
- * </p>
  */
-public class ReplaceLowestCommand implements Modable {
-    /** Список аргументов команды */
+public class ReplaceLowestCommand implements Modable, ObjectModable {
     private ArrayList<String> args = new ArrayList<>();
+    private LabWork labWork;
 
-    /**
-     * Выполняет команду replace_if_lower.
-     * <p>
-     * Проверяет существование элемента с указанным ключом,
-     * запрашивает новые данные и выполняет замену только если
-     * новый элемент меньше старого по значению maximumPoint.
-     * </p>
-     */
     @Override
-    public void execute() {
+    public Response execute(CollectionManager collectionManager) {
         try {
+            if (args.isEmpty()) return new Response("Ошибка: не указан ключ.", false);
             Integer key = Integer.parseInt(args.get(0));
             Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
             if (!coll.containsKey(key)) {
-                System.out.println("Элемент с ключом " + key + " не найден.");
-                return;
+                return new Response("Ошибка: элемент с ключом " + key + " не найден.", false);
             }
-            LabWork newLab = LabWorkReader.readLabWork();
+            if (labWork == null) {
+                return new Response("Ошибка: объект для сравнения не получен.", false);
+            }
             LabWork oldLab = coll.get(key);
-            if (newLab.compareTo(oldLab) < 0) {
-                newLab.setCreationDate(oldLab.getCreationDate());
-                CollectionManager.update(key, newLab);
-                System.out.println("Значение заменено.");
+            if (labWork.compareTo(oldLab) < 0) {
+                labWork.setCreationDate(oldLab.getCreationDate());
+                CollectionManager.update(key, labWork);
+                return new Response("Значение успешно заменено.", true);
             } else {
-                System.out.println("Новое значение не меньше старого. Замена не выполнена.");
+                return new Response("Новое значение не меньше старого. Замена не выполнена.", true);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Ошибка: ключ должен быть целым числом.");
+            return new Response("Ошибка: ключ должен быть целым числом.", false);
         }
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("replace_if_lower {key} : заменить значение по ключу, если новое значение меньше старого");
+    public String describe() {
+        return "replace_if_lowe {key} {element} : заменить значение по ключу, если новое значение меньше старого";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 1 — команда требует один аргумент (ключ)
-     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
-    /**
-     * Устанавливает аргументы команды.
-     *
-     * @param ar список аргументов командной строки
-     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;
+    }
+
+    @Override
+    public void setObject(LabWork labWork) {
+        this.labWork = labWork;
     }
 }

@@ -1,61 +1,44 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import java.util.ArrayList;
-
 import com.akira.general.commands.interfaces.Modable;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
  * Команда удаления элемента из коллекции по ключу.
- * <p>
- * Удаляет элемент из коллекции с указанным ключом.
- * </p>
  */
-public class RemoveCommand implements Modable{
-    /** Список аргументов команды */
-    private ArrayList<String> args;
+public class RemoveCommand implements Modable {
+    private ArrayList<String> args = new ArrayList<>();
 
-    /**
-     * Выполняет команду remove_key.
-     * <p>
-     * Парсит ключ из аргументов команды и удаляет соответствующий
-     * элемент из коллекции.
-     * </p>
-     */
     @Override
-    public void execute() {
+    public Response execute(CollectionManager collectionManager) {
         try {
+            if (args.isEmpty()) {
+                return new Response("Ошибка: не указан ключ.", false);
+            }
             Integer key = Integer.parseInt(args.get(0));
-            CollectionManager.removeByKey(key);
-            System.out.println("Коллекция стала свободнее!");
+            if (CollectionManager.getCollection().containsKey(key)) {
+                CollectionManager.removeByKey(key);
+                return new Response("Элемент с ключом " + key + " успешно удален.", true);
+            } else {
+                return new Response("Ошибка: элемент с таким ключом не найден.", false);
+            }
         } catch (NumberFormatException e) {
-            System.out.println("Ошибка: ключ должен быть целым числом.");
+            return new Response("Ошибка: ключ должен быть целым числом.", false);
         }
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("remove_key {key} : удалить элемент из коллекции по его ключу");
+    public String describe() {
+        return "remove_key {key} : удалить элемент из коллекции по его ключу";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 1 — команда требует один аргумент (ключ)
-     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
-    /**
-     * Устанавливает аргументы команды.
-     *
-     * @param ar список аргументов командной строки
-     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;

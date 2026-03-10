@@ -1,41 +1,36 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
+import com.akira.general.datas.LabWork;
+import java.util.Hashtable;
+import java.util.stream.Collectors;
 
 /**
  * Команда вывода всех элементов коллекции.
- * <p>
- * Отображает строковое представление всех элементов,
- * хранящихся в коллекции лабораторных работ.
- * </p>
  */
-public class ShowCommand implements Command{
-    /**
-     * Выполняет команду show.
-     * <p>
-     * Выводит в консоль строковое представление всей коллекции
-     * путём вызова метода {@code toString()} над объектом коллекции.
-     * </p>
-     */
+public class ShowCommand implements Command {
     @Override
-    public void execute() {
-        System.out.println(CollectionManager.getCollection());
+    public Response execute(CollectionManager collectionManager) {
+        Hashtable<Integer, LabWork> collection = CollectionManager.getCollection();
+        if (collection.isEmpty()) {
+            return new Response("Коллекция пуста.", true);
+        }
+        
+        String result = collection.values().stream()
+                .sorted((l1, l2) -> l1.getName().compareTo(l2.getName()))
+                .map(LabWork::toString)
+                .collect(Collectors.joining("\n"));
+        
+        return new Response(result, true, collection);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении");
+    public String describe() {
+        return "show : вывести все элементы коллекции";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

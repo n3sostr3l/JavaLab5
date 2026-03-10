@@ -1,41 +1,24 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
  * Команда очистки коллекции.
- * <p>
- * Удаляет все элементы из коллекции лабораторных работ.
- * </p>
  */
 public class ClearCommand implements Command {
-
-    /**
-     * Выполняет команду clear.
-     * <p>
-     * Удаляет все элементы из коллекции путём вызова метода
-     * {@link CollectionManager#clear()}.
-     * </p>
-     */
     @Override
-    public void execute() {
+    public Response execute(CollectionManager collectionManager) {
         CollectionManager.clear();
+        return new Response("Коллекция успешно очищена.", true);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("clear : очистить коллекцию");
+    public String describe() {
+        return "clear : очистить коллекцию";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

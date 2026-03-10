@@ -1,39 +1,23 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
+import com.akira.general.network.Response;
+import com.akira.server.CollectionManager;
 
 /**
- * Команда завершения работы программы.
- * <p>
- * Завершает выполнение программы без сохранения коллекции в файл.
- * </p>
+ * Команда завершения работы.
  */
-public class ExitCommand implements Command{
-    /**
-     * Выполняет команду exit.
-     * <p>
-     * Завершает работу приложения с кодом возврата 200.
-     * Коллекция не сохраняется в файл перед выходом.
-     * </p>
-     */
+public class ExitCommand implements Command {
     @Override
-    public void execute() {
-        System.exit(200);
+    public Response execute(CollectionManager collectionManager) {
+        return new Response("Завершение работы...", true);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("exit : завершить программу (без сохранения в файл)");
+    public String describe() {
+        return "exit : завершить программу (без сохранения)";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

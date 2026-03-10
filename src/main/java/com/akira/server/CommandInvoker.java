@@ -177,6 +177,7 @@ public class CommandInvoker {
             }
         }
 
-        command.execute();
+        CollectionManager collectionManager = new CollectionManager();
+        command.execute(collectionManager);
     }
 }

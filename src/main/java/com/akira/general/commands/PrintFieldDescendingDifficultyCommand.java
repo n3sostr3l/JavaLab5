@@ -1,61 +1,32 @@
-package com.akira.commands;
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
-import com.akira.general.datas.LabWork;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 /**
- * Команда вывода значений сложности в порядке убывания.
- * <p>
- * Выводит значения поля difficulty всех элементов коллекции
- * в порядке убывания. Элементы без значения сложности пропускаются.
- * </p>
+ * Команда вывода сложности всех элементов в порядке убывания.
  */
 public class PrintFieldDescendingDifficultyCommand implements Command {
-
-    /**
-     * Выполняет команду print_field_descending_difficulty.
-     * <p>
-     * Извлекает элементы с установленной сложностью, сортирует их
-     * по убыванию сложности и выводит в консоль.
-     * </p>
-     */
     @Override
-    public void execute() {
-        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
-        List<Map.Entry<Integer, LabWork>> entries = new ArrayList<>();
-
-        for (Map.Entry<Integer, LabWork> entry : coll.entrySet()) {
-            if (entry.getValue().getDifficulty() != null) {
-                entries.add(entry);
-            }
-        }
-
-        entries.sort((a, b) -> b.getValue().getDifficulty().compareTo(a.getValue().getDifficulty()));
-
-        for (Map.Entry<Integer, LabWork> entry : entries) {
-            System.out.println(entry.getValue().getDifficulty() + " - id: " + entry.getValue().getId());
-        }
+    public Response execute(CollectionManager collectionManager) {
+        String result = CollectionManager.getCollection().values().stream()
+                .map(lw -> lw.getDifficulty())
+                .filter(java.util.Objects::nonNull)
+                .sorted(Comparator.reverseOrder())
+                .map(Enum::toString)
+                .collect(Collectors.joining("\n"));
+        
+        return new Response("Сложности в порядке убывания:\n" + result, true);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("print_field_descending_difficulty : вывести значения поля difficulty всех элементов в порядке убывания");
+    public String describe() {
+        return "print_field_descending_difficulty : вывести все значения поля difficulty в порядке убывания";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

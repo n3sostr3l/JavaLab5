@@ -3,7 +3,9 @@ package com.akira.general.network;
 import com.akira.general.datas.*;
 import org.junit.jupiter.api.Test;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SerializationTest {
@@ -14,7 +16,7 @@ public class SerializationTest {
         LabWork labWork = new LabWork();
         labWork.setName("TestLab");
         labWork.setCreationDate(new Date());
-        labWork.setMaximumPoint(100);
+        labWork.setMaximumPoint(100L);
         
         Coordinates coords = new Coordinates();
         coords.setX(10);
@@ -31,7 +33,10 @@ public class SerializationTest {
         labWork.setDifficulty(Difficulty.INSANE);
 
         // 2. Создание Request
-        Request originalRequest = new Request("add", "some_args", labWork);
+        ArrayList<String> args = new ArrayList<>();
+        args.add("arg1");
+        args.add("arg2");
+        Request originalRequest = new Request("add", args, labWork);
 
         // 3. Сериализация в байты
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -49,18 +54,23 @@ public class SerializationTest {
         assertEquals(originalRequest.getCommandName(), restoredRequest.getCommandName());
         assertEquals(originalRequest.getArgs(), restoredRequest.getArgs());
         
-        LabWork restoredLab = restoredRequest.getObjectArg();
+        LabWork restoredLab = restoredRequest.getObjectArgument();
         assertNotNull(restoredLab);
         assertEquals("TestLab", restoredLab.getName());
-        assertEquals(100, restoredLab.getMaximumPoint());
+        assertEquals(100L, restoredLab.getMaximumPoint());
         assertEquals(Difficulty.INSANE, restoredLab.getDifficulty());
         assertEquals("AuthorName", restoredLab.getAuthor().getName());
-        assertEquals(10, restoredLab.getCoordinates().toString().contains("10") ? 10 : 0); // Проверка через toString или геттеры
+        assertEquals(10, restoredLab.getCoordinates().getX());
     }
 
     @Test
-    public void testResponseSerialization() throws IOException, ClassNotFoundException {
-        Response originalResponse = new Response("Successfully added", true);
+    public void testResponseWithCollectionSerialization() throws IOException, ClassNotFoundException {
+        Hashtable<Integer, LabWork> collection = new Hashtable<>();
+        LabWork lab1 = new LabWork();
+        lab1.setName("Lab1");
+        collection.put(1, lab1);
+
+        Response originalResponse = new Response("Successfully shown", true, collection);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -71,5 +81,8 @@ public class SerializationTest {
 
         assertEquals(originalResponse.getMessage(), restoredResponse.getMessage());
         assertEquals(originalResponse.isSuccess(), restoredResponse.isSuccess());
+        assertNotNull(restoredResponse.getCollection());
+        assertEquals(1, restoredResponse.getCollection().size());
+        assertEquals("Lab1", restoredResponse.getCollection().get(1).getName());
     }
 }

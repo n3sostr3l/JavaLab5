@@ -1,62 +1,44 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import java.util.ArrayList;
-
 import com.akira.general.commands.interfaces.Modable;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
  * Команда удаления элементов с ключами меньше заданного.
- * <p>
- * Удаляет из коллекции все элементы, ключ которых меньше, чем заданный.
- * </p>
  */
 public class RemoveLowerElementsCommand implements Modable {
-    /** Список аргументов команды */
     private ArrayList<String> args = new ArrayList<>();
 
-    /**
-     * Выполняет команду remove_lower_key.
-     * <p>
-     * Парсит ключ из аргументов команды и удаляет все элементы
-     * коллекции, ключ которых меньше заданного значения.
-     * Выводит количество удалённых элементов.
-     * </p>
-     */
     @Override
-    public void execute() {
+    public Response execute(CollectionManager collectionManager) {
         try {
+            if (args.isEmpty()) return new Response("Ошибка: не указан ключ.", false);
             Integer key = Integer.parseInt(args.get(0));
-            int removed = CollectionManager.removeLowerKeys(key);
-            System.out.println("Удалено элементов: " + removed);
+            
+            java.util.List<Integer> keysToRemove = CollectionManager.getCollection().keySet().stream()
+                    .filter(k -> k < key)
+                    .collect(java.util.stream.Collectors.toList());
+            
+            keysToRemove.forEach(CollectionManager::removeByKey);
+            
+            return new Response("Удалено элементов: " + keysToRemove.size(), true);
         } catch (NumberFormatException e) {
-            System.out.println("Ошибка: ключ должен быть целым числом.");
+            return new Response("Ошибка: ключ должен быть целым числом.", false);
         }
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("remove_lower_key {key} : удалить из коллекции все элементы, ключ которых меньше, чем заданный");
+    public String describe() {
+        return "remove_lower_key {key} : удалить из коллекции все элементы, ключ которых меньше, чем заданный";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 1 — команда требует один аргумент (ключ)
-     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
-    /**
-     * Устанавливает аргументы команды.
-     *
-     * @param ar список аргументов командной строки
-     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;

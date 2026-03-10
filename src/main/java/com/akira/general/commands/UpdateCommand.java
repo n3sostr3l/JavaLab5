@@ -1,70 +1,67 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import java.util.ArrayList;
-
-import com.akira.general.LabWorkReader;
 import com.akira.general.commands.interfaces.Modable;
+import com.akira.general.commands.interfaces.ObjectModable;
 import com.akira.general.datas.LabWork;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
  * Команда обновления элемента коллекции по id.
- * <p>
- * Обновляет значение элемента, id которого совпадает с заданным.
- * Новые данные запрашиваются у пользователя в интерактивном режиме.
- * Оригинальные id и дата создания элемента сохраняются.
- * </p>
  */
-public class UpdateCommand implements Modable{
-    /** Список аргументов команды */
-    private ArrayList<String> args = new ArrayList<String>();
+public class UpdateCommand implements Modable, ObjectModable {
+    private ArrayList<String> args = new ArrayList<>();
+    private LabWork labWork;
 
-    /**
-     * Выполняет команду update.
-     * <p>
-     * Парсит id из аргументов команды, проверяет существование элемента,
-     * запрашивает новые данные и обновляет элемент в коллекции.
-     * </p>
-     */
-    public void execute() {
+    @Override
+    public Response execute(CollectionManager collectionManager) {
         try {
-            Long id = Long.parseLong(args.get(0));
-            LabWork lab = LabWorkReader.readLabWork();
-            if (!CollectionManager.existsById(id)) {
-                System.out.println("Элемент с id " + id + " не найден.");
-                return;
+            if (args.isEmpty()) {
+                return new Response("Ошибка: не указан id.", false);
             }
-            CollectionManager.updateById(id, lab);
-            System.out.println("Обновление успешно!");
+            Long id = Long.parseLong(args.get(0));
+            if (labWork == null) {
+                return new Response("Ошибка: объект для обновления не получен.", false);
+            }
+            
+            Integer key = CollectionManager.getCollection().entrySet().stream()
+                    .filter(entry -> entry.getValue().getId().equals(id))
+                    .map(entry -> entry.getKey())
+                    .findFirst()
+                    .orElse(null);
+
+            if (key == null) {
+                return new Response("Ошибка: элемент с таким id не найден.", false);
+            }
+
+            if (CollectionManager.update(key, labWork)) {
+                return new Response("Элемент с id " + id + " успешно обновлен.", true);
+            } else {
+                return new Response("Ошибка при обновлении элемента.", false);
+            }
         } catch (NumberFormatException e) {
-            System.out.println("Ошибка: id должен быть числом.");
+            return new Response("Ошибка: id должен быть числом.", false);
         }
     }
 
-    /**
-     * Выводит описание команды.
-     */
-    public void describe() {
-        System.out.println("update {id} : обновить значение элемента коллекции, id которого равен заданному");
+    @Override
+    public String describe() {
+        return "update id {element} : обновить значение элемента коллекции, id которого равен заданному";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 1 — команда требует один аргумент (id)
-     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
-    /**
-     * Устанавливает аргументы команды.
-     *
-     * @param ar список аргументов командной строки
-     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;
+    }
+
+    @Override
+    public void setObject(LabWork labWork) {
+        this.labWork = labWork;
     }
 }

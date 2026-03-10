@@ -1,53 +1,34 @@
-package com.akira.commands;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
  * Команда вывода информации о коллекции.
- * <p>
- * Отображает тип коллекции, дату её инициализации
- * и текущее количество элементов.
- * </p>
  */
-public class InfoCommand implements Command{
-    /**
-     * Выполняет команду info.
-     * <p>
-     * Выводит в консоль следующую информацию о коллекции:
-     * <ul>
-     *   <li>тип коллекции</li>
-     *   <li>дата создания</li>
-     *   <li>количество элементов</li>
-     * </ul>
-     */
+public class InfoCommand implements Command {
     @Override
-    public void execute(){
-
-        System.out.printf(
+    public Response execute(CollectionManager collectionManager) {
+        String result = String.format(
                 """
                 Информация о коллекции:
                 Тип: %s
                 Дата создания: %s
                 Количество элементов в коллекции: %d
-
-                """, CollectionManager.getCollection().getClass().getSimpleName(), CollectionManager.getCollectionCreationTime(), CollectionManager.getCollection().size()
+                """,
+                CollectionManager.getCollection().getClass().getSimpleName(),
+                CollectionManager.getCollectionCreationTime(),
+                CollectionManager.getCollection().size()
         );
+        return new Response(result, true);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)");
+    public String describe() {
+        return "info : вывести информацию о коллекции";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

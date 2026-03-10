@@ -20,9 +20,11 @@ public interface Command extends Serializable {
     public Response execute(CollectionManager collectionManager);
 
     /**
-     * Выводит описание команды.
+     * Возвращает описание команды и ее синтаксис.
+     *
+     * @return строка с описанием команды
      */
-    public void describe();
+    public String describe();
 
     /**
      * Возвращает количество требуемых строковых аргументов.

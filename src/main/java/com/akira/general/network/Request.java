@@ -1,27 +1,72 @@
 package com.akira.general.network;
 
-import com.akira.general.commands.interfaces.Command;
+import com.akira.general.datas.LabWork;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
- * Класс запроса. Передает объект команды от клиента на сервер.
- * Это соответствует требованию ТЗ: «Команды и их аргументы — объекты классов».
+ * Класс запроса. Передает информацию о команде от клиента на сервер.
+ * Согласно ТЗ: «Команды и их аргументы должны представлять из себя объекты классов».
  */
 public class Request implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Command command;
+    private final String commandName;
+    private final ArrayList<String> args;
+    private final LabWork objectArgument;
 
-    public Request(Command command) {
-        this.command = command;
+    /**
+     * Конструктор для команд без аргументов.
+     * @param commandName имя команды
+     */
+    public Request(String commandName) {
+        this(commandName, new ArrayList<>(), null);
     }
 
-    public Command getCommand() {
-        return command;
+    /**
+     * Конструктор для команд со строковыми аргументами.
+     * @param commandName имя команды
+     * @param args список строковых аргументов
+     */
+    public Request(String commandName, ArrayList<String> args) {
+        this(commandName, args, null);
+    }
+
+    /**
+     * Конструктор для команд с объектом и строковыми аргументами.
+     * @param commandName имя команды
+     * @param args список строковых аргументов
+     * @param objectArgument объект LabWork
+     */
+    public Request(String commandName, ArrayList<String> args, LabWork objectArgument) {
+        this.commandName = commandName;
+        this.args = args;
+        this.objectArgument = objectArgument;
+    }
+
+    /**
+     * Конструктор для команд с объектом без строковых аргументов.
+     * @param commandName имя команды
+     * @param objectArgument объект LabWork
+     */
+    public Request(String commandName, LabWork objectArgument) {
+        this(commandName, new ArrayList<>(), objectArgument);
+    }
+
+    public String getCommandName() {
+        return commandName;
+    }
+
+    public ArrayList<String> getArgs() {
+        return args;
+    }
+
+    public LabWork getObjectArgument() {
+        return objectArgument;
     }
 
     @Override
     public String toString() {
-        return "Request: " + (command != null ? command.getClass().getSimpleName() : "null");
+        return "Request[" + commandName + ", args=" + args + ", obj=" + (objectArgument != null ? "present" : "null") + "]";
     }
 }

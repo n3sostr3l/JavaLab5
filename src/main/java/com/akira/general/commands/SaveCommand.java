@@ -1,46 +1,27 @@
-package com.akira.commands;
-
-import java.util.Hashtable;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
-import com.akira.general.datas.LabWork;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
-import com.akira.server.FileEditor;
 
 /**
- * Команда сохранения коллекции в файл.
- * <p>
- * Сохраняет текущее состояние коллекции лабораторных работ
- * в XML-файл, используемый для персистентного хранения данных.
- * </p>
+ * Команда сохранения коллекции.
  */
-public class SaveCommand implements Command{
-    /**
-     * Выполняет команду save.
-     * <p>
-     * Получает текущую коллекцию из {@link CollectionManager}
-     * и сохраняет её в файл с помощью {@link FileEditor}.
-     * </p>
-     */
+public class SaveCommand implements Command {
     @Override
-    public void execute() {
-        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
-        FileEditor.saveCollection(coll);
+    public Response execute(CollectionManager collectionManager) {
+        if (CollectionManager.save()) {
+            return new Response("Коллекция сохранена.", true);
+        } else {
+            return new Response("Ошибка при сохранении коллекции.", false);
+        }
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("save : сохранить коллекцию в файл");
+    public String describe() {
+        return "save : сохранить коллекцию в файл (только сервер)";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;

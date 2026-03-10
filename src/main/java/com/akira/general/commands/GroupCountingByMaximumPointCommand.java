@@ -1,59 +1,31 @@
-package com.akira.commands;
-
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.TreeMap;
+package com.akira.general.commands;
 
 import com.akira.general.commands.interfaces.Command;
-import com.akira.general.datas.LabWork;
+import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * Команда группировки элементов по максимальному баллу.
- * <p>
- * Сгруппирует элементы коллекции по значению поля maximumPoint
- * и выводит количество элементов в каждой группе.
- * Использует {@link TreeMap} для автоматической сортировки групп.
- * </p>
+ * Команда группировки по значению maximumPoint.
  */
 public class GroupCountingByMaximumPointCommand implements Command {
-
-    /**
-     * Выполняет команду group_counting_by_maximum_point.
-     * <p>
-     * Группирует элементы коллекции по значению поля maximumPoint,
-     * подсчитывает количество элементов в каждой группе и выводит
-     * результат в консоль.
-     * </p>
-     */
     @Override
-    public void execute() {
-        Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
-        Map<Long, Integer> groups = new TreeMap<>();
-
-        for (LabWork lab : coll.values()) {
-            long mp = lab.getMaximumPoint();
-            groups.put(mp, groups.getOrDefault(mp, 0) + 1);
-        }
-
-        for (Map.Entry<Long, Integer> entry : groups.entrySet()) {
-            System.out.println("maximumPoint = " + entry.getKey() + " : " + entry.getValue() + " элемент(ов)");
-        }
+    public Response execute(CollectionManager collectionManager) {
+        Map<Long, Long> counts = CollectionManager.getCollection().values().stream()
+                .collect(Collectors.groupingBy(lw -> lw.getMaximumPoint(), Collectors.counting()));
+        
+        StringBuilder result = new StringBuilder("Количество элементов в каждой группе maximumPoint:\n");
+        counts.forEach((point, count) -> result.append(point).append(": ").append(count).append("\n"));
+        
+        return new Response(result.toString(), true);
     }
 
-    /**
-     * Выводит описание команды.
-     */
     @Override
-    public void describe() {
-        System.out.println("group_counting_by_maximum_point : сгруппировать элементы коллекции по значению поля maximumPoint, вывести количество элементов в каждой группе");
+    public String describe() {
+        return "group_counting_by_maximum_point : сгруппировать элементы по maximumPoint и вывести количество в группах";
     }
 
-    /**
-     * Возвращает количество требуемых аргументов.
-     *
-     * @return 0 — команда не требует аргументов
-     */
     @Override
     public int numberArgsRequired() {
         return 0;
