@@ -15,39 +15,27 @@ public class CommandInvoker {
     private final HashMap<String, Command> commands = new HashMap<>();
 
     public CommandInvoker() {
-        register(new HelpCommand());
-        register(new InfoCommand());
-        register(new ShowCommand());
-        register(new InsertCommand());
-        register(new UpdateCommand());
-        register(new RemoveCommand());
-        register(new ClearCommand());
-        register(new SaveCommand());
-        register(new ExitCommand());
-        register(new ReplaceGreatestCommand());
-        register(new ReplaceLowestCommand());
-        register(new RemoveLowerElementsCommand());
-        register(new GroupCountingByMaximumPointCommand());
-        register(new UniqueAuthorCommand());
-        register(new PrintFieldDescendingDifficultyCommand());
-        register(new AddRandomCommand());
-    }
-
-    private void register(Command command) {
-        String name = command.getClass().getSimpleName().replace("Command", "").toLowerCase();
-        // Специальные имена для некоторых команд
-        if (name.equals("remove")) name = "remove_key";
-        if (name.equals("removelowerelements")) name = "remove_lower_key";
-        if (name.equals("replacegreatest")) name = "replace_if_greater";
-        if (name.equals("replacelowest")) name = "replace_if_lowe";
-        if (name.equals("uniqueauthor")) name = "print_unique_author";
-        if (name.equals("printfielddescendingdifficulty")) name = "print_field_descending_difficulty";
-        
-        commands.put(name, command);
+        commands.put("help", new HelpCommand());
+        commands.put("info", new InfoCommand());
+        commands.put("show", new ShowCommand());
+        commands.put("insert", new InsertCommand());
+        commands.put("update", new UpdateCommand());
+        commands.put("remove_key", new RemoveCommand());
+        commands.put("clear", new ClearCommand());
+        commands.put("save", new SaveCommand());
+        commands.put("exit", new ExitCommand());
+        commands.put("execute_script", new ExecuteCommand());
+        commands.put("replace_if_greater", new ReplaceGreatestCommand());
+        commands.put("replace_if_lowe", new ReplaceLowestCommand());
+        commands.put("remove_lower_key", new RemoveLowerElementsCommand());
+        commands.put("group_counting_by_maximum_point", new GroupCountingByMaximumPointCommand());
+        commands.put("print_unique_author", new UniqueAuthorCommand());
+        commands.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommand());
+        commands.put("add_random", new AddRandomCommand());
     }
 
     public Response executeRequest(Request request, CollectionManager collectionManager) {
-        Command command = commands.get(request.getCommandName());
+        Command command = commands.get(request.getCommandName().toLowerCase());
         if (command == null) {
             return new Response("Ошибка: команда '" + request.getCommandName() + "' не найдена.", false);
         }
