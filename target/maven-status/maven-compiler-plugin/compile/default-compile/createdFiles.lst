@@ -2,8 +2,8 @@ com/akira/CollectionManager.class
 com/akira/commands/HelpCommand.class
 com/akira/Person.class
 com/akira/commands/SaveCommand.class
-com/akira/commands/ExitCommand.class
 com/akira/commands/UpdateCommand.class
+com/akira/commands/ExitCommand.class
 com/akira/commands/ClearCommand.class
 com/akira/commands/Command.class
 com/akira/commands/ReplaceGreatestCommand.class

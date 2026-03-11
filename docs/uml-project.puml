@@ -1,28 +1,28 @@
 @startuml
 !theme plain
 
-title JavaLab5 — UML (основные связи)
+' title JavaLab5 — UML (основные связи)
 left to right direction
 
-skinparam linetype polyline
-skinparam packageStyle rectangle
-skinparam shadowing false
+' skinparam linetype polyline
+' skinparam packageStyle rectangle
+' skinparam shadowing false
 skinparam roundcorner 12
-skinparam dpi 170
-skinparam ClassAttributeIconSize 0
-skinparam defaultTextAlignment left
-skinparam ArrowColor #334155
-skinparam ArrowThickness 1.2
-skinparam ClassBorderColor #1E293B
-skinparam ClassBackgroundColor #F8FAFC
-skinparam PackageBorderColor #6B7280
-skinparam PackageBackgroundColor #FFFFFF
-skinparam InterfaceBorderColor #0F766E
-skinparam InterfaceBackgroundColor #ECFEFF
-skinparam EnumBorderColor #7C3AED
-skinparam EnumBackgroundColor #F5F3FF
-skinparam NoteBackgroundColor #FFFBEB
-skinparam NoteBorderColor #F59E0B
+skinparam dpi 600
+' skinparam ClassAttributeIconSize 0
+' skinparam defaultTextAlignment left
+' skinparam ArrowColor #334155
+' skinparam ArrowThickness 1.2
+' skinparam ClassBorderColor #1E293B
+' skinparam ClassBackgroundColor #F8FAFC
+' skinparam PackageBorderColor #6B7280
+' skinparam PackageBackgroundColor #FFFFFF
+' skinparam InterfaceBorderColor #0F766E
+' skinparam InterfaceBackgroundColor #ECFEFF
+' skinparam EnumBorderColor #7C3AED
+' skinparam EnumBackgroundColor #F5F3FF
+' skinparam NoteBackgroundColor #FFFBEB
+' skinparam NoteBorderColor #F59E0B
 
 package "com.akira" {
   class Main {
