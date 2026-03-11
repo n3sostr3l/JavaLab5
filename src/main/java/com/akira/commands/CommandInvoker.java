@@ -134,6 +134,7 @@ public class CommandInvoker {
      */
     private static void runParticularCommand(String line){
         String[] tokens = line.trim().replace("\n", "").split(" ");
+
         String commandName = tokens[0];
         ArrayList<String> args = new ArrayList<>();
         if (tokens.length > 1) {
