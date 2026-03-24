@@ -12,8 +12,9 @@ public class UniqueAuthorCommand implements Command {
     @Override
     public Response execute(CollectionManager collectionManager) {
         String result = CollectionManager.getCollection().values().stream()
-                .map(lw -> lw.getAuthor().getName())
+                .map(lw -> lw.getAuthor())
                 .distinct()
+                .map(Object::toString)
                 .collect(Collectors.joining("\n"));
         
         return new Response("Уникальные авторы:\n" + result, true);
