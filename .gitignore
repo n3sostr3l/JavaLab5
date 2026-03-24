@@ -8,3 +8,11 @@
 data.xml
 .env
 Instruct.md
+last_saved_session.xml
+last_unsaved_session.xml
+IamAngel.xml
+angel_logs/
+test_collection_int.xml
+src/test/
+test_adv_collection_3.xml.bak
+переделать.md
