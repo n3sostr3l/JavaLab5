@@ -31,11 +31,15 @@ public class ServerManager {
         this.commandInvoker = new CommandInvoker();
         
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.info("Получен сигнал завершения. Автосохранение коллекции...");
-            if (CollectionManager.save()) {
-                logger.info("Коллекция успешно сохранена перед выходом.");
+            if (CollectionManager.isSaveOnExit()) {
+                logger.info("Получен сигнал завершения. Автосохранение коллекции...");
+                if (CollectionManager.save()) {
+                    logger.info("Коллекция успешно сохранена перед выходом.");
+                } else {
+                    logger.error("Ошибка при автосохранении коллекции.");
+                }
             } else {
-                logger.error("Ошибка при автосохранении коллекции.");
+                logger.info("Получен сигнал завершения. Сохранение пропущено по требованию.");
             }
         }));
     }
@@ -74,50 +78,101 @@ public class ServerManager {
 
     /**
      * Принимает входящее подключение и регистрирует его в селекторе на чтение.
+     * Прикрепляет новый ReadState для накопления байт.
      * @param serverChannel серверный канал сокета
      * @throws IOException если возникла ошибка при установке соединения
      */
     private void acceptConnection(ServerSocketChannel serverChannel) throws IOException {
         SocketChannel clientChannel = serverChannel.accept();
         clientChannel.configureBlocking(false);
-        clientChannel.register(selector, SelectionKey.OP_READ);
+        SelectionKey key = clientChannel.register(selector, SelectionKey.OP_READ);
+        key.attach(new ReadState());
+    }
+
+    /**
+     * Внутреннее состояние чтения для одного клиентского соединения.
+     * Накапливает байты между несколькими вызовами read() в non-blocking режиме.
+     */
+    private static class ReadState {
+        ByteBuffer sizeBuffer = ByteBuffer.allocate(4);
+        ByteBuffer dataBuffer = null;
     }
 
     /**
      * Обрабатывает данные, поступившие от клиента.
-     * Считывает размер пакета, затем сам десериализованный объект запроса.
+     * Накапливает байты в ReadState, прикреплённом к ключу, до получения полного пакета.
      * @param key ключ выбора из селектора
      */
     private void handleRead(SelectionKey key) {
         SocketChannel clientChannel = (SocketChannel) key.channel();
+        ReadState state = (ReadState) key.attachment();
+        if (state == null) {
+            state = new ReadState();
+            key.attach(state);
+        }
+
         try {
-            // Читаем размер
-            ByteBuffer sizeBuffer = ByteBuffer.allocate(4);
-            int read = clientChannel.read(sizeBuffer);
-            if (read == -1) { clientChannel.close(); return; }
-            
-            sizeBuffer.flip();
-            int size = sizeBuffer.getInt();
-            
-            // Читаем данные
-            ByteBuffer dataBuffer = ByteBuffer.allocate(size);
-            int totalRead = 0;
-            while (totalRead < size) {
-                int r = clientChannel.read(dataBuffer);
-                if (r == -1) break;
-                totalRead += r;
+            // Шаг 1: читаем 4 байта размера (может приходить по частям)
+            if (state.sizeBuffer.hasRemaining()) {
+                int read = clientChannel.read(state.sizeBuffer);
+                if (read == -1) {
+                    logger.info("Клиент отключился. Сохранение промежуточного состояния...");
+                    FileEditor.saveToFile(FileEditor.UNSAVED_SESSION_FILE, CollectionManager.getCollection());
+                    clientChannel.close();
+                    key.cancel();
+                    return;
+                }
+                if (state.sizeBuffer.hasRemaining()) return; // ещё не все 4 байта
             }
 
-            ByteArrayInputStream bais = new ByteArrayInputStream(dataBuffer.array());
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            Request request = (Request) ois.readObject();
-            logger.info("Запрос: {}", request.getCommandName());
+            // Шаг 2: инициализируем буфер данных
+            if (state.dataBuffer == null) {
+                state.sizeBuffer.flip();
+                int size = state.sizeBuffer.getInt();
+                if (size <= 0 || size > 64 * 1024 * 1024) { // защита от мусора (>64MB)
+                    logger.warn("Получен некорректный размер пакета: {}", size);
+                    clientChannel.close();
+                    key.cancel();
+                    return;
+                }
+                state.dataBuffer = ByteBuffer.allocate(size);
+            }
 
-            Response response = commandInvoker.executeRequest(request, collectionManager);
-            sendResponse(clientChannel, response);
+            // Шаг 3: читаем данные (может приходить по частям)
+            if (state.dataBuffer.hasRemaining()) {
+                int read = clientChannel.read(state.dataBuffer);
+                if (read == -1) {
+                    clientChannel.close();
+                    key.cancel();
+                    return;
+                }
+                if (state.dataBuffer.hasRemaining()) return; // ещё не весь пакет
+            }
+
+            // Шаг 4: полный пакет получен — десериализуем и обрабатываем
+            state.dataBuffer.flip();
+            try (ObjectInputStream ois = new ObjectInputStream(
+                    new ByteArrayInputStream(state.dataBuffer.array(), 0, state.dataBuffer.limit()))) {
+                Request request = (Request) ois.readObject();
+                logger.info("Запрос: {}", request.getCommandName());
+                Response response = commandInvoker.executeRequest(request, collectionManager);
+                sendResponse(clientChannel, response);
+
+                if (request.getCommandName().equalsIgnoreCase("exit_server") && response.isSuccess()) {
+                    logger.info("Завершение работы сервера по команде админа.");
+                    CollectionManager.setSaveOnExit(false);
+                    System.exit(0);
+                }
+            }
+
+            // Сбрасываем состояние для следующего запроса по тому же соединению
+            state.sizeBuffer.clear();
+            state.dataBuffer = null;
 
         } catch (IOException | ClassNotFoundException e) {
+            logger.warn("Ошибка при обработке клиента: {}", e.getMessage());
             try { clientChannel.close(); } catch (IOException ignored) {}
+            key.cancel();
         }
     }
 
