@@ -35,6 +35,22 @@ public class Main {
         labWorkReader = new LabWorkReader(scanner);
 
         System.out.println("Клиент запущен. Введите 'help' для получения списка команд.");
+        
+        // Запрос восстановления сессии
+        System.out.print("Желаете восстановить предыдущую сессию? (y/n): ");
+        if (!scanner.hasNextLine()) return;
+        String restoreInput = scanner.nextLine().trim().toLowerCase();
+        boolean restore = restoreInput.equals("y") || restoreInput.equals("yes");
+        
+        Request initRequest = new Request("init");
+        initRequest.setInit(true);
+        initRequest.setRestore(restore);
+        initRequest.setAdmin(false);
+        
+        Response initResponse = networkManager.sendAndReceive(initRequest);
+        if (initResponse != null) {
+            System.out.println("Сервер: " + initResponse.getMessage());
+        }
 
         processInput(scanner, false);
         
@@ -45,6 +61,7 @@ public class Main {
      * Основной цикл обработки ввода.
      * @param scanner источник ввода
      * @param isScript флаг, указывающий, является ли ввод скриптом
+     * @param isAdmin флаг, указывающий на права администратора
      */
     private static void processInput(Scanner scanner, boolean isScript) {
         while (true) {
@@ -56,6 +73,11 @@ public class Main {
             String[] tokens = input.split("\\s+");
             String commandName = tokens[0].toLowerCase();
             ArrayList<String> commandArgs = new ArrayList<>(Arrays.asList(tokens).subList(1, tokens.length));
+
+            if (commandName.equals("save")) {
+                System.out.println("Ошибка: Команда 'save' доступна только в админ-клиенте.");
+                continue;
+            }
 
             if (commandName.equals("exit")) {
                 if (isScript) break;
@@ -78,7 +100,6 @@ public class Main {
                 continue;
             }
 
-
             Request request;
             if (isObjectRequired(commandName)) {
                 LabWork lab = labWorkReader.readLabWork();
@@ -86,6 +107,7 @@ public class Main {
             } else {
                 request = new Request(commandName, commandArgs);
             }
+            request.setAdmin(false);
 
             Response response = networkManager.sendAndReceive(request);
             if (response != null) {
