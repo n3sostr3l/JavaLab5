@@ -16,6 +16,8 @@ public class CollectionManager {
     
     /** Дата и время инициализации коллекции. Используется для команды 'info'. */
     private static Date collectionCreationTime;
+    /** Флаг, разрешающий сохранение при завершении работы (Shutdown Hook). */
+    private static boolean saveOnExit = true;
 
     static {
         try {
@@ -39,7 +41,6 @@ public class CollectionManager {
             lab.setId(labworks.get(id).getId());
             lab.setCreationDate(labworks.get(id).getCreationDate());
             labworks.put(id, lab);
-            FileEditor.saveBackup(labworks);
             return true;
         }
         return false;
@@ -47,7 +48,6 @@ public class CollectionManager {
 
     public static void clear() {
         labworks.clear();
-        FileEditor.saveBackup(labworks);
     }
 
     public static boolean insert(Integer key, LabWork lab) {
@@ -61,19 +61,17 @@ public class CollectionManager {
         }
         
         labworks.put(key, lab);
-        FileEditor.saveBackup(labworks);
         return true;
     }
 
     public static void removeByKey(Integer key){
         labworks.remove(key);
-        FileEditor.saveBackup(labworks);
     }
 
     public static boolean save() {
         boolean success = FileEditor.saveCollection(labworks);
         if (success) {
-            FileEditor.deleteBackup();
+            FileEditor.saveToFile(FileEditor.UNSAVED_SESSION_FILE, labworks);
         }
         return success;
     }
@@ -83,9 +81,6 @@ public class CollectionManager {
                 .filter(k -> k < key)
                 .collect(java.util.stream.Collectors.toList());
         keysToRemove.forEach(labworks::remove);
-        if (!keysToRemove.isEmpty()) {
-            FileEditor.saveBackup(labworks);
-        }
         return keysToRemove.size();
     }
 
@@ -93,10 +88,26 @@ public class CollectionManager {
         labworks = FileEditor.getCollection();
     }
 
-    public static void restoreFromBackup() {
-        if (FileEditor.hasBackup()) {
-            labworks = FileEditor.getBackupCollection();
+    public static void loadSession(boolean restored) {
+        String fileName = restored ? FileEditor.UNSAVED_SESSION_FILE : FileEditor.SAVED_SESSION_FILE;
+        if (!FileEditor.exists(fileName)) {
+            FileEditor.saveToFile(fileName, new Hashtable<>());
         }
+        
+        labworks = FileEditor.getSessionCollection(fileName);
+        if (labworks == null) labworks = new Hashtable<>();
+
+        if (restored) {
+            FileEditor.saveToFile(FileEditor.SAVED_SESSION_FILE, labworks);
+        }
+    }
+
+    public static void setSaveOnExit(boolean value) {
+        saveOnExit = value;
+    }
+
+    public static boolean isSaveOnExit() {
+        return saveOnExit;
     }
 
     public static Hashtable<Integer, LabWork> getCollection(){
