@@ -1,8 +1,8 @@
-package com.akira.general.commands;
+package com.akira.server.commands;
 
 import java.util.ArrayList;
-import com.akira.general.commands.interfaces.Modable;
-import com.akira.general.commands.interfaces.ObjectModable;
+import com.akira.server.commands.interfaces.Modable;
+import com.akira.server.commands.interfaces.ObjectModable;
 import com.akira.general.datas.LabWork;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;

@@ -29,6 +29,15 @@ public class ServerManager {
         this.port = port;
         this.collectionManager = new CollectionManager();
         this.commandInvoker = new CommandInvoker();
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            logger.info("Получен сигнал завершения. Автосохранение коллекции...");
+            if (CollectionManager.save()) {
+                logger.info("Коллекция успешно сохранена перед выходом.");
+            } else {
+                logger.error("Ошибка при автосохранении коллекции.");
+            }
+        }));
     }
 
     /**

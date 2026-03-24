@@ -39,42 +39,17 @@ public class CollectionManager {
             lab.setId(labworks.get(id).getId());
             lab.setCreationDate(labworks.get(id).getCreationDate());
             labworks.put(id, lab);
+            FileEditor.saveBackup(labworks);
             return true;
         }
         return false;
     }
 
-    /**
-     * Полностью очищает текущую коллекцию объектов.
-     */
     public static void clear() {
         labworks.clear();
+        FileEditor.saveBackup(labworks);
     }
 
-    /**
-     * Предоставляет доступ к объекту коллекции.
-     * @return Hashtable, содержащий все лабораторные работы
-     */
-    public static Hashtable<Integer, LabWork> getCollection(){
-        return labworks;
-    }
-
-    /**
-     * Возвращает дату создания (инициализации) коллекции.
-     * @return объект {@link Date} с временем создания
-     */
-    public static Date getCollectionCreationTime(){
-        return collectionCreationTime;
-    }
-
-    /**
-     * Вставляет новый элемент в коллекцию по заданному ключу.
-     * Если у объекта отсутствует ID или дата создания, они генерируются автоматически.
-     * 
-     * @param key ключ для вставки
-     * @param lab объект лабораторной работы
-     * @return {@code true}, если вставка прошла успешно, {@code false}, если ключ уже занят
-     */
     public static boolean insert(Integer key, LabWork lab) {
         if (labworks.containsKey(key)) return false;
         
@@ -86,47 +61,56 @@ public class CollectionManager {
         }
         
         labworks.put(key, lab);
+        FileEditor.saveBackup(labworks);
         return true;
     }
 
-    /**
-     * Генерирует следующий доступный уникальный ID на основе максимального ID в коллекции.
-     * @return новый уникальный идентификатор типа Long
-     */
-    private static Long generateNextId() {
-        return labworks.values().stream()
-                .mapToLong(LabWork::getId)
-                .max()
-                .orElse(0L) + 1;
-    }
-
-    /**
-     * Удаляет объект из коллекции по его ключу.
-     * @param key ключ удаляемого объекта
-     */
     public static void removeByKey(Integer key){
         labworks.remove(key);
+        FileEditor.saveBackup(labworks);
     }
 
-    /**
-     * Сохраняет текущее состояние коллекции в файл через {@link FileEditor}.
-     * @return {@code true}, если сохранение прошло успешно
-     */
     public static boolean save() {
-        return FileEditor.saveCollection(labworks);
+        boolean success = FileEditor.saveCollection(labworks);
+        if (success) {
+            FileEditor.deleteBackup();
+        }
+        return success;
     }
 
-    /**
-     * Удаляет все элементы коллекции, ключи которых меньше заданного значения.
-     * 
-     * @param key пороговое значение ключа
-     * @return количество удаленных элементов
-     */
     public static int removeLowerKeys(Integer key) {
         java.util.List<Integer> keysToRemove = labworks.keySet().stream()
                 .filter(k -> k < key)
                 .collect(java.util.stream.Collectors.toList());
         keysToRemove.forEach(labworks::remove);
+        if (!keysToRemove.isEmpty()) {
+            FileEditor.saveBackup(labworks);
+        }
         return keysToRemove.size();
+    }
+
+    public static void reload() {
+        labworks = FileEditor.getCollection();
+    }
+
+    public static void restoreFromBackup() {
+        if (FileEditor.hasBackup()) {
+            labworks = FileEditor.getBackupCollection();
+        }
+    }
+
+    public static Hashtable<Integer, LabWork> getCollection(){
+        return labworks;
+    }
+
+    public static Date getCollectionCreationTime(){
+        return collectionCreationTime;
+    }
+
+    private static Long generateNextId() {
+        return labworks.values().stream()
+                .mapToLong(LabWork::getId)
+                .max()
+                .orElse(0L) + 1;
     }
 }

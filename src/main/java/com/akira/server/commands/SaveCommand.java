@@ -1,6 +1,6 @@
-package com.akira.general.commands;
+package com.akira.server.commands;
 
-import com.akira.general.commands.interfaces.Command;
+import com.akira.server.commands.interfaces.Command;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
@@ -19,7 +19,7 @@ public class SaveCommand implements Command {
 
     @Override
     public String describe() {
-        return "save : сохранить коллекцию в файл (только сервер)";
+        return "save : сохранить коллекцию в файл (доступно клиенту)";
     }
 
     @Override

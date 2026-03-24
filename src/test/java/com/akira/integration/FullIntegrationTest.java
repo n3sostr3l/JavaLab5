@@ -30,6 +30,8 @@ public class FullIntegrationTest {
             }
             
             System.setProperty("DATA_FILE_NAME", TEST_FILE);
+            com.akira.server.FileEditor.setDataFileName(TEST_FILE);
+            com.akira.server.CollectionManager.reload();
             
             serverExecutor = Executors.newSingleThreadExecutor();
             serverExecutor.submit(() -> {

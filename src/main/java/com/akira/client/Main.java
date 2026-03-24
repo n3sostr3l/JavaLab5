@@ -58,8 +58,15 @@ public class Main {
             ArrayList<String> commandArgs = new ArrayList<>(Arrays.asList(tokens).subList(1, tokens.length));
 
             if (commandName.equals("exit")) {
-                if (!isScript) System.out.println("Завершение работы клиента.");
-                break;
+                if (isScript) break;
+                System.out.print("Вы действительно хотите выйти? (y/n): ");
+                String confirm = scanner.nextLine().trim().toLowerCase();
+                if (confirm.equals("y") || confirm.equals("yes")) {
+                    System.out.println("Завершение работы клиента.");
+                    break;
+                } else {
+                    continue;
+                }
             }
             
             if (commandName.equals("execute_script")) {

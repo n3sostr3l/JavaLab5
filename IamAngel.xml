@@ -1,0 +1,46 @@
+<Hashtable>
+  <k_55>
+    <id>9</id>
+    <name>TestLabFromScript</name>
+    <coordinates>
+      <x>10</x>
+      <y>20</y>
+    </coordinates>
+    <creationDate>1773321699222</creationDate>
+    <minimalPoint>1.5</minimalPoint>
+    <maximumPoint>100</maximumPoint>
+    <description>Desc</description>
+    <difficulty>EASY</difficulty>
+    <author>
+      <name>AuthorName</name>
+      <birthday>0</birthday>
+      <location>
+        <x/>
+        <y>0.0</y>
+        <z>0.0</z>
+      </location>
+    </author>
+  </k_55>
+  <k_91848>
+    <id>2</id>
+    <name>Дискретная Математика 95</name>
+    <coordinates>
+      <x>-750</x>
+      <y>390</y>
+    </coordinates>
+    <creationDate>1773322609714</creationDate>
+    <minimalPoint>23.26582</minimalPoint>
+    <maximumPoint>192</maximumPoint>
+    <description>Отчёт по теме</description>
+    <difficulty>INSANE</difficulty>
+    <author>
+      <name>Author_6102</name>
+      <birthday>-137013806387</birthday>
+      <location>
+        <x>-841</x>
+        <y>425.99426</y>
+        <z>382.1197327536505</z>
+      </location>
+    </author>
+  </k_91848>
+</Hashtable>

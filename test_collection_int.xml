@@ -1,0 +1,20 @@
+<Hashtable>
+  <k_1>
+    <id>9</id>
+    <name>IntegrationLab</name>
+    <coordinates>
+      <x>1</x>
+      <y>1</y>
+    </coordinates>
+    <creationDate>1773322598101</creationDate>
+    <minimalPoint/>
+    <maximumPoint>500</maximumPoint>
+    <description/>
+    <difficulty/>
+    <author>
+      <name>TestAuthor</name>
+      <birthday/>
+      <location/>
+    </author>
+  </k_1>
+</Hashtable>

@@ -1,4 +1,4 @@
-package com.akira.general.commands.interfaces;
+package com.akira.server.commands.interfaces;
 
 import com.akira.general.datas.LabWork;
 

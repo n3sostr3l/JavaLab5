@@ -29,9 +29,17 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  */
 public class FileEditor {
     /** Имя файла для хранения данных коллекции */
-    private static final String DATA_FILE_NAME = resolveDataFileName();
+    private static String DATA_FILE_NAME = resolveDataFileName();
     /** XML-маппер для сериализации и десериализации */
     private static final XmlMapper xmlMapper = new XmlMapper();
+
+    public static void setDataFileName(String name) {
+        DATA_FILE_NAME = name;
+    }
+
+    public static String getDataFileName() {
+        return DATA_FILE_NAME;
+    }
 
     static {
         xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -43,6 +51,11 @@ public class FileEditor {
         String fromEnv = System.getenv("DATA_FILE_NAME");
         if (fromEnv != null && !fromEnv.isBlank()) {
             return fromEnv;
+        }
+
+        String fromProp = System.getProperty("DATA_FILE_NAME");
+        if (fromProp != null && !fromProp.isBlank()) {
+            return fromProp;
         }
 
         String fromDotEnvFile = readFromDotEnvFile();
@@ -124,6 +137,61 @@ public class FileEditor {
             result.put(Integer.parseInt(keyStr), e.getValue());
         }
         return result;
+    }
+
+    private static String getBackupFileName() {
+        return DATA_FILE_NAME + ".bak";
+    }
+
+    /**
+     * Сохраняет коллекцию в резервный файл.
+     */
+    public static void saveBackup(Hashtable<Integer, LabWork> coll) {
+        try (FileWriter writer = new FileWriter(getBackupFileName(), StandardCharsets.UTF_8)) {
+            Hashtable<String, LabWork> wrapped = new Hashtable<>();
+            coll.forEach((key, value) -> wrapped.put("k_" + key, value));
+            xmlMapper.writerWithDefaultPrettyPrinter().writeValue(writer, wrapped);
+        } catch (IOException ignored) {}
+    }
+
+    /**
+     * Удаляет резервный файл.
+     */
+    public static void deleteBackup() {
+        try {
+            Files.deleteIfExists(Path.of(getBackupFileName()));
+        } catch (IOException ignored) {}
+    }
+
+    /**
+     * Проверяет наличие резервной копии.
+     */
+    public static boolean hasBackup() {
+        return Files.exists(Path.of(getBackupFileName()));
+    }
+
+    /**
+     * Загружает коллекцию из резервной копии.
+     */
+    public static Hashtable<Integer, LabWork> getBackupCollection() {
+        String originalFile = DATA_FILE_NAME;
+        // Временно подменяем имя для использования существующего метода загрузки
+        // Но лучше просто вызвать чтение с параметром. 
+        // Однако для минимальных правок:
+        return loadFromFile(getBackupFileName());
+    }
+
+    private static Hashtable<Integer, LabWork> loadFromFile(String fileName) {
+        Path dataPath = Path.of(fileName);
+        if (Files.notExists(dataPath)) return new Hashtable<>();
+        try (InputStream inputStream = Files.newInputStream(dataPath);
+             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+            Hashtable<String, LabWork> raw = xmlMapper.readValue(reader,
+                    xmlMapper.getTypeFactory().constructMapType(Hashtable.class, String.class, LabWork.class));
+            return unwrapKeys(raw);
+        } catch (IOException | NumberFormatException e) {
+            return new Hashtable<>();
+        }
     }
 
     /**

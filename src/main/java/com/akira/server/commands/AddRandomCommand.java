@@ -1,10 +1,10 @@
-package com.akira.general.commands;
+package com.akira.server.commands;
 
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.akira.general.commands.interfaces.Command;
+import com.akira.server.commands.interfaces.Command;
 import com.akira.general.datas.Coordinates;
 import com.akira.general.datas.Difficulty;
 import com.akira.general.datas.LabWork;

@@ -1,4 +1,4 @@
-package com.akira.general.commands.interfaces;
+package com.akira.server.commands.interfaces;
 
 import com.akira.server.CollectionManager;
 import com.akira.general.network.Response;

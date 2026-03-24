@@ -1,0 +1,20 @@
+<Hashtable>
+  <k_55>
+    <id>8</id>
+    <name>TestLabFromScript</name>
+    <coordinates>
+      <x>10</x>
+      <y>20</y>
+    </coordinates>
+    <creationDate>1773322595934</creationDate>
+    <minimalPoint>1.5</minimalPoint>
+    <maximumPoint>100</maximumPoint>
+    <description>Desc</description>
+    <difficulty>EASY</difficulty>
+    <author>
+      <name>AuthorName</name>
+      <birthday/>
+      <location/>
+    </author>
+  </k_55>
+</Hashtable>

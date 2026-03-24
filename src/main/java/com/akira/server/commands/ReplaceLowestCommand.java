@@ -1,17 +1,18 @@
-package com.akira.general.commands;
+package com.akira.server.commands;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import com.akira.general.commands.interfaces.Modable;
-import com.akira.general.commands.interfaces.ObjectModable;
+
+import com.akira.server.commands.interfaces.Modable;
+import com.akira.server.commands.interfaces.ObjectModable;
 import com.akira.general.datas.LabWork;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 
 /**
- * Команда замены элемента при большем значении.
+ * Команда замены элемента при меньшем значении.
  */
-public class ReplaceGreatestCommand implements Modable, ObjectModable {
+public class ReplaceLowestCommand implements Modable, ObjectModable {
     private ArrayList<String> args = new ArrayList<>();
     private LabWork labWork;
 
@@ -28,12 +29,12 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
                 return new Response("Ошибка: объект для сравнения не получен.", false);
             }
             LabWork oldLab = coll.get(key);
-            if (labWork.compareTo(oldLab) > 0) {
+            if (labWork.compareTo(oldLab) < 0) {
                 labWork.setCreationDate(oldLab.getCreationDate());
                 CollectionManager.update(key, labWork);
                 return new Response("Значение успешно заменено.", true);
             } else {
-                return new Response("Новое значение не больше старого. Замена не выполнена.", true);
+                return new Response("Новое значение не меньше старого. Замена не выполнена.", true);
             }
         } catch (NumberFormatException e) {
             return new Response("Ошибка: ключ должен быть целым числом.", false);
@@ -42,7 +43,7 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
 
     @Override
     public String describe() {
-        return "replace_if_greater {key} {element} : заменить значение по ключу, если новое значение больше старого";
+        return "replace_if_lower {key} {element} : заменить значение по ключу, если новое значение меньше старого";
     }
 
     @Override

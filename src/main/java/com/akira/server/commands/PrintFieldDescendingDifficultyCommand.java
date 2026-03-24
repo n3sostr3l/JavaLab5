@@ -1,6 +1,6 @@
-package com.akira.general.commands;
+package com.akira.server.commands;
 
-import com.akira.general.commands.interfaces.Command;
+import com.akira.server.commands.interfaces.Command;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 import java.util.Comparator;
