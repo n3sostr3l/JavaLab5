@@ -14,6 +14,9 @@ public class Request implements Serializable {
     private final String commandName;
     private final ArrayList<String> args;
     private final LabWork objectArgument;
+    private boolean isAdmin = false;
+    private boolean isInit = false;
+    private boolean restore = false;
 
     /**
      * Конструктор для команд без аргументов.
@@ -64,6 +67,15 @@ public class Request implements Serializable {
     public LabWork getObjectArgument() {
         return objectArgument;
     }
+
+    public boolean isAdmin() { return isAdmin; }
+    public void setAdmin(boolean admin) { isAdmin = admin; }
+
+    public boolean isInit() { return isInit; }
+    public void setInit(boolean init) { isInit = init; }
+
+    public boolean isRestore() { return restore; }
+    public void setRestore(boolean restore) { this.restore = restore; }
 
     @Override
     public String toString() {
