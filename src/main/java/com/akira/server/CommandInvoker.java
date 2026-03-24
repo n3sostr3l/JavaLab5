@@ -64,6 +64,10 @@ public class CommandInvoker {
             ((ObjectModable) command).setObject(request.getObjectArgument());
         }
 
+        if (!(command instanceof SaveCommand)){
+
+        }
+
         return command.execute(collectionManager);
     }
 }
