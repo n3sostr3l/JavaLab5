@@ -5,6 +5,7 @@ import com.akira.general.datas.LabWork;
 /**
  * Интерфейс для команд, требующих объект LabWork.
  */
+
 public interface ObjectModable extends Command {
     /**
      * Устанавливает объект лабораторной работы для выполнения команды.
