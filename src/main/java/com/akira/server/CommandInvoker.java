@@ -19,6 +19,7 @@ import com.akira.server.commands.SaveCommand;
 import com.akira.server.commands.ShowCommand;
 import com.akira.server.commands.UniqueAuthorCommand;
 import com.akira.server.commands.UpdateCommand;
+import com.akira.server.commands.ExitServerCommand;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.ObjectModable;
@@ -49,10 +50,29 @@ public class CommandInvoker {
         commands.put("print_unique_author", new UniqueAuthorCommand());
         commands.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommand());
         commands.put("add_random", new AddRandomCommand());
+        commands.put("exit_server", new ExitServerCommand());
     }
 
     public Response executeRequest(Request request, CollectionManager collectionManager) {
-        Command command = commands.get(request.getCommandName().toLowerCase());
+        if (request.isInit()) {
+            CollectionManager.loadSession(request.isRestore());
+            return new Response("Сессия " + (request.isRestore() ? "восстановлена" : "инициализирована") + " успешно.", true);
+        }
+
+        String commandName = request.getCommandName().toLowerCase();
+        
+        // Проверка прав админа
+        if (request.isAdmin()) {
+            if (!commandName.equals("save") && !commandName.equals("exit_server")) {
+                return new Response("Ошибка: Админу разрешены только команды: save, exit_server", false);
+            }
+        } else {
+            if (commandName.equals("exit_server") || commandName.equals("save")) {
+                return new Response("Ошибка: У вас нет прав для выполнения этой команды.", false);
+            }
+        }
+
+        Command command = commands.get(commandName);
         if (command == null) {
             return new Response("Ошибка: команда '" + request.getCommandName() + "' не найдена.", false);
         }
@@ -62,10 +82,6 @@ public class CommandInvoker {
         }
         if (command instanceof ObjectModable) {
             ((ObjectModable) command).setObject(request.getObjectArgument());
-        }
-
-        if (!(command instanceof SaveCommand)){
-
         }
 
         return command.execute(collectionManager);
