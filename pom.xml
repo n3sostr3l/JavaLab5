@@ -135,7 +135,33 @@
                         </configuration>
                     </execution>
 
-                    <!-- 3. General (Common) JAR -->
+                    <!-- 3. Admin JAR -->
+                    <execution>
+                        <id>shade-admin</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>admin</finalName>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.akira.client.AdminMain</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>com/akira/server/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+
+                    <!-- 4. General (Common) JAR -->
                     <execution>
                         <id>shade-general</id>
                         <phase>package</phase>
