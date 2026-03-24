@@ -43,42 +43,65 @@ public class NetworkManager {
 
     /**
      * Отправляет объект запроса на сервер и получает ответ.
-     * Автоматически пытается переподключиться при обрыве соединения.
+     * При временной недоступности сервера автоматически повторяет попытку подключения
+     * до {@code MAX_RETRIES} раз с паузой {@code RETRY_DELAY_MS} мс.
      * 
      * @param request сериализуемый объект запроса
-     * @return объект {@link Response} от сервера или {@code null} при возникновении ошибки
+     * @return объект {@link Response} от сервера или {@code null} при исчерпании попыток
      */
     public Response sendAndReceive(Request request) {
-        try {
-            if (socket == null || socket.isClosed()) {
-                if (!connect()) return null;
+        final int MAX_RETRIES = 3;
+        final long RETRY_DELAY_MS = 2000;
+
+        for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            try {
+                if (socket == null || socket.isClosed()) {
+                    if (!connect()) {
+                        System.out.println("Сервер недоступен. Повтор через 2 сек... (попытка " + attempt + "/" + MAX_RETRIES + ")");
+                        Thread.sleep(RETRY_DELAY_MS);
+                        continue;
+                    }
+                }
+
+                // Сериализуем объект в массив байтов
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos);
+                oos.writeObject(request);
+                oos.flush();
+                byte[] data = baos.toByteArray();
+
+                // Отправляем размер, затем данные
+                out.writeInt(data.length);
+                out.write(data);
+                out.flush();
+
+                // Читаем размер ответа
+                int size = in.readInt();
+                byte[] responseData = new byte[size];
+                in.readFully(responseData);
+
+                ByteArrayInputStream bais = new ByteArrayInputStream(responseData);
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                return (Response) ois.readObject();
+
+            } catch (IOException e) {
+                close();
+                if (attempt < MAX_RETRIES) {
+                    System.out.println("Соединение прервано. Повтор через 2 сек... (попытка " + attempt + "/" + MAX_RETRIES + ")");
+                    try { Thread.sleep(RETRY_DELAY_MS); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); break; }
+                } else {
+                    System.out.println("Ошибка: не удалось связаться с сервером после " + MAX_RETRIES + " попытки.");
+                }
+            } catch (ClassNotFoundException e) {
+                System.out.println("Ошибка десериализации ответа.");
+                close();
+                break;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
-            
-            // Сериализуем объект в массив байтов
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(request);
-            oos.flush();
-            byte[] data = baos.toByteArray();
-            
-            // Отправляем размер, затем данные
-            out.writeInt(data.length);
-            out.write(data);
-            out.flush();
-            
-            // Читаем размер ответа
-            int size = in.readInt();
-            byte[] responseData = new byte[size];
-            in.readFully(responseData);
-            
-            ByteArrayInputStream bais = new ByteArrayInputStream(responseData);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-            return (Response) ois.readObject();
-            
-        } catch (IOException | ClassNotFoundException e) {
-            close();
-            return null;
         }
+        return null;
     }
 
     /**
@@ -90,5 +113,8 @@ public class NetworkManager {
             if (in != null) in.close();
             if (socket != null) socket.close();
         } catch (IOException ignored) {}
+        socket = null;
+        out = null;
+        in = null;
     }
 }
