@@ -13,7 +13,6 @@ import com.akira.general.network.Response;
 
 /**
  * Управляет интерактивной сессией обычного клиента.
- * <p>
  * Отвечает за:
  * <ul>
  *   <li>Основной цикл ввода команд.</li>
@@ -21,7 +20,6 @@ import com.akira.general.network.Response;
  *       обрабатываются локально; все остальные — отправляются на сервер.</li>
  *   <li>Блокировку серверной команды {@code save} для обычного клиента.</li>
  * </ul>
- * </p>
  */
 public class ClientSession {
     private static final Set<String> OBJECT_COMMANDS = Set.of(
