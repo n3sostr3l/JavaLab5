@@ -22,7 +22,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  * Класс для работы с файлами хранения коллекции (основным и сессионными).
  */
 public class FileEditor {
-    private static String DATA_FILE_NAME = resolveDataFileName();
+    private static String DATA_FILE_NAME = "last_saved_session.xml";
     public static final String SAVED_SESSION_FILE = "last_saved_session.xml";
     public static final String UNSAVED_SESSION_FILE = "last_unsaved_session.xml";
     private static final XmlMapper xmlMapper = new XmlMapper();
@@ -37,37 +37,7 @@ public class FileEditor {
     public static void setDataFileName(String name) { DATA_FILE_NAME = name; }
     public static boolean exists(String fileName) { return Files.exists(Path.of(fileName)); }
 
-    private static String resolveDataFileName() {
-        String name = System.getenv("DATA_FILE_NAME");
-        if (name == null || name.isBlank()) name = System.getProperty("DATA_FILE_NAME");
-        if (name == null || name.isBlank()) name = readFromDotEnv();
-        return (name == null || name.isBlank()) ? "data.xml" : name;
-    }
-
-    private static String readFromDotEnv() {
-        Path dotEnvPath = Path.of(".env");
-        if (Files.exists(dotEnvPath)) {
-            try (BufferedReader br = Files.newBufferedReader(dotEnvPath, StandardCharsets.UTF_8)) {
-                return readProp(br);
-            } catch (IOException ignored) {}
-        }
-        try (InputStream is = FileEditor.class.getClassLoader().getResourceAsStream(".env")) {
-            if (is != null) {
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                    return readProp(br);
-                }
-            }
-        } catch (IOException ignored) {}
-        return null;
-    }
-
-    private static String readProp(BufferedReader reader) throws IOException {
-        Properties props = new Properties();
-        props.load(reader);
-        String val = props.getProperty("DATA_FILE_NAME");
-        return val != null ? val.trim() : null;
-    }
-
+    
     public static Hashtable<Integer, LabWork> loadFromFile(String fileName) {
         Path path = Path.of(fileName);
         if (Files.notExists(path)) return new Hashtable<>();
