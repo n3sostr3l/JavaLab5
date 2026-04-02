@@ -12,7 +12,7 @@ import com.akira.general.network.Response;
  */
 public class AdminMain {
     private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 12345;
+    private static final int DEFAULT_PORT = 12347;
 
     /**
      * @param args аргументы командной строки (не используются)
