@@ -1,8 +1,7 @@
 package com.akira.general;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
 import com.akira.general.datas.*;
 
@@ -10,10 +9,7 @@ import com.akira.general.datas.*;
  * Класс для интерактивного чтения данных лабораторной работы из консоли.
  */
 public class LabWorkReader {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
     private final Scanner sc;
-
-    static { DATE_FORMAT.setLenient(false); }
 
     /** @param sc источник ввода */
     public LabWorkReader(Scanner sc) { this.sc = sc; }
@@ -131,18 +127,18 @@ public class LabWorkReader {
         return p;
     }
 
-    private Date readBirthday() {
+    private LocalDate readBirthday() {
         while (true) {
             System.out.print("Введите author.birthday (дд.мм.гггг, пустая строка — null): ");
             String line = sc.nextLine().trim();
             if (line.isEmpty()) return null;
-            try { return DATE_FORMAT.parse(line); }
-            catch (ParseException e) { System.out.println("Ошибка: неверный формат даты (дд.мм.гггг)."); }
+            try { return DateParser.parseAndValidate(line); }
+            catch (IllegalArgumentException e) { System.out.println("Ошибка: неверный формат даты (дд.мм.гггг)."); }
         }
     }
 
     private Location readLocation() {
-        System.out.print("Хотите ввести author.location? (да/нет): ");
+        System.out.print("Хотите ввести author.location? (да/нет по умолчанию): ");
         if (!sc.nextLine().trim().equalsIgnoreCase("да")) return null;
         Location loc = new Location();
         loc.setX(readInt("location.x (Integer)", Integer.MIN_VALUE, Integer.MAX_VALUE));
