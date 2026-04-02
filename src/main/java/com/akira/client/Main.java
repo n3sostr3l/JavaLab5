@@ -8,7 +8,7 @@ import com.akira.general.LabWorkReader;
  */
 public class Main {
     private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 12345;
+    private static final int DEFAULT_PORT = 12347;
 
     /**
      * @param args аргументы командной строки (не используются)

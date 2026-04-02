@@ -1,10 +1,12 @@
 package com.akira.server.commands;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.akira.server.commands.interfaces.Command;
+import com.akira.server.commands.interfaces.Modable;
 import com.akira.general.datas.Coordinates;
 import com.akira.general.datas.Difficulty;
 import com.akira.general.datas.LabWork;
@@ -16,7 +18,8 @@ import com.akira.server.CollectionManager;
 /**
  * Команда генерации случайной лабораторной работы.
  */
-public class AddRandomCommand implements Command {
+public class AddRandomCommand implements Modable {
+    private int number;
     private static final String[] LAB_NAMES = {
             "Математический Анализ", "Линейная Алгебра", "Промпт Инженерия", "Программирование на Java",
             "Программирование на Python", "Алгоритмы и структуры данных", "Дискретная Математика", "Основы Профессиональной Деятельности"
@@ -27,23 +30,32 @@ public class AddRandomCommand implements Command {
 
     @Override
     public Response execute(CollectionManager collectionManager) {
-        Integer key = generateUniqueKey();
-        LabWork randomLabWork = generateRandomLabWork();
-        if (CollectionManager.insert(key, randomLabWork)) {
-            return new Response("Случайная лабораторная работа добавлена. Ключ: " + key + ", id: " + randomLabWork.getId(), true);
-        } else {
-            return new Response("Ошибка при добавлении случайной работы.", false);
+        HashSet<Integer> keys = new HashSet<>();
+        ArrayList<LabWork> randomLabWork = generateRandomLabWork();
+        for (LabWork labWork : randomLabWork) {
+            Integer key = generateUniqueKey();
+            while (keys.contains(key)) {
+                key = generateUniqueKey();
+            }
+            keys.add(key);
+            CollectionManager.insert(key, labWork);
         }
+        return new Response("Случайные лабораторные работы добавлены. Ключи: " + keys.toString(), true);
     }
 
     @Override
     public String describe() {
-        return "add_random : добавить случайно сгенерированную лабораторную работу";
+        return "add_random {number}: добавить {number} случайно сгенерированных лабораторных работ";
     }
 
     @Override
     public int numberArgsRequired() {
-        return 0;
+        return 1;
+    }
+    
+    @Override
+    public void setArguments(ArrayList<String> args) {
+        this.number = Integer.parseInt(args.get(0));
     }
 
     private Integer generateUniqueKey() {
@@ -55,36 +67,40 @@ public class AddRandomCommand implements Command {
         return key;
     }
 
-    private LabWork generateRandomLabWork() {
+    private ArrayList<LabWork> generateRandomLabWork() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        LabWork labWork = new LabWork();
-        labWork.setCreationDate(new Date());
-        labWork.setName(LAB_NAMES[random.nextInt(LAB_NAMES.length)] + " " + random.nextInt(1, 101));
-        
-        Coordinates coords = new Coordinates();
-        coords.setX(random.nextInt(-880, 1000));
-        coords.setY(random.nextLong(-1000, 1000));
-        labWork.setCoordinates(coords);
-        
-        labWork.setMinimalPoint(random.nextFloat(1.0f, 51.0f));
-        labWork.setMaximumPoint(random.nextLong(51, 201));
-        labWork.setDescription(DESCRIPTIONS[random.nextInt(DESCRIPTIONS.length)]);
-        
-        Difficulty[] values = Difficulty.values();
-        labWork.setDifficulty(values[random.nextInt(values.length)]);
-        
-        Person person = new Person();
-        person.setName("Author_" + random.nextInt(1, 10000));
-        long now = System.currentTimeMillis();
-        person.setBirthday(new Date(now - random.nextLong(100L * 365 * 24 * 60 * 60 * 1000)));
-        
-        Location loc = new Location();
-        loc.setX(random.nextInt(-880, 1001));
-        loc.setY((float) random.nextDouble(-500.0, 500.0));
-        loc.setZ(random.nextDouble(-500.0, 500.0));
-        person.setLocation(loc);
-        
-        labWork.setAuthor(person);
-        return labWork;
+        ArrayList<LabWork> labWorks = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            LabWork labWork = new LabWork();
+            labWork.setCreationDate(new Date());
+            labWork.setName(LAB_NAMES[random.nextInt(LAB_NAMES.length)] + " " + random.nextInt(1, 101));
+            
+            Coordinates coords = new Coordinates();
+            coords.setX(random.nextInt(-880, 1000));
+            coords.setY(random.nextLong(-1000, 1000));
+            labWork.setCoordinates(coords);
+            
+            labWork.setMinimalPoint(random.nextFloat(1.0f, 51.0f));
+            labWork.setMaximumPoint(random.nextLong(51, 201));
+            labWork.setDescription(DESCRIPTIONS[random.nextInt(DESCRIPTIONS.length)]);
+            
+            Difficulty[] values = Difficulty.values();
+            labWork.setDifficulty(values[random.nextInt(values.length)]);
+            
+            Person person = new Person();
+            person.setName("Author_" + random.nextInt(1, 10000));
+            long now = System.currentTimeMillis();
+            person.setBirthday(new Date(now - random.nextLong(100L * 365 * 24 * 60 * 60 * 1000)));
+            
+            Location loc = new Location();
+            loc.setX(random.nextInt(-880, 1001));
+            loc.setY((float) random.nextDouble(-500.0, 500.0));
+            loc.setZ(random.nextDouble(-500.0, 500.0));
+            person.setLocation(loc);
+            
+            labWork.setAuthor(person);
+            labWorks.add(labWork);
+        }
+        return labWorks;
     }
 }

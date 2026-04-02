@@ -8,7 +8,6 @@ import com.akira.general.network.Response;
  * Точка входа административного клиента.
  * <p>
  * Обрабатывает команды: {@code save}, {@code exit_server}, {@code exit}.
- * Вся логика находится здесь, так как команд строго ограниченный набор.
  * </p>
  */
 public class AdminMain {

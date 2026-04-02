@@ -2,28 +2,31 @@ JAR_DIR = target
 CLIENT_JAR = $(JAR_DIR)/client.jar
 SERVER_JAR = $(JAR_DIR)/server.jar
 ADMIN_JAR = $(JAR_DIR)/admin.jar
-PORT = 12345
-LOG_FILE = angel_logs/server.log
+LOG_FILE = server.log
 
 .PHONY: build server client admin clean start all logs
 
-all: start
+all: remote
+
+remote:
+	@echo "Отправляем сервер на Helios..."
+	scp -P 2222 $(SERVER_JAR) s501818@cs.ifmo.ru:./server.jar
+
+	@echo "Останаливаем запущенный сервер"
+	-pkill -f server.jar 2>/dev/null || true
+	-fuser -k 12345/tcp 2>/dev/null || true
+
+	@echo "Запускаем сервер на Helios..."
+	ssh -p 2222 s501818@cs.ifmo.ru "nohup java -Xms64m -Xmx128m -jar server.jar > server.log 2>&1 &"
+	sleep 3
+
+	@echo "Открываем порт 12347:12345..."
+	ssh -f -N -L 12347:localhost:12345 s501818@cs.ifmo.ru -p 2222
+
+	java -jar $(CLIENT_JAR)
 
 build:
 	mvn clean package
-
-server:
-	mkdir -p angel_logs
-	-pkill -f server.jar 2>/dev/null || true
-	-fuser -k $(PORT)/tcp 2>/dev/null || true
-	sleep 1
-	nohup java -jar $(SERVER_JAR) > $(LOG_FILE) 2>&1 &
-	@echo "Сервер запускается на порту $(PORT)..."
-
-start: server
-	@echo "Ожидание запуска сервера..."
-	@sleep 2
-	@$(MAKE) client
 
 client:
 	java -jar $(CLIENT_JAR)
@@ -32,7 +35,5 @@ admin:
 	java -jar $(ADMIN_JAR)
 
 logs:
-	tail -f $(LOG_FILE)
+	ssh -p 2222 s501818@cs.ifmo.ru "cat server.log"
 
-clean:
-	mvn clean
