@@ -13,7 +13,7 @@ public class Person implements Serializable{
     /** Имя автора. Не может быть null, строка не может быть пустой */
     private String name;
     /** Дата рождения автора. Может быть null */
-    private java.util.Date birthday;
+    private java.time.LocalDate birthday;
     /** Местоположение автора. Может быть null */
     private Location location;
 
@@ -31,7 +31,7 @@ public class Person implements Serializable{
      *
      * @param birthday дата рождения
      */
-    public void setBirthday(java.util.Date birthday) {
+    public void setBirthday(java.time.LocalDate birthday) {
         this.birthday = birthday;
     }
 

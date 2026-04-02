@@ -1,6 +1,7 @@
 package com.akira.server.commands;
 
 import java.util.Date;
+import java.time.LocalDate;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -76,7 +77,10 @@ public class AddRandomCommand implements Command {
         Person person = new Person();
         person.setName("Author_" + random.nextInt(1, 10000));
         long now = System.currentTimeMillis();
-        person.setBirthday(new Date(now - random.nextLong(100L * 365 * 24 * 60 * 60 * 1000)));
+
+        LocalDate date = LocalDate.of(ThreadLocalRandom.current().nextInt(2005,2015), ThreadLocalRandom.current().nextInt(0,12),ThreadLocalRandom.current().nextInt(0,28));
+
+        person.setBirthday(date);
         
         Location loc = new Location();
         loc.setX(random.nextInt(-880, 1001));
