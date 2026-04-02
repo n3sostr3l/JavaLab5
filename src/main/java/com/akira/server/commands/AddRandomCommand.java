@@ -90,8 +90,8 @@ public class AddRandomCommand implements Modable {
             
             Person person = new Person();
             person.setName("Author_" + random.nextInt(1, 10000));
-            long now = System.currentTimeMillis();
-            person.setBirthday(new Date(now - random.nextLong(100L * 365 * 24 * 60 * 60 * 1000)));
+
+            person.setBirthday(LocalDate.of(ThreadLocalRandom.current().nextInt(1999,2010), ThreadLocalRandom.current().nextInt(1,12), ThreadLocalRandom.current().nextInt(1,28)));
             
             Location loc = new Location();
             loc.setX(random.nextInt(-880, 1001));
