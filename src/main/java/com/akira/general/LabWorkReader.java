@@ -55,7 +55,7 @@ public class LabWorkReader {
                 int val = Integer.parseInt(sc.nextLine().trim());
                 if (val > min && (max == Integer.MAX_VALUE || val <= max)) return val;
                 System.out.println("Ошибка: значение должно быть > " + min + ".");
-            } catch (NumberFormatException e) { System.out.println("Ошибка: введите целое число."); }
+            } catch (NumberFormatException e) { System.out.println(String.format("Ошибка: введите целое число из промежутка [%d,%d].",Integer.MIN_VALUE, Integer.MAX_VALUE )); }
         }
     }
 
@@ -64,7 +64,6 @@ public class LabWorkReader {
             System.out.print("Введите " + prompt + ": ");
             try {
                 long val = Long.parseLong(sc.nextLine().trim());
-                if (val >= min) return val;
                 System.out.println("Ошибка: значение должно быть >= " + min + ".");
             } catch (NumberFormatException e) { System.out.println("Ошибка: введите целое число."); }
         }
