@@ -99,10 +99,25 @@ public class ClientSession {
             }
 
             // --- Всё остальное — на сервер ---
-            Request request = OBJECT_COMMANDS.contains(cmd)
-                    ? new Request(cmd, cmdArgs, reader.readLabWork())
-                    : new Request(cmd, cmdArgs);
-            request.setAdmin(false);
+
+            Request request = null;
+
+            if (OBJECT_COMMANDS.contains(cmd)){
+                if (cmdArgs.size() == 1){
+                    request = new Request(cmd, cmdArgs, reader.readLabWork());
+                }
+                else{
+                    System.out.println("Ошибка: неверное кол-во аргументов, смотри help.");
+                    continue;
+                }
+            }
+            else{
+                request = new Request(cmd, cmdArgs);
+            }
+
+            if (request != null) {
+                request.setAdmin(false);
+            }
 
             Response response = network.sendAndReceive(request);
             System.out.println(response != null ? response.getMessage()
