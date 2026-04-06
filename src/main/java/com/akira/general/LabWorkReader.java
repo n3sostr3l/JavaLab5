@@ -11,12 +11,17 @@ import com.akira.general.datas.*;
 public class LabWorkReader {
     private final Scanner sc;
 
-    /** @param sc источник ввода */
-    public LabWorkReader(Scanner sc) { this.sc = sc; }
+    /**
+     * @param sc источник ввода
+     */
+    public LabWorkReader(Scanner sc) {
+        this.sc = sc;
+    }
 
     /**
      * Читает и возвращает новый объект {@link LabWork} из консоли.
      * ID и дата создания генерируются на сервере согласно ТЗ.
+     *
      * @return новый объект LabWork
      */
     public LabWork readLabWork() {
@@ -53,9 +58,11 @@ public class LabWorkReader {
             System.out.print("Введите " + prompt + ": ");
             try {
                 int val = Integer.parseInt(sc.nextLine().trim());
-                if (val > min && (max == Integer.MAX_VALUE || val <= max)) return val;
+                if (val > min && val <= max) return val;
                 System.out.println("Ошибка: значение должно быть > " + min + ".");
-            } catch (NumberFormatException e) { System.out.println(String.format("Ошибка: введите целое число из промежутка [%d,%d].",Integer.MIN_VALUE, Integer.MAX_VALUE )); }
+            } catch (NumberFormatException e) {
+                System.out.println(String.format("Ошибка: введите целое число из промежутка [%d,%d].", Integer.MIN_VALUE, Integer.MAX_VALUE));
+            }
         }
     }
 
@@ -64,24 +71,33 @@ public class LabWorkReader {
             System.out.print("Введите " + prompt + ": ");
             try {
                 long val = Long.parseLong(sc.nextLine().trim());
+                if (val > min && val <= max) return val;
                 System.out.println("Ошибка: значение должно быть >= " + min + ".");
-            } catch (NumberFormatException e) { System.out.println("Ошибка: введите целое число."); }
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число.");
+            }
         }
     }
 
     private float readFloat(String prompt) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
-            try { return Float.parseFloat(sc.nextLine().trim()); }
-            catch (NumberFormatException e) { System.out.println("Ошибка: введите число."); }
+            try {
+                return Float.parseFloat(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите число.");
+            }
         }
     }
 
     private double readDouble(String prompt) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
-            try { return Double.parseDouble(sc.nextLine().trim()); }
-            catch (NumberFormatException e) { System.out.println("Ошибка: введите число."); }
+            try {
+                return Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите число.");
+            }
         }
     }
 
@@ -103,7 +119,9 @@ public class LabWorkReader {
                 float val = Float.parseFloat(line);
                 if (val > 0) return val;
                 System.out.println("Ошибка: значение должно быть > 0.");
-            } catch (NumberFormatException e) { System.out.println("Ошибка: введите число."); }
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите число.");
+            }
         }
     }
 
@@ -113,8 +131,11 @@ public class LabWorkReader {
             System.out.print("Введите difficulty (пустая строка — null): ");
             String line = sc.nextLine().trim();
             if (line.isEmpty()) return null;
-            try { return Difficulty.valueOf(line.toUpperCase()); }
-            catch (IllegalArgumentException e) { System.out.println("Ошибка: нет такой константы."); }
+            try {
+                return Difficulty.valueOf(line.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: нет такой константы.");
+            }
         }
     }
 
@@ -131,14 +152,36 @@ public class LabWorkReader {
             System.out.print("Введите author.birthday (дд.мм.гггг, пустая строка — null): ");
             String line = sc.nextLine().trim();
             if (line.isEmpty()) return null;
-            try { return DateParser.parseAndValidate(line); }
-            catch (IllegalArgumentException e) { System.out.println("Ошибка: неверный формат даты (дд.мм.гггг)."); }
+            try {
+                return DateParser.parseAndValidate(line);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: неверный формат даты (дд.мм.гггг).");
+            }
         }
     }
 
+    private String readYesNo(String question) {
+        while (true) {
+            System.out.print(String.format("%s (да/нет)"));
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) {
+                System.out.println("Ответ должен быть не пуст");
+            }
+
+            try {
+                if (line.equalsIgnoreCase("да") || line.equalsIgnoreCase("нет")) {
+                    return line;
+                } else
+                    throw new IllegalArgumentException("Ошибка ввода, введите 'да' или 'нет' (без кавычек)");
+            } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
     private Location readLocation() {
-        System.out.print("Хотите ввести author.location? (да/нет по умолчанию): ");
-        if (!sc.nextLine().trim().equalsIgnoreCase("да")) return null;
+        if (readYesNo("Хотите ввести author.location?").equalsIgnoreCase("нет")) return null;
         Location loc = new Location();
         loc.setX(readInt("location.x (Integer)", Integer.MIN_VALUE, Integer.MAX_VALUE));
         loc.setY(readFloat("location.y (float)"));
