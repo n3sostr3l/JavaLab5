@@ -1,7 +1,13 @@
 package com.akira.general.datas;
 
+import com.akira.server.CollectionManager;
+
 import java.io.IOError;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Класс, представляющий лабораторную работу.
@@ -48,6 +54,13 @@ public class LabWork implements Comparable<LabWork>, Serializable{
      */
     @Override
     public String toString() {
+
+        Integer key = CollectionManager.getCollection().entrySet().stream()
+                .filter(entry -> Objects.equals(entry.getValue(), this))
+                .map(HashMap.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
         return String.format("""
                 LabWork{
                 id= %d ,
@@ -59,8 +72,8 @@ public class LabWork implements Comparable<LabWork>, Serializable{
                 description= %s ,
                 difficulty= %s ,
                 author= %s
-                }
-                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author);
+                }, ключ из файла: %d
+                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author, key);
     }
 
     /**
