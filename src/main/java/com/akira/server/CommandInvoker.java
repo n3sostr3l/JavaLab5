@@ -77,22 +77,23 @@ public class CommandInvoker {
             return new Response("Ошибка: команда '" + request.getCommandName() + "' не найдена.", false);
         }
 
-        Response response;
-
         try {
             if (command instanceof Modable) {
                 ((Modable) command).setArguments(request.getArgs());
             }
+        }catch (Exception e){
+            return new Response(String.format("Ошибка при задании аргументов команды. Команда требует %d арументов (см. help, anyway)", command.numberArgsRequired()), true);
+        }
+
+        try {
             if (command instanceof ObjectModable) {
                 ((ObjectModable) command).setObject(request.getObjectArgument());
             }
-            response  = command.execute(collectionManager);
         }catch (Exception e){
-            response = new Response(String.format("Ошибка при задании аргументов команды. Команда требует %d арументов (см. help, anyway)", command.numberArgsRequired()), false);
+            return new Response(String.format("Ошибка при задании аргументов команды. Команда требует %d арументов (см. help, anyway)", command.numberArgsRequired()), true);
         }
 
+        return command.execute(collectionManager);
 
-
-        return response;
     }
 }
