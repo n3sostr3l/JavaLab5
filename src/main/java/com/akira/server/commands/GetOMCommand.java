@@ -5,28 +5,29 @@ import com.akira.server.CollectionManager;
 import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.server.commands.interfaces.Modable;
+import com.akira.server.commands.interfaces.ObjectModable;
 import com.akira.server.commands.interfaces.SystemCommand;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GetOMCommand implements Command {
     @Override
     public Response execute(CollectionManager collectionManager) {
+        return new Response(String.format("%s", CommandInvoker.getCommandsMap().entrySet().stream()
+                .filter(entry -> !(entry.getValue() instanceof SystemCommand))
+                .filter(entry -> entry.getValue() instanceof ObjectModable)
 
-        return new Response(String.format("%s", CommandInvoker.getCommandsList().stream()
-                .filter(command -> !(command instanceof SystemCommand))
-                .filter(command -> command instanceof Modable)
-                        .map(command -> CommandInvoker.getCommandsMap().entrySet().stream()
-                                .filter(entry -> command.equals(entry.getValue()))
-                                .findFirst()
-                                .get()
-                                .getKey()
-                        ).toList()
+                .map(Map.Entry::getKey)
+                .toList()
 
                 ), true);
     }
 
     @Override
     public String describe() {
-        return "";
+        return "getomc : получить список всех команд, которые требуют введения объекта";
     }
 
     @Override

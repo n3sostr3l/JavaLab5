@@ -1,10 +1,6 @@
 package com.akira.client;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 import com.akira.general.LabWorkReader;
 import com.akira.general.datas.LabWork;
@@ -22,7 +18,7 @@ import com.akira.general.network.Response;
  * </ul>
  */
 public class ClientSession {
-    private Set OBJECT_COMMANDS = Set.of();
+    private ArrayList<String> OBJECT_COMMANDS = new ArrayList<>();
 
     private final NetworkManager network;
     private LabWorkReader reader;
@@ -110,6 +106,13 @@ public class ClientSession {
 
             if (OBJECT_COMMANDS.contains(cmd)){
                 if (cmdArgs.size() == 1){
+                    Request rq = new Request("check", new ArrayList<>(List.of(cmd, cmdArgs.get(0))), true);
+                    Response response = network.sendAndReceive(rq);
+                    if (response.getMessage().contains("свободен")) {
+                        System.out.println("такого ключа нет, попробуйте другой (show для вывода всей коллекции)");
+                        continue;
+                    }
+
                     key = Integer.valueOf(cmdArgs.get(0));
                     request = new Request(cmd, cmdArgs, reader.readLabWork());
                 }
