@@ -5,10 +5,12 @@ import com.akira.server.CollectionManager;
 import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.server.commands.interfaces.Modable;
+import com.akira.server.commands.interfaces.SystemCommand;
+
 import java.util.ArrayList;
 import java.util.Map;
 
-public class CheckCommand implements Command, Modable {
+public class CheckCommand implements SystemCommand, Modable {
     private ArrayList<String> args = new ArrayList<>();
 
     @Override

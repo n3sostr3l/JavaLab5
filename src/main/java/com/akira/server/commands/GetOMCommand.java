@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GetOMCommand implements Command {
+public class GetOMCommand implements SystemCommand {
     @Override
     public Response execute(CollectionManager collectionManager) {
         return new Response(String.format("%s", CommandInvoker.getCommandsMap().entrySet().stream()
