@@ -17,9 +17,6 @@ public class InsertCommand implements Modable, ObjectModable {
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
-            if (args.isEmpty()) {
-                return new Response("Ошибка: не указан ключ.", false);
-            }
             Integer key = Integer.parseInt(args.get(0));
             if (labWork == null) {
                 return new Response("Ошибка: объект для вставки не получен.", false);

@@ -43,7 +43,7 @@ public class ReplaceLowestCommand implements Modable, ObjectModable {
 
     @Override
     public String describe() {
-        return "replace_if_lower {key} {element} : заменить значение по ключу, если новое значение меньше старого";
+        return "replace_if_lower {key} : заменить значение по ключу, если новое значение меньше старого";
     }
 
     @Override

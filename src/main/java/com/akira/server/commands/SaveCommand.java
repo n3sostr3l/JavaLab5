@@ -19,7 +19,7 @@ public class SaveCommand implements Command {
 
     @Override
     public String describe() {
-        return "save : сохранить коллекцию в файл (доступно клиенту)";
+        return "save : сохранить коллекцию в файл (доступно админу)";
     }
 
     @Override

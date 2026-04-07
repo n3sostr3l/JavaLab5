@@ -18,7 +18,6 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
-            if (args.isEmpty()) return new Response("Ошибка: не указан ключ.", false);
             Integer key = Integer.parseInt(args.get(0));
             Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
             if (!coll.containsKey(key)) {
@@ -42,7 +41,7 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
 
     @Override
     public String describe() {
-        return "replace_if_greater {key} {element} : заменить значение по ключу, если новое значение больше старого";
+        return "replace_if_greater {key} : заменить значение по ключу, если новое значение больше старого";
     }
 
     @Override
