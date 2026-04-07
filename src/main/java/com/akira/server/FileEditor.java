@@ -22,9 +22,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  * Класс для работы с файлами хранения коллекции (основным и сессионными).
  */
 public class FileEditor {
-    private static String DATA_FILE_NAME = "last_saved_session.xml";
-    public static final String SAVED_SESSION_FILE = "last_saved_session.xml";
-    public static final String UNSAVED_SESSION_FILE = "last_unsaved_session.xml";
+    public static String DATA_FILE_NAME = "last_saved_session.xml";
     private static final XmlMapper xmlMapper = new XmlMapper();
 
     static {

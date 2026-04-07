@@ -117,7 +117,7 @@ public class ServerManager {
                 int read = clientChannel.read(state.sizeBuffer);
                 if (read == -1) {
                     logger.info("Клиент отключился. Сохранение промежуточного состояния...");
-                    FileEditor.saveToFile(FileEditor.UNSAVED_SESSION_FILE, CollectionManager.getCollection());
+                    FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, CollectionManager.getCollection());
                     clientChannel.close();
                     key.cancel();
                     return;

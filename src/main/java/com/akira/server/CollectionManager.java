@@ -71,7 +71,7 @@ public class CollectionManager {
     public static boolean save() {
         boolean success = FileEditor.saveCollection(labworks);
         if (success) {
-            FileEditor.saveToFile(FileEditor.UNSAVED_SESSION_FILE, labworks);
+            FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
         }
         return success;
     }
@@ -88,8 +88,8 @@ public class CollectionManager {
         labworks = FileEditor.getCollection();
     }
 
-    public static void loadSession(boolean restored) {
-        String fileName = restored ? FileEditor.UNSAVED_SESSION_FILE : FileEditor.SAVED_SESSION_FILE;
+    public static void loadSession() {
+        String fileName = FileEditor.DATA_FILE_NAME;
         if (!FileEditor.exists(fileName)) {
             FileEditor.saveToFile(fileName, new Hashtable<>());
         }
@@ -97,9 +97,7 @@ public class CollectionManager {
         labworks = FileEditor.getSessionCollection(fileName);
         if (labworks == null) labworks = new Hashtable<>();
 
-        if (restored) {
-            FileEditor.saveToFile(FileEditor.SAVED_SESSION_FILE, labworks);
-        }
+        FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
     }
 
     public static void setSaveOnExit(boolean value) {

@@ -72,7 +72,7 @@ public class LabWork implements Comparable<LabWork>, Serializable{
                 description= %s ,
                 difficulty= %s ,
                 author= %s
-                }, ключ из файла: %d
+                }, ключ Hashtable для элемента: %d
                 """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author, key);
     }
 

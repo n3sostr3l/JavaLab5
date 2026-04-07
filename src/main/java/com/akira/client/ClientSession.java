@@ -47,10 +47,10 @@ public class ClientSession {
      *
      * @param restore true, если требуется восстановить предыдущую сессию
      */
-    public void init(boolean restore) {
+    public void init() {
         Request req = new Request("init");
         req.setInit(true);
-        req.setRestore(restore);
+        req.setRestore(true);
         req.setAdmin(false);
         Response resp = network.sendAndReceive(req);
         if (resp != null) System.out.println("Сервер: " + resp.getMessage());

@@ -55,8 +55,8 @@ public class CommandInvoker {
 
     public Response executeRequest(Request request, CollectionManager collectionManager) {
         if (request.isInit()) {
-            CollectionManager.loadSession(request.isRestore());
-            return new Response("Сессия " + (request.isRestore() ? "восстановлена" : "инициализирована") + " успешно.", true);
+            CollectionManager.loadSession();
+            return new Response("Сессия успешно инициализирована", true);
         }
 
         String commandName = request.getCommandName().toLowerCase();

@@ -19,11 +19,9 @@ public class Main {
         ClientSession session = new ClientSession(network, new LabWorkReader(scanner));
 
         System.out.println("Клиент запущен. Введите 'help' для списка команд.");
-        System.out.print("Желаете восстановить предыдущую сессию? (y/n): ");
 
         if (!scanner.hasNextLine()) { network.close(); return; }
-        String answer = scanner.nextLine().trim().toLowerCase();
-        session.init(answer.equals("y") || answer.equals("yes"));
+        session.init();
 
         session.processInput(scanner, false);
         network.close();
