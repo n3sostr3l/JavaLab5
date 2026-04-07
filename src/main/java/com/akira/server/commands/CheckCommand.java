@@ -13,7 +13,7 @@ public class CheckCommand implements SystemCommand, Modable {
 
     @Override
     public Response execute(CollectionManager collectionManager) {
-        return switch (args.getFirst()){
+        return switch (args.get(0)){
             case "id" -> new Response(ifIdIsTaken()?"id занят":"", true);
             case "key" -> new Response(ifKeyIsTaken()?"ключ занят":"", true);
             default -> new Response("",true);

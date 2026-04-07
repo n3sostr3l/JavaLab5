@@ -12,14 +12,16 @@ all: remote
 remote:
 	@echo "Отправляем сервер на Helios..."
 	scp -P 2222 $(SERVER_JAR) $(STUDENT_ID)@cs.ifmo.ru:./server.jar
+	@echo "Очистка портов..."
+	killall ssh 2>/dev/null || true
 
 	@echo "Останаливаем запущенный сервер"
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "pkill -f server.jar 2>/dev/null || true"
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "fuser -k 12345/tcp 2>/dev/null || true"
-	sleep 3
+	sleep 4
 	@echo "Запускаем сервер на Helios..."
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "nohup java -Xms64m -Xmx128m -jar server.jar > server.log 2>&1 &"
-	sleep 2
+	sleep 4
 
 	@echo "Очищаю порт..."
 	-fuser -k 12347/tcp 2>/dev/null || true
