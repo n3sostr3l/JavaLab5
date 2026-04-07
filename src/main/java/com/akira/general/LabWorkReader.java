@@ -29,7 +29,7 @@ public class LabWorkReader {
         lab.setName(readNonEmpty("name (String, не пустое)"));
         lab.setCoordinates(readCoordinates());
         lab.setMinimalPoint(readMinimalPoint());
-        lab.setMaximumPoint(readLong("maximumPoint (long, > 0)", 1, Long.MAX_VALUE));
+        lab.setMaximumPoint(readLong("maximumPoint (long, > 0)", 0, Long.MAX_VALUE));
         lab.setDescription(readNullable("description (String, пустая строка — null)"));
         lab.setDifficulty(readDifficulty());
         lab.setAuthor(readPerson());

@@ -101,9 +101,11 @@ public class ClientSession {
             // --- Всё остальное — на сервер ---
 
             Request request = null;
+            Integer key = null;
 
             if (OBJECT_COMMANDS.contains(cmd)){
                 if (cmdArgs.size() == 1){
+                    key = Integer.valueOf(cmdArgs.get(0));
                     request = new Request(cmd, cmdArgs, reader.readLabWork());
                 }
                 else{
@@ -120,8 +122,15 @@ public class ClientSession {
             }
 
             Response response = network.sendAndReceive(request);
-            System.out.println(response != null ? response.getMessage()
-                    : "Ошибка: нет ответа от сервера.");
+            if (response != null){
+                System.out.println(response.getMessage());
+    
+                if (key != null && response.isSuccess()) {
+                    System.out.println("Ключ: " + key);
+                }
+                continue;
+            }
+            System.out.println("Ошибка: нет ответа от сервера.");
         }
     }
 }
