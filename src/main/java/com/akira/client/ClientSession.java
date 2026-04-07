@@ -22,7 +22,7 @@ import com.akira.general.network.Response;
  * </ul>
  */
 public class ClientSession {
-    private static final Set<String> OBJECT_COMMANDS = Set.of();
+    private Set OBJECT_COMMANDS = Set.of();
 
     private final NetworkManager network;
     private LabWorkReader reader;
@@ -56,6 +56,9 @@ public class ClientSession {
         if (resp != null) System.out.println("Сервер: " + resp.getMessage());
 
         String omc = network.sendAndReceive(new Request("getomc", new ArrayList<>(), true )).getMessage();
+        OBJECT_COMMANDS.addAll(Arrays.asList(omc.substring(1,omc.length()-1).split(",")).stream()
+                        .map(command -> command.trim())
+                .toList());
     }
 
     /**

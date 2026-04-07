@@ -4,6 +4,8 @@ import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
+import com.akira.server.commands.interfaces.SystemCommand;
+
 import java.util.ArrayList;
 
 /**
@@ -13,7 +15,8 @@ public class HelpCommand implements Command {
     @Override
     public Response execute(CollectionManager collectionManager) {
         StringBuilder result = new StringBuilder("Доступные команды:\n");
-        ArrayList<Command> allCommands = CommandInvoker.getCommandsList();
+        ArrayList<Command> allCommands = new ArrayList<>(CommandInvoker.getCommandsList().stream()
+                .filter(command -> !(command instanceof SystemCommand)).toList());
 
         for (Command command : allCommands) {
             result.append(command.describe()).append("\n");
