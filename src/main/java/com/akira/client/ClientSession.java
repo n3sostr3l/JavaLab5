@@ -22,8 +22,7 @@ import com.akira.general.network.Response;
  * </ul>
  */
 public class ClientSession {
-    private static final Set<String> OBJECT_COMMANDS = Set.of(
-            "insert", "update", "replace_if_greater", "replace_if_lower");
+    private static final Set<String> OBJECT_COMMANDS = Set.of();
 
     private final NetworkManager network;
     private LabWorkReader reader;
