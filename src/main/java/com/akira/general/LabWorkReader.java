@@ -162,7 +162,7 @@ public class LabWorkReader {
 
     private String readYesNo(String question) {
         while (true) {
-            System.out.print(String.format("%s (да/нет)", question));
+            System.out.print(String.format("%s (да/нет): ", question));
             String line = sc.nextLine().trim();
             if (line.isEmpty()) {
                 System.out.println("Ответ должен быть не пуст");
