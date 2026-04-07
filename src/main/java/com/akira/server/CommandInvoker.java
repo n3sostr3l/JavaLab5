@@ -45,7 +45,7 @@ public class CommandInvoker {
     public Response executeRequest(Request request, CollectionManager collectionManager) {
         if (request.isInit()) {
             CollectionManager.loadSession();
-            return new Response(String.format("Сессия успешно инициализирована\n dbg: %s", commands), true);
+            return new Response(String.format("Сессия успешно инициализирована"), true);
         }
 
         String commandName = request.getCommandName().toLowerCase();
@@ -94,5 +94,9 @@ public class CommandInvoker {
 
     public static ArrayList<Command> getCommandsList(){
         return new ArrayList<>(commands.values());
+    }
+
+    public static HashMap<String, Command> getCommandsMap(){
+        return commands;
     }
 }

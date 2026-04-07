@@ -4,18 +4,29 @@ import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
 import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Command;
+import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.SystemCommand;
 
-public class GetOMCommand implements SystemCommand {
+public class GetOMCommand implements Command {
     @Override
     public Response execute(CollectionManager collectionManager) {
 
-        return new Response(String.format("%s", CommandInvoker.getCommandsList()), true);
+        return new Response(String.format("%s", CommandInvoker.getCommandsList().stream()
+                .filter(command -> !(command instanceof SystemCommand))
+                .filter(command -> command instanceof Modable)
+                        .map(command -> CommandInvoker.getCommandsMap().entrySet().stream()
+                                .filter(entry -> command.equals(entry.getValue()))
+                                .findFirst()
+                                .get()
+                                .getKey()
+                        ).toList()
+
+                ), true);
     }
 
     @Override
     public String describe() {
-        return "getomc : [системная команда, не доступная простым смертным]";
+        return "";
     }
 
     @Override

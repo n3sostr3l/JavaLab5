@@ -57,7 +57,6 @@ public class ClientSession {
         if (resp != null) System.out.println("Сервер: " + resp.getMessage());
 
         String omc = network.sendAndReceive(new Request("getomc", new ArrayList<>(), true )).getMessage();
-        System.out.println(String.format("dbg: %s", omc));
     }
 
     /**

@@ -22,7 +22,7 @@ public class CheckCommand implements SystemCommand, Modable {
 
     @Override
     public String describe() {
-        return "check : [системная команда, не доступная простым смертным]";
+        return "";
     }
 
     @Override
