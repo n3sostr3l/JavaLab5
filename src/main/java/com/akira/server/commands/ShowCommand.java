@@ -18,9 +18,8 @@ public class ShowCommand implements Command {
             return new Response("Коллекция пуста.", true);
         }
         
-        String result = collection.values().stream()
-                .sorted((l1, l2) -> l1.getName().compareTo(l2.getName()))
-                .map(LabWork::toString)
+        String result = collection.entrySet().stream()
+                .map(entry -> String.format("Ключ: %d, Значение: %s", entry.getKey(), entry.getValue()))
                 .collect(Collectors.joining("\n"));
         
         return new Response(result, true, collection);

@@ -61,10 +61,10 @@ public class Person implements Serializable{
     @Override
     public String toString() {
         return String.format("""
-                Person{
-                name= %s ,
-                birthday= %s ,
-                location= %s
-                }""", name, birthday, location);
+                Person(
+                name = %s,
+                birthday = %s ,
+                location = %s
+                )""", name, birthday, location);
     }
 }

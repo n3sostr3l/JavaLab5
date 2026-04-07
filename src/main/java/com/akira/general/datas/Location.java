@@ -52,11 +52,11 @@ public class Location implements Serializable{
     @Override
     public String toString() {
         return String.format("""
-                Location{
-                x= %s ,
-                y= %f ,
-                z= %f
-                }
+                Location[
+                x = %s,
+                y = %f,
+                z = %f
+                ]
                 """, x, y, z);
     }
 }

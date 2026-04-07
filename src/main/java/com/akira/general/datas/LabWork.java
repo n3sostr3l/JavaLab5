@@ -55,25 +55,19 @@ public class LabWork implements Comparable<LabWork>, Serializable{
     @Override
     public String toString() {
 
-        Integer key = CollectionManager.getCollection().entrySet().stream()
-                .filter(entry -> Objects.equals(entry.getValue(), this))
-                .map(HashMap.Entry::getKey)
-                .findFirst()
-                .orElse(null);
-
         return String.format("""
                 LabWork{
-                id= %d ,
-                name= %s ,
-                coordinates = %s ,
-                creationDate= %s ,
-                minimalPoint= %s ,
-                maximumPoint= %d ,
-                description= %s ,
-                difficulty= %s ,
-                author= %s
-                }, ключ Hashtable для элемента: %d
-                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author, key);
+                id = %d,
+                name = %s,
+                coordinates = %s,
+                creationDate = %s,
+                minimalPoint = %s,
+                maximumPoint = %d,
+                description = %s,
+                difficulty = %s,
+                author = %s
+                }
+                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author);
     }
 
     /**
