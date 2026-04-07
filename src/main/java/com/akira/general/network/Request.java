@@ -17,7 +17,7 @@ public class Request implements Serializable {
     private boolean isAdmin = false;
     private boolean isInit = false;
     private boolean restore = false;
-
+    private boolean isSystemRequest = false;
     /**
      * Конструктор для команд без аргументов.
      * @param commandName имя команды
@@ -33,6 +33,11 @@ public class Request implements Serializable {
      */
     public Request(String commandName, ArrayList<String> args) {
         this(commandName, args, null);
+    }
+
+    public Request(String commandName, ArrayList<String> args, boolean isSystemRequest){
+        this(commandName, args, null);
+        this.isSystemRequest = true;
     }
 
     /**
@@ -76,6 +81,10 @@ public class Request implements Serializable {
 
     public boolean isRestore() { return restore; }
     public void setRestore(boolean restore) { this.restore = restore; }
+
+    public boolean isSystemRequest(){
+        return this.isSystemRequest;
+    }
 
     @Override
     public String toString() {

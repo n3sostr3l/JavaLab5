@@ -1,5 +1,6 @@
 package com.akira.server.commands;
 
+import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.general.network.Response;
 import com.akira.server.CollectionManager;
@@ -12,24 +13,7 @@ public class HelpCommand implements Command {
     @Override
     public Response execute(CollectionManager collectionManager) {
         StringBuilder result = new StringBuilder("Доступные команды:\n");
-        ArrayList<Command> allCommands = new ArrayList<>();
-        allCommands.add(new HelpCommand());
-        allCommands.add(new ClearCommand());
-        allCommands.add(new InfoCommand());
-        allCommands.add(new InsertCommand());
-        allCommands.add(new UpdateCommand());
-        allCommands.add(new ExitCommand());
-        allCommands.add(new ExecuteCommand());
-        allCommands.add(new ShowCommand());
-        allCommands.add(new UniqueAuthorCommand());
-        allCommands.add(new SaveCommand());
-        allCommands.add(new RemoveCommand());
-        allCommands.add(new GroupCountingByMaximumPointCommand());
-        allCommands.add(new PrintFieldDescendingDifficultyCommand());
-        allCommands.add(new ReplaceGreatestCommand());
-        allCommands.add(new ReplaceLowestCommand());
-        allCommands.add(new RemoveLowerElementsCommand());
-        allCommands.add(new AddRandomCommand());
+        ArrayList<Command> allCommands = CommandInvoker.getCommandsList();
 
         for (Command command : allCommands) {
             result.append(command.describe()).append("\n");

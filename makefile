@@ -3,7 +3,7 @@ CLIENT_JAR = $(JAR_DIR)/client.jar
 SERVER_JAR = $(JAR_DIR)/server.jar
 ADMIN_JAR = $(JAR_DIR)/admin.jar
 LOG_FILE = server.log
-STUDENT_ID = s501818
+STUDENT_ID = s501858
 
 .PHONY: build server client admin clean start all logs
 

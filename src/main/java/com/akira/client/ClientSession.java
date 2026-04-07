@@ -52,8 +52,12 @@ public class ClientSession {
         req.setInit(true);
         req.setRestore(true);
         req.setAdmin(false);
+
         Response resp = network.sendAndReceive(req);
         if (resp != null) System.out.println("Сервер: " + resp.getMessage());
+
+        String omc = network.sendAndReceive(new Request("getomc", new ArrayList<>(), true )).getMessage();
+        System.out.println(String.format("dbg: %s", omc));
     }
 
     /**
