@@ -12,8 +12,6 @@ all: remote
 remote:
 	@echo "Отправляем сервер на Helios..."
 	scp -P 2222 $(SERVER_JAR) $(STUDENT_ID)@cs.ifmo.ru:./server.jar
-	@echo "Очистка портов..."
-	killall ssh 2>/dev/null || true
 
 	@echo "Останаливаем запущенный сервер"
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "pkill -f server.jar 2>/dev/null || true"
