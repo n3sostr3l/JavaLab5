@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.akira.general.datas.LabWork;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -25,7 +27,12 @@ public class FileEditor {
     public static String DATA_FILE_NAME = "last_saved_session.xml";
     private static final XmlMapper xmlMapper = new XmlMapper();
 
+
     static {
+        xmlMapper.registerModule(new JavaTimeModule());
+
+        xmlMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         xmlMapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
         xmlMapper.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);

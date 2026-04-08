@@ -20,7 +20,6 @@ public class Main {
 
         System.out.println("Клиент запущен. Введите 'help' для списка команд.");
 
-        if (!scanner.hasNextLine()) { network.close(); return; }
         session.init();
 
         session.processInput(scanner, false);

@@ -2,6 +2,7 @@ package com.akira.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.akira.server.commands.*;
 import com.akira.server.commands.interfaces.Command;
@@ -20,7 +21,6 @@ public class CommandInvoker {
     static{
 
         commands.put("check", new CheckCommand());
-        commands.put("getomc", new GetOMCommand());
         commands.put("help", new HelpCommand());
         commands.put("info", new InfoCommand());
         commands.put("show", new ShowCommand());
@@ -45,7 +45,13 @@ public class CommandInvoker {
     public Response executeRequest(Request request, CollectionManager collectionManager) {
         if (request.isInit()) {
             CollectionManager.loadSession();
-            return new Response(String.format("Сессия успешно инициализирована"), true);
+            return new Response(String.format("%s", CommandInvoker.getCommandsMap().entrySet().stream()
+                .filter(entry -> !(entry.getValue() instanceof SystemCommand))
+                .filter(entry -> entry.getValue() instanceof ObjectModable)
+
+                .map(Map.Entry::getKey)
+                .toList()
+                ), true);
         }
 
         String commandName = request.getCommandName().toLowerCase();

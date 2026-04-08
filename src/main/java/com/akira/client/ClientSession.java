@@ -49,10 +49,13 @@ public class ClientSession {
         req.setAdmin(false);
 
         Response resp = network.sendAndReceive(req);
-        if (resp != null) System.out.println("Сервер: " + resp.getMessage());
-
-        String omc = network.sendAndReceive(new Request("getomc", new ArrayList<>(), true )).getMessage();
-        OBJECT_COMMANDS.addAll(Arrays.asList(omc.substring(1,omc.length()-1).split(",")).stream()
+        if (resp != null) {
+            System.out.println("Сервер: Сессия успешно инициализирована.");
+        } else {
+            System.out.println("Сервер не ответил на запрос инициализации сессии.");
+        }
+        
+        OBJECT_COMMANDS.addAll(Arrays.asList(resp.getMessage().substring(1,resp.getMessage().length()-1).split(",")).stream()
                         .map(command -> command.trim())
                 .toList());
     }
