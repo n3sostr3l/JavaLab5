@@ -7,6 +7,7 @@ import com.akira.server.commands.interfaces.Command;
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.SystemCommand;
 
+
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public class CheckCommand implements SystemCommand, Modable {
     private ArrayList<String> args = new ArrayList<>();
-
+    private static final Logger logger = LogManager.getLogger(CheckCommand.class);
     @Override
     public Response execute(CollectionManager collectionManager) {
         String insertKey = CommandInvoker.getCommandsMap().entrySet().stream()
@@ -65,16 +66,16 @@ public class CheckCommand implements SystemCommand, Modable {
                 .filter(integerLabWorkEntry -> integerLabWorkEntry.getValue().getId().equals(id))
                 .toList()
                 .isEmpty()){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     private boolean ifKeyIsTaken(){
         Integer key = Integer.parseInt(args.get(1));
-        if(CollectionManager.getCollection().get(key)!=null){
-            return true;
+        if(CollectionManager.getCollection().get(key)==null){
+            return false;
         }
-        return false;
+        return true;
     }
 }
