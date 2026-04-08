@@ -161,27 +161,16 @@ public class LabWorkReader {
     }
 
     private String readYesNo(String question) {
-        while (true) {
-            System.out.print(String.format("%s (да/нет): ", question));
-            String line = sc.nextLine().trim();
-            if (line.isEmpty()) {
-                System.out.println("Ответ должен быть не пуст");
-            }
+        
+        System.out.print(String.format("%s (y/n) (по умолчанию - n): ", question));
+        String line = sc.nextLine().trim();
 
-            try {
-                if (line.equalsIgnoreCase("да") || line.equalsIgnoreCase("нет")) {
-                    return line;
-                } else
-                    throw new IllegalArgumentException("Ошибка ввода, введите 'да' или 'нет' (без кавычек)");
-            } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-            }
-        }
+        return line;
 
     }
 
     private Location readLocation() {
-        if (readYesNo("Хотите ввести author.location?").equalsIgnoreCase("нет")) return null;
+        if (!readYesNo("Хотите ввести author.location?").equalsIgnoreCase("y") && !readYesNo("Хотите ввести author.location?").equalsIgnoreCase("yes")) return null;
         Location loc = new Location();
         loc.setX(readInt("location.x (Integer)", Integer.MIN_VALUE, Integer.MAX_VALUE));
         loc.setY(readFloat("location.y (float)"));

@@ -81,7 +81,7 @@ public class ClientSession {
             // --- Клиентские команды ---
             if (cmd.equals("exit")) {
                 if (isScript) break;
-                System.out.print("Вы действительно хотите выйти? (y/n): ");
+                System.out.print("Вы действительно хотите выйти? (y/n) (по умолчанию - n): ");
                 String confirm = scanner.nextLine().trim().toLowerCase();
                 if (confirm.equals("y") || confirm.equals("yes")) {
                     System.out.println("Завершение работы клиента.");
@@ -112,7 +112,7 @@ public class ClientSession {
                     Request rq = new Request("check", new ArrayList<>(List.of(cmd, cmdArgs.get(0))), true);
                     Response response = network.sendAndReceive(rq);
                     if (cmd.equals("insert") && response.getMessage().contains("занят")) {
-                        System.out.println("Такой ключ уже существует. Согласны перезаписать? (y/n) (по умолчанию - no): ");
+                        System.out.println("Такой ключ уже существует. Согласны перезаписать? (y/n) (по умолчанию - n): ");
                         String confirm = scanner.nextLine().trim().toLowerCase();
                         if (!confirm.equals("y") && !confirm.equals("yes")) {
                             System.out.println("Операция отменена.");
