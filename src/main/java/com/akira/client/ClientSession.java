@@ -119,7 +119,7 @@ public class ClientSession {
                             continue;
                         }
                     }
-                    if (response.getMessage().contains("свободен")) {
+                    if (response.getMessage().contains("свободен") && !cmd.equals("insert")) {
                         System.out.println("такого ключа нет, попробуйте другой (show для вывода всей коллекции)");
                         continue;
                     }
@@ -143,10 +143,6 @@ public class ClientSession {
             Response response = network.sendAndReceive(request);
             if (response != null){
                 System.out.println(response.getMessage());
-    
-                if (key != null && response.isSuccess()) {
-                    System.out.println("Ключ: " + key);
-                }
                 continue;
             }
             System.out.println("Ошибка: нет ответа от сервера.");

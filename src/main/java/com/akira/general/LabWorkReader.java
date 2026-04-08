@@ -170,7 +170,8 @@ public class LabWorkReader {
     }
 
     private Location readLocation() {
-        if (!readYesNo("Хотите ввести author.location?").equalsIgnoreCase("y") && !readYesNo("Хотите ввести author.location?").equalsIgnoreCase("yes")) return null;
+        String answer = readYesNo("Хотите ввести author.location?");
+        if (!answer.equalsIgnoreCase("y") && !answer.equalsIgnoreCase("yes")) return null;
         Location loc = new Location();
         loc.setX(readInt("location.x (Integer)", Integer.MIN_VALUE, Integer.MAX_VALUE));
         loc.setY(readFloat("location.y (float)"));
