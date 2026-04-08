@@ -16,10 +16,10 @@ remote:
 	@echo "Останаливаем запущенный сервер"
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "pkill -f server.jar 2>/dev/null || true"
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "fuser -k 12345/tcp 2>/dev/null || true"
-	sleep 4
+	sleep 2
 	@echo "Запускаем сервер на Helios..."
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "nohup java -Xms64m -Xmx128m -jar server.jar > server.log 2>&1 &"
-	sleep 4
+	sleep 3
 
 	@echo "Очищаю порт..."
 	-fuser -k 12347/tcp 2>/dev/null || true
@@ -33,6 +33,12 @@ build:
 	mvn clean package
 
 client:
+	@echo "Очищаю порт..."
+	-fuser -k 12347/tcp 2>/dev/null || true
+
+	@echo "Открываем порт 12347:12345..."
+	ssh -f -N -L 12347:localhost:12345 $(STUDENT_ID)@cs.ifmo.ru -p 2222
+	
 	java -jar $(CLIENT_JAR)
 
 admin:
