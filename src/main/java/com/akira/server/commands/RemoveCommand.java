@@ -9,8 +9,14 @@ import com.akira.server.CollectionManager;
  * Команда удаления элемента из коллекции по ключу.
  */
 public class RemoveCommand implements Modable {
+    /** Аргументы команды */
     private ArrayList<String> args = new ArrayList<>();
 
+    /**
+     * Выполняет удаление элемента по ключу.
+     * @param collectionManager менеджер коллекции
+     * @return ответ с результатом удаления
+     */
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
@@ -29,16 +35,28 @@ public class RemoveCommand implements Modable {
         }
     }
 
+    /**
+     * Возвращает описание команды.
+     * @return строка описания
+     */
     @Override
     public String describe() {
         return "remove_key {key} : удалить элемент из коллекции по его ключу";
     }
 
+    /**
+     * Возвращает количество аргументов.
+     * @return 1
+     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
+    /**
+     * Устанавливает аргументы команды.
+     * @param ar список аргументов
+     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;

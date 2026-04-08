@@ -34,13 +34,19 @@ public class ClientSession {
         this.scriptExecutor = new ScriptExecutor(new HashSet<>(), this);
     }
 
+    /**
+     * Возвращает объект для чтения лабораторных работ.
+     * @return объект чтения
+     */
     public LabWorkReader getReader() { return reader; }
+    /**
+     * Устанавливает объект для чтения лабораторных работ.
+     * @param reader объект чтения
+     */
     public void setReader(LabWorkReader reader) { this.reader = reader; }
 
     /**
      * Инициализирует сессию на сервере (восстановление / чистый старт).
-     *
-     * @param restore true, если требуется восстановить предыдущую сессию
      */
     public void init() {
         Request req = new Request("init");

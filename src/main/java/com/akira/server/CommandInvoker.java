@@ -42,6 +42,12 @@ public class CommandInvoker {
 
     }
 
+    /**
+     * Выполняет запрос, пришедший от клиента.
+     * @param request объект запроса
+     * @param collectionManager менеджер коллекции
+     * @return объект ответа
+     */
     public Response executeRequest(Request request, CollectionManager collectionManager) {
         if (request.isInit()) {
             CollectionManager.loadSession();
@@ -98,10 +104,18 @@ public class CommandInvoker {
 
     }
 
+    /**
+     * Возвращает список всех доступных команд.
+     * @return список команд
+     */
     public static ArrayList<Command> getCommandsList(){
         return new ArrayList<>(commands.values());
     }
 
+    /**
+     * Возвращает карту соответствия имен команд и их объектов.
+     * @return карта команд
+     */
     public static HashMap<String, Command> getCommandsMap(){
         return commands;
     }

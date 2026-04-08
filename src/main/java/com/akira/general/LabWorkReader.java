@@ -38,6 +38,12 @@ public class LabWorkReader {
 
     // --- Примитивные читатели ---
 
+    /**
+     * Читает непустую строку из консоли.
+     *
+     * @param prompt подсказка для пользователя
+     * @return введенная непустая строка
+     */
     private String readNonEmpty(String prompt) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
@@ -47,12 +53,26 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает строку из консоли, которая может быть пустой (трактуется как null).
+     *
+     * @param prompt подсказка для пользователя
+     * @return введенная строка или null
+     */
     private String readNullable(String prompt) {
         System.out.print("Введите " + prompt + ": ");
         String line = sc.nextLine().trim();
         return line.isEmpty() ? null : line;
     }
 
+    /**
+     * Читает целое число из консоли в заданном диапазоне.
+     *
+     * @param prompt подсказка для пользователя
+     * @param min минимальное значение (исключая)
+     * @param max максимальное значение (включая)
+     * @return введенное целое число
+     */
     private int readInt(String prompt, int min, int max) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
@@ -66,6 +86,14 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает длинное целое число из консоли в заданном диапазоне.
+     *
+     * @param prompt подсказка для пользователя
+     * @param min минимальное значение (исключая)
+     * @param max максимальное значение (включая)
+     * @return введенное длинное целое число
+     */
     private long readLong(String prompt, long min, long max) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
@@ -79,6 +107,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает число с плавающей точкой (float) из консоли.
+     *
+     * @param prompt подсказка для пользователя
+     * @return введенное число
+     */
     private float readFloat(String prompt) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
@@ -90,6 +124,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает число с плавающей точкой двойной точности (double) из консоли.
+     *
+     * @param prompt подсказка для пользователя
+     * @return введенное число
+     */
     private double readDouble(String prompt) {
         while (true) {
             System.out.print("Введите " + prompt + ": ");
@@ -103,6 +143,11 @@ public class LabWorkReader {
 
     // --- Составные читатели ---
 
+    /**
+     * Читает координаты из консоли.
+     *
+     * @return объект координат
+     */
     private Coordinates readCoordinates() {
         Coordinates c = new Coordinates();
         c.setX(readInt("coordinates.x (Integer, > -881)", -881, Integer.MAX_VALUE));
@@ -110,6 +155,11 @@ public class LabWorkReader {
         return c;
     }
 
+    /**
+     * Читает минимальный балл из консоли.
+     *
+     * @return минимальный балл или null
+     */
     private Float readMinimalPoint() {
         while (true) {
             System.out.print("Введите minimalPoint (Float, > 0, пустая строка — null): ");
@@ -125,6 +175,11 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает уровень сложности из консоли.
+     *
+     * @return уровень сложности или null
+     */
     private Difficulty readDifficulty() {
         while (true) {
             System.out.println("Доступные значения Difficulty: " + java.util.Arrays.toString(Difficulty.values()));
@@ -139,6 +194,11 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает данные автора из консоли.
+     *
+     * @return объект автора
+     */
     private Person readPerson() {
         Person p = new Person();
         p.setName(readNonEmpty("author.name (String, не пустое)"));
@@ -147,6 +207,11 @@ public class LabWorkReader {
         return p;
     }
 
+    /**
+     * Читает дату рождения из консоли.
+     *
+     * @return дата рождения или null
+     */
     private LocalDate readBirthday() {
         while (true) {
             System.out.print("Введите author.birthday (дд.мм.гггг, пустая строка — null): ");
@@ -160,6 +225,12 @@ public class LabWorkReader {
         }
     }
 
+    /**
+     * Читает ответ "да" или "нет" из консоли.
+     *
+     * @param question вопрос для пользователя
+     * @return введенная строка
+     */
     private String readYesNo(String question) {
         
         System.out.print(String.format("%s (y/n) (по умолчанию - n): ", question));
@@ -169,6 +240,11 @@ public class LabWorkReader {
 
     }
 
+    /**
+     * Читает местоположение из консоли.
+     *
+     * @return объект местоположения или null
+     */
     private Location readLocation() {
         String answer = readYesNo("Хотите ввести author.location?");
         if (!answer.equalsIgnoreCase("y") && !answer.equalsIgnoreCase("yes")) return null;

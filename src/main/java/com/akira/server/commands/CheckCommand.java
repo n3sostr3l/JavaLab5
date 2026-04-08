@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Системная команда для проверки существования ключа или ID в коллекции.
+ */
 public class CheckCommand implements SystemCommand, Modable {
+    /** Аргументы команды */
     private ArrayList<String> args = new ArrayList<>();
     
     @Override

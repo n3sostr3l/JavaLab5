@@ -10,6 +10,7 @@ import com.akira.server.CollectionManager;
  * Команда выполнения команд из указанного файла.
  */
 public class ExecuteCommand implements Modable {
+    /** Аргументы команды */
     private ArrayList<String> args = new ArrayList<>();
     private static HashSet<String> filesQuery = new HashSet<>();
 
@@ -33,10 +34,18 @@ public class ExecuteCommand implements Modable {
         this.args = args_;
     }
 
+    /**
+     * Возвращает аргументы команды.
+     * @return список аргументов
+     */
     public ArrayList<String> getArguments() {
         return args;
     }
 
+    /**
+     * Возвращает очередь файлов для выполнения.
+     * @return набор путей к файлам
+     */
     public static HashSet<String> getFilesQuery() {
         return filesQuery;
     }

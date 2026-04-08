@@ -11,9 +11,16 @@ import com.akira.server.CollectionManager;
  * Команда обновления элемента коллекции по id.
  */
 public class UpdateCommand implements Modable, ObjectModable {
+    /** Аргументы команды */
     private ArrayList<String> args = new ArrayList<>();
+    /** Объект лабораторной работы для обновления */
     private LabWork labWork;
 
+    /**
+     * Выполняет обновление элемента по его ID.
+     * @param collectionManager менеджер коллекции
+     * @return ответ с результатом обновления
+     */
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
@@ -45,21 +52,37 @@ public class UpdateCommand implements Modable, ObjectModable {
         }
     }
 
+    /**
+     * Возвращает описание команды.
+     * @return строка описания
+     */
     @Override
     public String describe() {
         return "update id {element} : обновить значение элемента коллекции, id которого равен заданному";
     }
 
+    /**
+     * Возвращает количество аргументов.
+     * @return 1
+     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
+    /**
+     * Устанавливает аргументы команды.
+     * @param ar список аргументов
+     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;
     }
 
+    /**
+     * Устанавливает объект для обновления.
+     * @param labWork объект лабораторной работы
+     */
     @Override
     public void setObject(LabWork labWork) {
         this.labWork = labWork;

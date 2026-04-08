@@ -94,7 +94,9 @@ public class ServerManager {
      * Накапливает байты между несколькими вызовами read() в non-blocking режиме.
      */
     private static class ReadState {
+        /** Буфер для чтения размера сообщения (4 байта) */
         ByteBuffer sizeBuffer = ByteBuffer.allocate(4);
+        /** Буфер для чтения самих данных сообщения */
         ByteBuffer dataBuffer = null;
     }
 

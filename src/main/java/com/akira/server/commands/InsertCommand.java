@@ -11,9 +11,16 @@ import com.akira.server.CollectionManager;
  * Команда добавления нового элемента в коллекцию.
  */
 public class InsertCommand implements Modable, ObjectModable {
+    /** Аргументы команды */
     private ArrayList<String> args = new ArrayList<>();
+    /** Объект лабораторной работы для вставки */
     private LabWork labWork;
 
+    /**
+     * Выполняет вставку элемента.
+     * @param collectionManager менеджер коллекции
+     * @return ответ с результатом вставки
+     */
     @Override
     public Response execute(CollectionManager collectionManager) {
         try {
@@ -29,21 +36,37 @@ public class InsertCommand implements Modable, ObjectModable {
         }
     }
 
+    /**
+     * Возвращает описание команды.
+     * @return строка описания
+     */
     @Override
     public String describe() {
         return "insert {key} {element} : добавить новый элемент с заданным ключом";
     }
 
+    /**
+     * Возвращает количество аргументов.
+     * @return 1
+     */
     @Override
     public int numberArgsRequired() {
         return 1;
     }
 
+    /**
+     * Устанавливает аргументы команды.
+     * @param ar список аргументов
+     */
     @Override
     public void setArguments(ArrayList<String> ar) {
         this.args = ar;
     }
 
+    /**
+     * Устанавливает объект для вставки.
+     * @param labWork объект лабораторной работы
+     */
     @Override
     public void setObject(LabWork labWork) {
         this.labWork = labWork;

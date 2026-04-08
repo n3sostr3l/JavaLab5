@@ -12,6 +12,11 @@ import java.util.ArrayList;
  * Команда вывода справки по доступным командам.
  */
 public class HelpCommand implements Command {
+    /**
+     * Выводит справку по командам.
+     * @param collectionManager менеджер коллекции
+     * @return ответ со списком команд
+     */
     @Override
     public Response execute(CollectionManager collectionManager) {
         StringBuilder result = new StringBuilder("Доступные команды:\n");
@@ -24,11 +29,19 @@ public class HelpCommand implements Command {
         return new Response(result.toString(), true);
     }
 
+    /**
+     * Возвращает описание команды.
+     * @return строка описания
+     */
     @Override
     public String describe() {
         return "help : вывести справку по доступным командам";
     }
 
+    /**
+     * Возвращает количество аргументов.
+     * @return 0
+     */
     @Override
     public int numberArgsRequired() {
         return 0;

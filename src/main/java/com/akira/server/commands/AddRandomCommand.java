@@ -20,6 +20,7 @@ import com.akira.server.CollectionManager;
  * Команда генерации случайной лабораторной работы.
  */
 public class AddRandomCommand implements Modable {
+    /** Количество работ для генерации */
     private int number;
     private static final String[] LAB_NAMES = {
             "Математический Анализ", "Линейная Алгебра", "Промпт Инженерия", "Программирование на Java",
@@ -59,6 +60,10 @@ public class AddRandomCommand implements Modable {
         this.number = Integer.parseInt(args.get(0));
     }
 
+    /**
+     * Генерирует уникальный ключ для нового элемента коллекции.
+     * @return уникальный ключ
+     */
     private Integer generateUniqueKey() {
         Hashtable<Integer, LabWork> collection = CollectionManager.getCollection();
         Integer key;
@@ -68,6 +73,10 @@ public class AddRandomCommand implements Modable {
         return key;
     }
 
+    /**
+     * Генерирует список случайных лабораторных работ.
+     * @return список LabWork
+     */
     private ArrayList<LabWork> generateRandomLabWork() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         ArrayList<LabWork> labWorks = new ArrayList<>();

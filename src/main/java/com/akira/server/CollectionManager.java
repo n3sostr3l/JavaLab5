@@ -46,10 +46,19 @@ public class CollectionManager {
         return false;
     }
 
+    /**
+     * Очищает коллекцию.
+     */
     public static void clear() {
         labworks.clear();
     }
 
+    /**
+     * Вставляет новый элемент в коллекцию.
+     * @param key ключ элемента
+     * @param lab объект лабораторной работы
+     * @return true, если вставка прошла успешно
+     */
     public static boolean insert(Integer key, LabWork lab) {
         
         if (lab.getId() == null || lab.getId() <= 0) {
@@ -63,10 +72,18 @@ public class CollectionManager {
         return true;
     }
 
+    /**
+     * Удаляет элемент из коллекции по ключу.
+     * @param key ключ элемента
+     */
     public static void removeByKey(Integer key){
         labworks.remove(key);
     }
 
+    /**
+     * Сохраняет коллекцию в файл.
+     * @return true, если сохранение прошло успешно
+     */
     public static boolean save() {
         boolean success = FileEditor.saveCollection(labworks);
         if (success) {
@@ -75,6 +92,11 @@ public class CollectionManager {
         return success;
     }
 
+    /**
+     * Удаляет все элементы, ключ которых меньше заданного.
+     * @param key пороговое значение ключа
+     * @return количество удаленных элементов
+     */
     public static int removeLowerKeys(Integer key) {
         java.util.List<Integer> keysToRemove = labworks.keySet().stream()
                 .filter(k -> k < key)
@@ -83,10 +105,16 @@ public class CollectionManager {
         return keysToRemove.size();
     }
 
+    /**
+     * Перезагружает коллекцию из файла.
+     */
     public static void reload() {
         labworks = FileEditor.getCollection();
     }
 
+    /**
+     * Загружает сессию из файла.
+     */
     public static void loadSession() {
         String fileName = FileEditor.DATA_FILE_NAME;
         if (!FileEditor.exists(fileName)) {
@@ -99,22 +127,42 @@ public class CollectionManager {
         FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
     }
 
+    /**
+     * Устанавливает флаг сохранения при выходе.
+     * @param value значение флага
+     */
     public static void setSaveOnExit(boolean value) {
         saveOnExit = value;
     }
 
+    /**
+     * Проверяет, включено ли сохранение при выходе.
+     * @return true, если включено
+     */
     public static boolean isSaveOnExit() {
         return saveOnExit;
     }
 
+    /**
+     * Возвращает коллекцию лабораторных работ.
+     * @return хеш-таблица объектов
+     */
     public static Hashtable<Integer, LabWork> getCollection(){
         return labworks;
     }
 
+    /**
+     * Возвращает время создания коллекции.
+     * @return дата и время создания
+     */
     public static Date getCollectionCreationTime(){
         return collectionCreationTime;
     }
 
+    /**
+     * Генерирует следующий уникальный идентификатор для объекта коллекции.
+     * @return новый ID
+     */
     private static Long generateNextId() {
         return labworks.values().stream()
                 .mapToLong(LabWork::getId)

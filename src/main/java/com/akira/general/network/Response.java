@@ -11,8 +11,11 @@ import java.util.Hashtable;
 public class Response implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    /** Текстовое сообщение ответа */
     private final String message;
+    /** Флаг успешности выполнения запроса */
     private final boolean success;
+    /** Коллекция, передаваемая в ответе (может быть null) */
     private final Hashtable<Integer, LabWork> collection;
 
     /**
@@ -36,18 +39,34 @@ public class Response implements Serializable {
         this.collection = collection;
     }
 
+    /**
+     * Возвращает сообщение от сервера.
+     * @return сообщение
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Проверяет успешность выполнения команды.
+     * @return true, если успешно
+     */
     public boolean isSuccess() {
         return success;
     }
 
+    /**
+     * Возвращает коллекцию объектов из ответа.
+     * @return хеш-таблица объектов
+     */
     public Hashtable<Integer, LabWork> getCollection() {
         return collection;
     }
 
+    /**
+     * Возвращает строковое представление ответа.
+     * @return строковое представление
+     */
     @Override
     public String toString() {
         return "Response[" + message + ", success=" + success + ", collection=" + (collection != null ? "present" : "null") + "]";

@@ -54,6 +54,12 @@ public class AdminMain {
         network.close();
     }
 
+    /**
+     * Отправляет административный запрос на сервер.
+     * @param network менеджер сети
+     * @param commandName имя команды
+     * @return ответ от сервера
+     */
     private static Response sendAdmin(NetworkManager network, String commandName) {
         Request req = new Request(commandName);
         req.setAdmin(true);
@@ -61,6 +67,10 @@ public class AdminMain {
         return network.sendAndReceive(req);
     }
 
+    /**
+     * Выводит сообщение из ответа сервера в консоль.
+     * @param resp ответ от сервера
+     */
     private static void print(Response resp) {
         if (resp != null) System.out.println(resp.getMessage());
     }

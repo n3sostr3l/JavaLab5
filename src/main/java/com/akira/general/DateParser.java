@@ -3,6 +3,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Утилитный класс для парсинга и валидации дат.
+ */
 public class DateParser{
 
     // Константы для границ года

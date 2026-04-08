@@ -24,6 +24,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  * Класс для работы с файлами хранения коллекции (основным и сессионными).
  */
 public class FileEditor {
+    /** Имя файла для сохранения сессии по умолчанию. */
     public static String DATA_FILE_NAME = "last_saved_session.xml";
     private static final XmlMapper xmlMapper = new XmlMapper();
 
@@ -38,11 +39,29 @@ public class FileEditor {
         xmlMapper.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
     }
 
+    /**
+     * Возвращает имя основного файла данных.
+     * @return имя файла
+     */
     public static String getDataFileName() { return DATA_FILE_NAME; }
+    /**
+     * Устанавливает имя основного файла данных.
+     * @param name имя файла
+     */
     public static void setDataFileName(String name) { DATA_FILE_NAME = name; }
+    /**
+     * Проверяет существование файла.
+     * @param fileName имя файла
+     * @return true, если файл существует
+     */
     public static boolean exists(String fileName) { return Files.exists(Path.of(fileName)); }
 
     
+    /**
+     * Загружает коллекцию из XML-файла.
+     * @param fileName имя файла
+     * @return хеш-таблица объектов
+     */
     public static Hashtable<Integer, LabWork> loadFromFile(String fileName) {
         Path path = Path.of(fileName);
         if (Files.notExists(path)) return new Hashtable<>();
@@ -62,6 +81,12 @@ public class FileEditor {
         }
     }
 
+    /**
+     * Сохраняет коллекцию в XML-файл.
+     * @param fileName имя файла
+     * @param coll коллекция объектов
+     * @return true, если сохранение прошло успешно
+     */
     public static boolean saveToFile(String fileName, Hashtable<Integer, LabWork> coll) {
         try (FileWriter writer = new FileWriter(fileName, StandardCharsets.UTF_8)) {
             Hashtable<String, LabWork> wrapped = new Hashtable<>();
@@ -74,10 +99,28 @@ public class FileEditor {
         }
     }
 
+    /**
+     * Возвращает коллекцию из основного файла данных.
+     * @return хеш-таблица объектов
+     */
     public static Hashtable<Integer, LabWork> getCollection() { return loadFromFile(DATA_FILE_NAME); }
+    /**
+     * Сохраняет коллекцию в основной файл данных.
+     * @param coll коллекция объектов
+     * @return true, если сохранение прошло успешно
+     */
     public static boolean saveCollection(Hashtable<Integer, LabWork> coll) { return saveToFile(DATA_FILE_NAME, coll); }
+    /**
+     * Загружает сессионную коллекцию из указанного файла.
+     * @param fileName имя файла
+     * @return хеш-таблица объектов
+     */
     public static Hashtable<Integer, LabWork> getSessionCollection(String fileName) { return loadFromFile(fileName); }
 
+    /**
+     * Возвращает время создания основного файла данных.
+     * @return дата и время создания или null
+     */
     public static Date getCollectionCreationTime() {
         try {
             BasicFileAttributes attrs = Files.readAttributes(Path.of(DATA_FILE_NAME), BasicFileAttributes.class);
