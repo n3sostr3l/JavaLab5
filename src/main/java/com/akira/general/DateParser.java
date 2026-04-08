@@ -6,11 +6,11 @@ import java.time.format.DateTimeParseException;
 public class DateParser{
 
     // Константы для границ года
-    private static final int MIN_YEAR = 1999;
-    private static final int MAX_YEAR = 2010;
+    private static final int MIN_YEAR = 1900;
+    private static final int MAX_YEAR = 2015;
 
     // Формат даты по умолчанию (ГГГГ-ММ-ДД)
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     /**
      * Парсит строку в LocalDate с проверкой диапазона.

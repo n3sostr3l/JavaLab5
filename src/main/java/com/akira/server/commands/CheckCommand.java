@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CheckCommand implements Command, Modable {
+public class CheckCommand implements SystemCommand, Modable {
     private ArrayList<String> args = new ArrayList<>();
 
     @Override
