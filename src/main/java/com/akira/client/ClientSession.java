@@ -106,11 +106,19 @@ public class ClientSession {
 
             Request request = null;
             Integer key = null;
-
+            
             if (OBJECT_COMMANDS.contains(cmd)){
                 if (cmdArgs.size() == 1){
                     Request rq = new Request("check", new ArrayList<>(List.of(cmd, cmdArgs.get(0))), true);
                     Response response = network.sendAndReceive(rq);
+                    if (cmd.equals("insert") && response.getMessage().contains("занят")) {
+                        System.out.println("Такой ключ уже существует. Согласны перезаписать? (y/n) (по умолчанию - no): ");
+                        String confirm = scanner.nextLine().trim().toLowerCase();
+                        if (!confirm.equals("y") && !confirm.equals("yes")) {
+                            System.out.println("Операция отменена.");
+                            continue;
+                        }
+                    }
                     if (response.getMessage().contains("свободен")) {
                         System.out.println("такого ключа нет, попробуйте другой (show для вывода всей коллекции)");
                         continue;

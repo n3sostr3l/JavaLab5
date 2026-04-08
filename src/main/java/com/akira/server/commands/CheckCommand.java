@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class CheckCommand implements SystemCommand, Modable {
     private ArrayList<String> args = new ArrayList<>();
-    private static final Logger logger = LogManager.getLogger(CheckCommand.class);
+    
     @Override
     public Response execute(CollectionManager collectionManager) {
         String insertKey = CommandInvoker.getCommandsMap().entrySet().stream()
@@ -36,7 +36,7 @@ public class CheckCommand implements SystemCommand, Modable {
                 .get();
 
         String karg = "key";
-        if(args.get(0).equals(insertKey)) return new Response("",true);
+        if(args.get(0).equals(insertKey)) return new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
         if(args.get(0).equals(updateKey)) karg = "id";
         return switch (karg){
             case "id" -> new Response(ifIdIsTaken()?"id занят":"id свободен", true);

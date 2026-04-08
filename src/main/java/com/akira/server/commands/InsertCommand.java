@@ -21,13 +21,10 @@ public class InsertCommand implements Modable, ObjectModable {
             if (labWork == null) {
                 return new Response("Ошибка: объект для вставки не получен.", false);
             }
-            if (CollectionManager.insert(key, labWork)) {
-                return new Response(String.format("Элемент успешно добавлен с ключом %d и id= %d" , key, labWork.getId()), true);
-            } else {
-                return new Response("Ошибка: элемент с таким ключом уже существует.", false);
-            }
+            return new Response(String.format("Элемент успешно добавлен/изменен с ключом %d и id= %d" , key, labWork.getId()), true);
+            
         } catch (NumberFormatException e) {
-            return new Response("Ошибка: ключ должен быть целым числом.", false);
+            return new Response("Ошибка: ключ должен быть целым числом или превышен лимит числа.", false);
         }
     }
 

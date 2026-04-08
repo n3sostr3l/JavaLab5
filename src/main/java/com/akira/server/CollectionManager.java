@@ -51,7 +51,6 @@ public class CollectionManager {
     }
 
     public static boolean insert(Integer key, LabWork lab) {
-        if (labworks.containsKey(key)) return false;
         
         if (lab.getId() == null || lab.getId() <= 0) {
             lab.setId(generateNextId());
