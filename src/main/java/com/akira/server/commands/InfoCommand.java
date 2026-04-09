@@ -19,7 +19,7 @@ public class InfoCommand implements Command {
                 """
                 Информация о коллекции:
                 Тип: %s
-                Дата создания: %s
+                Дата создания: %s (до момента последнего перезапуска сервера)
                 Количество элементов в коллекции: %d
                 """,
                 CollectionManager.getCollection().getClass().getSimpleName(),
