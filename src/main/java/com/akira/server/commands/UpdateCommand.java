@@ -58,7 +58,7 @@ public class UpdateCommand implements Modable, ObjectModable {
      */
     @Override
     public String describe() {
-        return "update id {element} : обновить значение элемента коллекции, id которого равен заданному";
+        return "update id {element} : обновить значение элемента коллекции, ID которого равен заданному";
     }
 
     /**
