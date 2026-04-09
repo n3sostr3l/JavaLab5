@@ -42,7 +42,7 @@ public class InsertCommand implements Modable, ObjectModable {
      */
     @Override
     public String describe() {
-        return "insert {key} {element} : добавить новый / заменить существующи элемент по КЛЮЧУ";
+        return "insert {key} {element} : добавить новый / заменить существующий элемент по ключу";
     }
 
     /**
