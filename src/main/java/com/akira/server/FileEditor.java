@@ -1,6 +1,5 @@
 package com.akira.server;
 
-import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Properties;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -104,19 +102,7 @@ public class FileEditor {
      * @return хеш-таблица объектов
      */
     public static Hashtable<Integer, LabWork> getCollection() { return loadFromFile(DATA_FILE_NAME); }
-    /**
-     * Сохраняет коллекцию в основной файл данных.
-     * @param coll коллекция объектов
-     * @return true, если сохранение прошло успешно
-     */
-    public static boolean saveCollection(Hashtable<Integer, LabWork> coll) { return saveToFile(DATA_FILE_NAME, coll); }
-    /**
-     * Загружает сессионную коллекцию из указанного файла.
-     * @param fileName имя файла
-     * @return хеш-таблица объектов
-     */
-    public static Hashtable<Integer, LabWork> getSessionCollection(String fileName) { return loadFromFile(fileName); }
-
+    
     /**
      * Возвращает время создания основного файла данных.
      * @return дата и время создания или null

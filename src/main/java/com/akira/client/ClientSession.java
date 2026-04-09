@@ -3,7 +3,6 @@ package com.akira.client;
 import java.util.*;
 
 import com.akira.general.LabWorkReader;
-import com.akira.general.datas.LabWork;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 

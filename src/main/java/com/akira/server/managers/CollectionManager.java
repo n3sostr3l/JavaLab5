@@ -84,10 +84,7 @@ public class CollectionManager {
      * @return true, если сохранение прошло успешно
      */
     public static boolean save() {
-        boolean success = FileEditor.saveCollection(labworks);
-        if (success) {
-            FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
-        }
+        boolean success = FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
         return success;
     }
 
@@ -111,20 +108,7 @@ public class CollectionManager {
         labworks = FileEditor.getCollection();
     }
 
-    /**
-     * Загружает сессию из файла.
-     */
-    public static void loadSession() {
-        String fileName = FileEditor.DATA_FILE_NAME;
-        if (!FileEditor.exists(fileName)) {
-            FileEditor.saveToFile(fileName, new Hashtable<>());
-        }
-        
-        labworks = FileEditor.getSessionCollection(fileName);
-        if (labworks == null) labworks = new Hashtable<>();
-
-        FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
-    }
+    
 
     /**
      * Устанавливает флаг сохранения при выходе.

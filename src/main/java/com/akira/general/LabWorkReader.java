@@ -1,6 +1,5 @@
 package com.akira.general;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Scanner;
 import com.akira.general.datas.*;
@@ -100,7 +99,7 @@ public class LabWorkReader {
             try {
                 long val = Long.parseLong(sc.nextLine().trim());
                 if (val > min && val <= max) return val;
-                System.out.println("Ошибка: значение должно быть >= " + min + ".");
+                System.out.println("Ошибка: значение должно быть > " + min + ".");
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите целое число.");
             }

@@ -51,7 +51,6 @@ public class CommandInvoker {
      */
     public Response executeRequest(Request request, CollectionManager collectionManager) {
         if (request.isInit()) {
-            CollectionManager.loadSession();
             return new Response(String.format("%s", CommandInvoker.getCommandsMap().entrySet().stream()
                 .filter(entry -> !(entry.getValue() instanceof SystemCommand))
                 .filter(entry -> entry.getValue() instanceof ObjectModable)

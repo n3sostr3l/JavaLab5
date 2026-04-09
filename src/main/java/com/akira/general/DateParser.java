@@ -12,7 +12,7 @@ public class DateParser{
     private static final int MIN_YEAR = 1900;
     private static final int MAX_YEAR = 2015;
 
-    // Формат даты по умолчанию (ГГГГ-ММ-ДД)
+    // Формат даты по умолчанию (dd.mm.yyyy)
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     /**
