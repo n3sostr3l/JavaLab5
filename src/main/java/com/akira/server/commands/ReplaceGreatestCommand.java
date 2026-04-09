@@ -52,7 +52,7 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
      */
     @Override
     public String describe() {
-        return "replace_if_greater {key} : заменить значение по ключу, если новое значение больше старого";
+        return "replace_if_greater {key} : заменить значение по ключу, если новое значение больше старого. Сравнение выполняется по полю maximumPoint";
     }
 
     /**

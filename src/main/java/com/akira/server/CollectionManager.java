@@ -60,10 +60,8 @@ public class CollectionManager {
      * @return true, если вставка прошла успешно
      */
     public static boolean insert(Integer key, LabWork lab) {
-        
-        if (lab.getId() == null || lab.getId() <= 0) {
-            lab.setId(generateNextId());
-        }
+        lab.setId(generateNextId());
+
         if (lab.getCreationDate() == null) {
             lab.setCreationDate(new Date());
         }

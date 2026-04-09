@@ -6,6 +6,7 @@ import java.util.Date;
 import java.time.LocalDate;
 import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
+import java.lang.Math;
 
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.general.datas.Coordinates;
@@ -32,7 +33,10 @@ public class AddRandomCommand implements Modable {
 
     @Override
     public Response execute(CollectionManager collectionManager) {
-        HashSet<Integer> keys = new HashSet<>();
+
+        HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
+        if (keys.size() >= 40000) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", true);
+
         ArrayList<LabWork> randomLabWork = generateRandomLabWork();
         for (LabWork labWork : randomLabWork) {
             Integer key = generateUniqueKey();
@@ -42,12 +46,13 @@ public class AddRandomCommand implements Modable {
             keys.add(key);
             CollectionManager.insert(key, labWork);
         }
-        return new Response("Случайные лабораторные работы добавлены. Ключи: " + keys.toString(), true);
+        if (number > 5000) return new Response("Ключи: " + keys.toString() + "\nСлучайные лабораторные работы добавлены в размере 5000 (лимит)", true);
+        return new Response("Ключи: " + keys.toString() + "\nСлучайные лабораторные работы добавлены. ", true);
     }
 
     @Override
     public String describe() {
-        return "add_random {number}: добавить {number} случайно сгенерированных лабораторных работ";
+        return "add_random {number}: добавить {number} случайно сгенерированных лабораторных работ (0 <= number <= 5000)";
     }
 
     @Override
@@ -80,7 +85,7 @@ public class AddRandomCommand implements Modable {
     private ArrayList<LabWork> generateRandomLabWork() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         ArrayList<LabWork> labWorks = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
+        for (int i = 0; i < Math.min(number, 5000); i++) {
             LabWork labWork = new LabWork();
             labWork.setCreationDate(new Date());
             labWork.setName(LAB_NAMES[random.nextInt(LAB_NAMES.length)] + " " + random.nextInt(1, 101));

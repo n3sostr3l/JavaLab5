@@ -18,7 +18,7 @@ remote:
 	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "fuser -k 12345/tcp 2>/dev/null || true"
 	sleep 2
 	@echo "Запускаем сервер на Helios..."
-	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "nohup java -Xms64m -Xmx128m -jar server.jar > server.log 2>&1 &"
+	ssh -p 2222 $(STUDENT_ID)@cs.ifmo.ru "nohup java -Xms128m -Xmx1024m -jar server.jar > server.log 2>&1 &"
 	sleep 3
 
 	@echo "Очищаю порт..."
@@ -42,6 +42,11 @@ client:
 	java -jar $(CLIENT_JAR)
 
 admin:
+	@echo "Очищаю порт..."
+	-fuser -k 12347/tcp 2>/dev/null || true
+
+	@echo "Открываем порт 12347:12345..."
+	ssh -f -N -L 12347:localhost:12345 $(STUDENT_ID)@cs.ifmo.ru -p 2222
 	java -jar $(ADMIN_JAR)
 
 logs:

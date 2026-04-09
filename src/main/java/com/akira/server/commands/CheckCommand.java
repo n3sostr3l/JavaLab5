@@ -12,6 +12,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 
 /**
  * Системная команда для проверки существования ключа или ID в коллекции.
@@ -22,6 +23,8 @@ public class CheckCommand implements SystemCommand, Modable {
     
     @Override
     public Response execute(CollectionManager collectionManager) {
+        HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
+
         String insertKey = CommandInvoker.getCommandsMap().entrySet().stream()
                 .filter(e -> e.getValue() instanceof InsertCommand)
                 .map(Map.Entry::getKey)
@@ -40,7 +43,12 @@ public class CheckCommand implements SystemCommand, Modable {
                 .get();
 
         String karg = "key";
-        if(args.get(0).equals(insertKey)) return new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
+
+        
+        if (args.get(0).equals(insertKey)){
+            if (keys.size() >= 40000 && !ifKeyIsTaken()) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", false);
+            return new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
+        }
         if(args.get(0).equals(updateKey)) karg = "id";
         return switch (karg){
             case "id" -> new Response(ifIdIsTaken()?"id занят":"id свободен", true);

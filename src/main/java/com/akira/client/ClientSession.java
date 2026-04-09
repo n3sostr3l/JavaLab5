@@ -117,6 +117,10 @@ public class ClientSession {
                 if (cmdArgs.size() == 1){
                     Request rq = new Request("check", new ArrayList<>(List.of(cmd, cmdArgs.get(0))), true);
                     Response response = network.sendAndReceive(rq);
+                    if (!response.isSuccess()){
+                        System.out.println(response.getMessage());
+                        continue;
+                    }
                     if (cmd.equals("insert") && response.getMessage().contains("занят")) {
                         System.out.println("Такой ключ уже существует. Согласны перезаписать? (y/n) (по умолчанию - n): ");
                         String confirm = scanner.nextLine().trim().toLowerCase();
