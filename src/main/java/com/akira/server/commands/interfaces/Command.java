@@ -1,7 +1,8 @@
 package com.akira.server.commands.interfaces;
 
-import com.akira.server.CollectionManager;
 import com.akira.general.network.Response;
+import com.akira.server.managers.CollectionManager;
+
 import java.io.Serializable;
 
 /**

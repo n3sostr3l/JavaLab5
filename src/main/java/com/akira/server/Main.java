@@ -3,6 +3,8 @@ package com.akira.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.akira.server.managers.ServerManager;
+
 /**
  * Главный класс серверного приложения.
  * <p>

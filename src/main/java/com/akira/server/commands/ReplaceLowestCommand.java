@@ -5,9 +5,9 @@ import java.util.Hashtable;
 
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.ObjectModable;
+import com.akira.server.managers.CollectionManager;
 import com.akira.general.datas.LabWork;
 import com.akira.general.network.Response;
-import com.akira.server.CollectionManager;
 
 /**
  * Команда замены элемента при меньшем значении.

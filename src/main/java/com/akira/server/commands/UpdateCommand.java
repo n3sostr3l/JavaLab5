@@ -3,9 +3,9 @@ package com.akira.server.commands;
 import java.util.ArrayList;
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.ObjectModable;
+import com.akira.server.managers.CollectionManager;
 import com.akira.general.datas.LabWork;
 import com.akira.general.network.Response;
-import com.akira.server.CollectionManager;
 
 /**
  * Команда обновления элемента коллекции по id.

@@ -9,13 +9,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.lang.Math;
 
 import com.akira.server.commands.interfaces.Modable;
+import com.akira.server.managers.CollectionManager;
 import com.akira.general.datas.Coordinates;
 import com.akira.general.datas.Difficulty;
 import com.akira.general.datas.LabWork;
 import com.akira.general.datas.Location;
 import com.akira.general.datas.Person;
 import com.akira.general.network.Response;
-import com.akira.server.CollectionManager;
 
 /**
  * Команда генерации случайной лабораторной работы.
@@ -34,9 +34,10 @@ public class AddRandomCommand implements Modable {
     @Override
     public Response execute(CollectionManager collectionManager) {
 
-        HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
-        if (keys.size() >= 40000) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", true);
+        HashSet<Integer> allKeys = new HashSet<>(collectionManager.getCollection().keySet());
+        if (allKeys.size() >= 40000) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", true);
 
+        HashSet<Integer> keys = new HashSet<>();
         ArrayList<LabWork> randomLabWork = generateRandomLabWork();
         for (LabWork labWork : randomLabWork) {
             Integer key = generateUniqueKey();

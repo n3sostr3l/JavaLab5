@@ -1,8 +1,8 @@
 package com.akira.server.commands;
 
 import com.akira.server.commands.interfaces.Command;
+import com.akira.server.managers.CollectionManager;
 import com.akira.general.network.Response;
-import com.akira.server.CollectionManager;
 
 /**
  * Команда сохранения коллекции.

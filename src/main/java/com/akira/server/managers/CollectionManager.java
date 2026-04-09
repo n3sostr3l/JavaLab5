@@ -1,8 +1,9 @@
-package com.akira.server;
+package com.akira.server.managers;
 
 import java.util.Date;
 import java.util.Hashtable;
 import com.akira.general.datas.LabWork;
+import com.akira.server.FileEditor;
 
 /**
  * Менеджер коллекции лабораторных работ.

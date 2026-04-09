@@ -3,8 +3,8 @@ package com.akira.server.commands;
 import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.general.network.Response;
-import com.akira.server.CollectionManager;
 import com.akira.server.commands.interfaces.SystemCommand;
+import com.akira.server.managers.CollectionManager;
 
 import java.util.ArrayList;
 
