@@ -1,6 +1,8 @@
 package com.akira.general.datas;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Класс, представляющий автора лабораторной работы.
@@ -66,5 +68,13 @@ public class Person implements Serializable{
                 birthday = %s ,
                 location = %s
                 )""", name, birthday, location);
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

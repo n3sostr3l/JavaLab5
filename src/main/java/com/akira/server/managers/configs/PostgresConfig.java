@@ -28,9 +28,14 @@ public class PostgresConfig {
         }
         return dataSource;
     }
-    public static DataSource getDataSource() throws SQLException{
-        if (dataSource == null){
-            getConnection();
+    public static DataSource getDataSource(){
+        try{
+            if (dataSource == null){
+                getConnection();
+            }
+        }
+        catch (SQLException e){
+            
         }
         return dataSource;
     }

@@ -226,4 +226,12 @@ public class LabWork implements Comparable<LabWork>, Serializable{
     public Coordinates getCoordinates() {
         return coordinates;
     }
+
+    public float getMinimalPoint() {
+        return minimalPoint;
+    }
+
+    public void setPerson(Person person) {
+        this.author = person;
+    }
 }

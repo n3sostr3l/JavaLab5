@@ -57,4 +57,5 @@ public class Coordinates implements Serializable {
     public String toString() {
         return String.format("Coordinates<x = %d , y = %d>", x, y);
     }
+
 }
