@@ -63,6 +63,9 @@ public class ClientSession {
         OBJECT_COMMANDS.addAll(Arrays.asList(resp.getMessage().substring(1,resp.getMessage().length()-1).split(",")).stream()
                         .map(command -> command.trim())
                 .toList());
+
+        System.out.println("Войдите (login <login> <password>) или зарегистрируйтесь (reg <login> <password>)");
+
     }
 
     /**
