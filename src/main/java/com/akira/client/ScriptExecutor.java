@@ -44,8 +44,8 @@ public class ScriptExecutor {
 
         executionStack.add(absPath);
         try (Scanner scriptScanner = new Scanner(file)) {
-            com.akira.general.LabWorkReader oldReader = session.getReader();
-            session.setReader(new com.akira.general.LabWorkReader(scriptScanner));
+            com.akira.client.reader.LabWorkReader oldReader = session.getReader();
+            session.setReader(new com.akira.client.reader.LabWorkReader(scriptScanner));
             
             session.processInput(scriptScanner, true);
             

@@ -1,7 +1,8 @@
 package com.akira.client;
 
 import java.util.Scanner;
-import com.akira.general.LabWorkReader;
+
+import com.akira.client.reader.LabWorkReader;
 
 /**
  * Точка входа клиентского приложения.

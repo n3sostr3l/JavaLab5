@@ -1,4 +1,4 @@
-package com.akira.general;
+package com.akira.client.reader;
 
 import java.time.LocalDate;
 import java.util.Scanner;

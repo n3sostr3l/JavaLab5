@@ -2,7 +2,7 @@ package com.akira.client;
 
 import java.util.*;
 
-import com.akira.general.LabWorkReader;
+import com.akira.client.reader.LabWorkReader;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 

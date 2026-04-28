@@ -52,3 +52,5 @@ admin:
 logs:
 	ssh -p 2222 s501858@cs.ifmo.ru "cat server.log"
 
+psql:
+	psql -h localhost -d studs -U s501858 -W
