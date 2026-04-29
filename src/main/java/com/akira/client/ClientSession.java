@@ -66,6 +66,7 @@ public class ClientSession {
 
         System.out.println("Войдите (login <login> <password>) или зарегистрируйтесь (reg <login> <password>)");
 
+
     }
 
     /**
