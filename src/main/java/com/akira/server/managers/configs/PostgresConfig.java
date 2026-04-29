@@ -7,8 +7,12 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import io.github.cdimascio.dotenv.Dotenv;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class PostgresConfig {
     private static HikariDataSource dataSource;
+    private static final Logger logger = LogManager.getLogger(PostgresConfig.class);
 
 
     public static synchronized DataSource getConnection() throws SQLException{

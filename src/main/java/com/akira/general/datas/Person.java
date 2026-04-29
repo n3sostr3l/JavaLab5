@@ -54,6 +54,14 @@ public class Person implements Serializable{
         return name;
     }
 
+    public java.time.LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
     /**
      * Возвращает строковое представление автора.
      *
@@ -69,11 +77,4 @@ public class Person implements Serializable{
                 )""", name, birthday, location);
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
 }
