@@ -1,7 +1,6 @@
 package com.akira.general.datas;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * Класс, представляющий автора лабораторной работы.

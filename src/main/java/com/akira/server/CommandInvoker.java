@@ -29,7 +29,7 @@ public class CommandInvoker {
         commands.put("update", new UpdateCommand());
         commands.put("remove_key", new RemoveCommand());
         commands.put("clear", new ClearCommand());
-        commands.put("save", new SaveCommand());
+        // commands.put("save", new SaveCommand());
         commands.put("exit", new ExitCommand());
         commands.put("execute_script", new ExecuteCommand());
         commands.put("replace_if_greater", new ReplaceGreatestCommand());

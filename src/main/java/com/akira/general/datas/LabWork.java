@@ -17,7 +17,7 @@ public class LabWork implements Comparable<LabWork>, Serializable{
     /** Счётчик для автоматической генерации уникальных идентификаторов */
     private static long idCounter = 1;
     /** Уникальный идентификатор лабораторной работы. Не может быть null, значение должно быть больше 0 */
-    private Long id;
+    private Long id = 0L;
     /** Название лабораторной работы. Не может быть null, строка не может быть пустой */
     private String name;
     /** Координаты лабораторной работы. Не может быть null */

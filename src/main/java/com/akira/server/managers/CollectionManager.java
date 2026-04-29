@@ -3,7 +3,6 @@ package com.akira.server.managers;
 import java.util.Date;
 import java.util.Hashtable;
 import com.akira.general.datas.LabWork;
-import com.akira.server.managers.PostgresManager;
 
 /**
  * Менеджер коллекции лабораторных работ.
@@ -13,7 +12,7 @@ import com.akira.server.managers.PostgresManager;
  */
 public class CollectionManager {
     /** Статическое хранилище коллекции лабораторных работ. Использует Hashtable для базовой потокобезопасности. */
-    private static Hashtable<Integer, LabWork> labworks = PostgresManager.getLabWorks();
+    private static Hashtable<Integer, LabWork> labworks = PostgresManager.getInstance().getLabWorks();
     
     /** Дата и время инициализации коллекции. Используется для команды 'info'. */
     private static Date collectionCreationTime;
@@ -22,7 +21,7 @@ public class CollectionManager {
 
     static {
         try {
-            collectionCreationTime = FileEditor.getCollectionCreationTime();
+            collectionCreationTime = PostgresManager.getInstance().getCollectionCreationTime();
         } catch (Exception e) {
             collectionCreationTime = null;
         }
@@ -37,12 +36,15 @@ public class CollectionManager {
      * @param lab новый объект LabWork с обновленными данными
      * @return {@code true}, если объект был найден и успешно обновлен, иначе {@code false}
      */
-    public static boolean update(Integer id, LabWork lab){
-        if (labworks.containsKey(id)){
-            lab.setId(labworks.get(id).getId());
-            lab.setCreationDate(labworks.get(id).getCreationDate());
-            labworks.put(id, lab);
-            return true;
+    public static boolean update(String user_login, Integer id, LabWork lab){
+        boolean isSuccess = PostgresManager.getInstance().updateLabWork(user_login, lab, id);
+        if (isSuccess) {
+            if (labworks.containsKey(id)){
+                lab.setId(labworks.get(id).getId());
+                lab.setCreationDate(labworks.get(id).getCreationDate());
+                labworks.put(id, lab);
+                return true;
+            }
         }
         return false;
     }
@@ -75,18 +77,11 @@ public class CollectionManager {
      * Удаляет элемент из коллекции по ключу.
      * @param key ключ элемента
      */
-    public static void removeByKey(Integer key){
+    public static void removeByKey(String user_login, Integer key){
+        PostgresManager.getInstance().deleteLabWork(user_login, key);
         labworks.remove(key);
     }
 
-    /**
-     * Сохраняет коллекцию в файл.
-     * @return true, если сохранение прошло успешно
-     */
-    public static boolean save() {
-        boolean success = FileEditor.saveToFile(FileEditor.DATA_FILE_NAME, labworks);
-        return success;
-    }
 
     /**
      * Удаляет все элементы, ключ которых меньше заданного.
@@ -105,7 +100,7 @@ public class CollectionManager {
      * Перезагружает коллекцию из файла.
      */
     public static void reload() {
-        labworks = FileEditor.getCollection();
+        labworks = PostgresManager.getInstance().getLabWorks();
     }
 
     
