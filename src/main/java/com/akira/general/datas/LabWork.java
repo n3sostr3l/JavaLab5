@@ -2,12 +2,7 @@ package com.akira.general.datas;
 
 import java.io.IOError;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.akira.server.managers.CollectionManager;
 
 /**
  * Класс, представляющий лабораторную работу.

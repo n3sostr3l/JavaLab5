@@ -6,10 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Hashtable;
 import javax.sql.DataSource;
 
 import com.akira.server.managers.configs.PostgresConfig;
@@ -24,16 +21,16 @@ public class PostgresManager {
     private static final Logger logger = LogManager.getLogger(PostgresManager.class);
     
     // SQL запросы
-    private final String sql_labworks = "CREATE TABLE IF NOT EXISTS lab_works (id SERIAL PRIMARY KEY, user_login TEXT, name TEXT, coordinates_x INT, coordinates_y BIGINT NOT NULL, creation_date TIMESTAMP NOT NULL, minimal_point FLOAT4 NOT NULL, maximum_point BIGINT NOT NULL, difficulty TEXT, person_name TEXT, person_birthday TIMESTAMP, person_location_x INT, person_location_y FLOAT4, person_location_z FLOAT8)";
+    private final String sql_labworks = "CREATE TABLE IF NOT EXISTS lab_works (id SERIAL PRIMARY KEY, key INTEGER PRIMARY KEY, user_login TEXT, name TEXT, coordinates_x INT, coordinates_y BIGINT NOT NULL, creation_date TIMESTAMP NOT NULL, minimal_point FLOAT4 NOT NULL, maximum_point BIGINT NOT NULL, difficulty TEXT, person_name TEXT, person_birthday TIMESTAMP, person_location_x INT, person_location_y FLOAT4, person_location_z FLOAT8)";
     private final String sql_users = "CREATE TABLE IF NOT EXISTS users (user_login TEXT PRIMARY KEY, user_password TEXT NOT NULL)";
     
     private final String sql_register_user = "INSERT INTO users (user_login, user_password) VALUES (?, ?)";
     private final String sql_login_user = "SELECT user_login FROM users WHERE user_login = ? AND user_password = ?";
     
-    private final String sql_add_labwork = "INSERT INTO lab_works (user_login, name, coordinates_x, coordinates_y, creation_date, minimal_point, maximum_point, difficulty, person_name, person_birthday, person_location_x, person_location_y, person_location_z) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String sql_add_labwork = "INSERT INTO lab_works (user_login, name, coordinates_x, coordinates_y, creation_date, minimal_point, maximum_point, difficulty, person_name, person_birthday, person_location_x, person_location_y, person_location_z, key) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String sql_update_labwork = "UPDATE lab_works SET name = ?, coordinates_x = ?, coordinates_y = ?, creation_date = ?, minimal_point = ?, maximum_point = ?, difficulty = ?, person_name = ?, person_birthday = ?, person_location_x = ?, person_location_y = ?, person_location_z = ? WHERE user_login = ? AND id = ?";
     
-    private final String sql_delete_labwork = "DELETE FROM lab_works WHERE user_login = ? AND id = ?";
+    private final String sql_delete_labwork = "DELETE FROM lab_works WHERE user_login = ? AND key = ?";
     private final String sql_clear_labworks = "DELETE FROM lab_works WHERE user_login = ?";
     private final String sql_get_labworks = "SELECT * FROM lab_works";
 
@@ -51,8 +48,8 @@ public class PostgresManager {
         }
     }
 
-    public List<LabWork> getLabWorks() {
-        List<LabWork> labWorks = new ArrayList<>();
+    public Hashtable<Integer, LabWork> getLabWorks() {
+        Hashtable<Integer, LabWork> labWorks = new Hashtable<>();
         try (
             Connection connect = dataSource.getConnection();
             Statement sm = connect.createStatement();
@@ -98,13 +95,15 @@ public class PostgresManager {
                 location.setZ(rs.getDouble("person_location_z"));
                 person.setLocation(location);
                 
+                Integer key = rs.getInt("key");
+
                 labWork.setPerson(person);
-                labWorks.add(labWork);
+                labWorks.put(key, labWork);
             }
             return labWorks;
         } catch (SQLException e) {
             logger.error("Ошибка получения лабораторных: " + e.getMessage());
-            return new ArrayList<>();
+            return labWorks;
         }
     }
 
@@ -144,7 +143,7 @@ public class PostgresManager {
         }
     }
 
-    public boolean addLabWork(String user_login, LabWork labWork) {
+    public boolean addLabWork(String user_login, LabWork labWork, Integer key) {
         try (
             Connection connect = dataSource.getConnection();
             PreparedStatement psm = connect.prepareStatement(sql_add_labwork)
@@ -174,6 +173,7 @@ public class PostgresManager {
             psm.setInt(11, labWork.getAuthor().getLocation().getX());
             psm.setFloat(12, labWork.getAuthor().getLocation().getY());
             psm.setDouble(13, labWork.getAuthor().getLocation().getZ());
+            psm.setInt(14, key);
 
             psm.executeUpdate(); 
             return true;
@@ -183,7 +183,7 @@ public class PostgresManager {
         }
     }
 
-    public boolean updateLabWork(String user_login, LabWork labWork) {
+    public boolean updateLabWork(String user_login, LabWork labWork, Integer id) {
         try (
             Connection connect = dataSource.getConnection();
             PreparedStatement psm = connect.prepareStatement(sql_update_labwork)
@@ -224,13 +224,13 @@ public class PostgresManager {
         }
     }
 
-    public boolean deleteLabWork(String user_login, long lab_work_id) {
+    public boolean deleteLabWork(String user_login, Integer key) {
         try (
             Connection connect = dataSource.getConnection();
             PreparedStatement psm = connect.prepareStatement(sql_delete_labwork)
         ) {
             psm.setString(1, user_login);
-            psm.setLong(2, lab_work_id);
+            psm.setLong(2, key);
             int rowsAffected = psm.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

@@ -1,6 +1,5 @@
 package com.akira.general.datas;
 
-import java.io.Serializable;
 
 /**
  * Перечисление уровней сложности лабораторной работы.
@@ -8,7 +7,7 @@ import java.io.Serializable;
  * Определяет возможные уровни сложности выполнения задания.
  * </p>
  */
-public enum Difficulty implements Serializable{
+public enum Difficulty{
     
     /** Лёгкий уровень сложности */
     EASY,

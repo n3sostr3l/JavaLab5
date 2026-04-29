@@ -3,7 +3,7 @@ package com.akira.server.managers;
 import java.util.Date;
 import java.util.Hashtable;
 import com.akira.general.datas.LabWork;
-import com.akira.server.FileEditor;
+import com.akira.server.managers.PostgresManager;
 
 /**
  * Менеджер коллекции лабораторных работ.
@@ -13,7 +13,7 @@ import com.akira.server.FileEditor;
  */
 public class CollectionManager {
     /** Статическое хранилище коллекции лабораторных работ. Использует Hashtable для базовой потокобезопасности. */
-    private static Hashtable<Integer, LabWork> labworks = FileEditor.getCollection();
+    private static Hashtable<Integer, LabWork> labworks = PostgresManager.getLabWorks();
     
     /** Дата и время инициализации коллекции. Используется для команды 'info'. */
     private static Date collectionCreationTime;

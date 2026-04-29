@@ -52,6 +52,7 @@ public class AdminMain {
             if (cmd.equals("exit")) break;
         }
         network.close();
+        scanner.close();
     }
 
     /**
