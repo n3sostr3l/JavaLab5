@@ -15,7 +15,7 @@ public class PostgresConfig {
     private static final Logger logger = LogManager.getLogger(PostgresConfig.class);
 
 
-    public static synchronized DataSource getConnection() throws SQLException{
+    public static synchronized HikariDataSource getConnection() throws SQLException{
         if (dataSource == null){
             Dotenv dotenv = Dotenv.load();
             String POSTGRES_URL = dotenv.get("POSTGRES_URL");
@@ -32,7 +32,7 @@ public class PostgresConfig {
         }
         return dataSource;
     }
-    public static DataSource getDataSource(){
+    public static HikariDataSource getDataSource(){
         try{
             if (dataSource == null){
                 getConnection();

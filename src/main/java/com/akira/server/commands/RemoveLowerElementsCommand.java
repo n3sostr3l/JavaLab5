@@ -25,9 +25,11 @@ public class RemoveLowerElementsCommand implements Modable {
             
             java.util.List<Integer> keysToRemove = CollectionManager.getCollection().keySet().stream()
                     .filter(k -> k < key)
-                    .collect(java.util.stream.Collectors.toList());
+                    .toList();
             
-            keysToRemove.forEach(CollectionManager::removeByKey);
+            for(Integer k: keysToRemove){
+                CollectionManager.removeByKey(login, k);
+            }
             
             return new Response("Удалено элементов: " + keysToRemove.size(), true);
         } catch (NumberFormatException e) {

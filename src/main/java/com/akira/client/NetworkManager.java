@@ -52,10 +52,6 @@ public class NetworkManager {
         final int MAX_RETRIES = 3;
         final long RETRY_DELAY_MS = 2000;
 
-        if(!request.isValid()){
-            return new Response("Не задан логин и пароль. Войдите или зарегистрируйтесь для работы", false);
-        }
-
         for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 if (socket == null || socket.isClosed()) {

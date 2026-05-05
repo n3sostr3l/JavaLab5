@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.akira.server.commands.*;
-import com.akira.server.commands.interfaces.Command;
-import com.akira.server.commands.interfaces.Modable;
-import com.akira.server.commands.interfaces.ObjectModable;
+import com.akira.server.commands.interfaces.*;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
-import com.akira.server.commands.interfaces.SystemCommand;
 import com.akira.server.managers.CollectionManager;
 
 /**
@@ -78,7 +75,9 @@ public class CommandInvoker {
 
 
         Command command = commands.get(commandName);
-
+        if(!(request.isValid() || command instanceof AuthCommand)){
+            return new Response("Не задан логин и пароль. Войдите или зарегистрируйтесь для работы", false);
+        }
         if((command instanceof SystemCommand) && !request.isSystemRequest())
             return new Response("Команда не доступна простым смертным, она системная (!)", false);
 
@@ -102,7 +101,7 @@ public class CommandInvoker {
             return new Response(String.format("Ошибка при задании аргументов команды. Команда требует %d арументов (см. help, anyway)", command.numberArgsRequired()), true);
         }
 
-        return command.execute(collectionManager);
+        return command.execute(collectionManager, request.getLogin());
 
     }
 
