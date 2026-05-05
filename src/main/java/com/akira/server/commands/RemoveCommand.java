@@ -18,14 +18,14 @@ public class RemoveCommand implements Modable {
      * @return ответ с результатом удаления
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         try {
             if (args.isEmpty()) {
                 return new Response("Ошибка: не указан ключ.", false);
             }
             Integer key = Integer.parseInt(args.get(0));
             if (CollectionManager.getCollection().containsKey(key)) {
-                CollectionManager.removeByKey(key);
+                CollectionManager.removeByKey(login, key);
                 return new Response("Элемент с ключом " + key + " успешно удален.", true);
             } else {
                 return new Response("Ошибка: элемент с таким ключом не найден.", false);

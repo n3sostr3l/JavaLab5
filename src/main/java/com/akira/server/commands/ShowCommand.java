@@ -17,7 +17,7 @@ public class ShowCommand implements Command {
      * @return ответ со всеми элементами
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         Hashtable<Integer, LabWork> collection = CollectionManager.getCollection();
         if (collection.isEmpty()) {
             return new Response("Коллекция пуста.", true);

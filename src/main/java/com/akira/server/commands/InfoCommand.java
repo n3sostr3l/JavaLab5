@@ -14,7 +14,7 @@ public class InfoCommand implements Command {
      * @return ответ с информацией
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         String result = String.format(
                 """
                 Информация о коллекции:

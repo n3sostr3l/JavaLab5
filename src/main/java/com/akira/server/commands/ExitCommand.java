@@ -9,7 +9,7 @@ import com.akira.general.network.Response;
  */
 public class ExitCommand implements Command {
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         return new Response("Завершение работы...", true);
     }
 

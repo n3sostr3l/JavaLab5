@@ -23,7 +23,7 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
      * @return ответ с результатом замены
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         try {
             Integer key = Integer.parseInt(args.get(0));
             Hashtable<Integer, LabWork> coll = CollectionManager.getCollection();
@@ -36,7 +36,7 @@ public class ReplaceGreatestCommand implements Modable, ObjectModable {
             LabWork oldLab = coll.get(key);
             if (labWork.compareTo(oldLab) > 0) {
                 labWork.setCreationDate(oldLab.getCreationDate());
-                CollectionManager.update(key, labWork);
+                CollectionManager.update(login, key, labWork);
                 return new Response("Значение успешно заменено.", true);
             } else {
                 return new Response("Новое значение не больше старого. Замена не выполнена.", true);

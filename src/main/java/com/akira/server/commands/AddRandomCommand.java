@@ -32,7 +32,7 @@ public class AddRandomCommand implements Modable {
     };
 
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
 
         HashSet<Integer> allKeys = new HashSet<>(collectionManager.getCollection().keySet());
         if (allKeys.size() >= 40000) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", true);

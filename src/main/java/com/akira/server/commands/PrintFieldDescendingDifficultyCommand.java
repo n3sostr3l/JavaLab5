@@ -17,14 +17,14 @@ public class PrintFieldDescendingDifficultyCommand implements Command {
      * @return ответ со списком сложностей
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         String result = CollectionManager.getCollection().values().stream()
                 .map(lw -> lw.getDifficulty())
                 .filter(java.util.Objects::nonNull)
                 .sorted(Comparator.reverseOrder())
                 .map(Enum::toString)
                 .collect(Collectors.joining("\n"));
-        
+
         return new Response("Сложности в порядке убывания:\n" + result, true);
     }
 

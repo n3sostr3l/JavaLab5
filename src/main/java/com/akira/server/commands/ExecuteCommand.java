@@ -15,7 +15,7 @@ public class ExecuteCommand implements Modable {
     private static HashSet<String> filesQuery = new HashSet<>();
 
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         return new Response("Команда execute_script должна обрабатываться на стороне клиента.", true);
     }
 

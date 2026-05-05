@@ -13,7 +13,7 @@ public class RegisterCommand implements Command, Modable {
     private String passwordHash;
 
     @Override
-    public Response execute(CollectionManager cm){
+    public Response execute(CollectionManager cm, String login){
         Response resp = PostgresManager.getInstance().registerUser(login, passwordHash)?new Response(String.format("Вы зарегистрировались с логином %s", login), true)
                 :new Response("Ошибка при регистрации. Измените логин и повторите попытку.", false);
     }

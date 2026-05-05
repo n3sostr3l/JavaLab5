@@ -65,8 +65,6 @@ public class ClientSession {
                 .toList());
 
         System.out.println("Войдите (login <login> <password>) или зарегистрируйтесь (reg <login> <password>)");
-
-
     }
 
     /**

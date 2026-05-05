@@ -16,7 +16,7 @@ public class UniqueAuthorCommand implements Command {
      * @return ответ со списком авторов
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         String result = CollectionManager.getCollection().values().stream()
                 .map(lw -> lw.getAuthor())
                 .distinct()

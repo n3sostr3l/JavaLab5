@@ -18,7 +18,7 @@ public class HelpCommand implements Command {
      * @return ответ со списком команд
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         StringBuilder result = new StringBuilder("Доступные команды:\n");
         ArrayList<Command> allCommands = new ArrayList<>(CommandInvoker.getCommandsList().stream()
                 .filter(command -> !(command instanceof SystemCommand)).toList());

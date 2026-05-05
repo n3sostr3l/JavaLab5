@@ -14,7 +14,7 @@ public class ExitServerCommand implements Command {
      * @return ответ с сообщением о завершении
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         // Логика завершения будет обработана в ServerManager или Main через специальный статус ответа
         // Но для протокола:
         return new Response("Сервер завершает работу по требованию администратора.", true);

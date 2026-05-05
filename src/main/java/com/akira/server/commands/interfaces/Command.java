@@ -18,7 +18,7 @@ public interface Command extends Serializable {
      * @param collectionManager менеджер коллекции сервера
      * @return объект Response с результатом выполнения
      */
-    public Response execute(CollectionManager collectionManager);
+    public Response execute(CollectionManager collectionManager, String login);
 
     /**
      * Возвращает описание команды и ее синтаксис.

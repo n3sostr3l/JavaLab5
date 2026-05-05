@@ -17,7 +17,7 @@ public class GroupCountingByMaximumPointCommand implements Command {
      * @return ответ с результатами группировки
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         Map<Long, Long> counts = CollectionManager.getCollection().values().stream()
                 .collect(Collectors.groupingBy(lw -> lw.getMaximumPoint(), Collectors.counting()));
         

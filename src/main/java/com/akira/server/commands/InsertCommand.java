@@ -22,7 +22,7 @@ public class InsertCommand implements Modable, ObjectModable {
      * @return ответ с результатом вставки
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         try {
             Integer key = Integer.parseInt(args.get(0));
             if (labWork == null) {

@@ -9,7 +9,7 @@ import com.akira.general.network.Response;
  */
 public class ClearCommand implements Command {
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         CollectionManager.clear();
         return new Response("Коллекция успешно очищена.", true);
     }

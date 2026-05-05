@@ -24,7 +24,7 @@ public class ReplaceLowestCommand implements Modable, ObjectModable {
      * @return ответ с результатом замены
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         try {
             if (args.isEmpty()) return new Response("Ошибка: не указан ключ.", false);
             Integer key = Integer.parseInt(args.get(0));

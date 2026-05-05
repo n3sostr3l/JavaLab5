@@ -22,7 +22,7 @@ public class UpdateCommand implements Modable, ObjectModable {
      * @return ответ с результатом обновления
      */
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         try {
             if (args.isEmpty()) {
                 return new Response("Ошибка: не указан id.", false);
@@ -42,7 +42,7 @@ public class UpdateCommand implements Modable, ObjectModable {
                 return new Response("Ошибка: элемент с таким id не найден.", false);
             }
 
-            if (CollectionManager.update(key, labWork)) {
+            if (CollectionManager.update(login, key, labWork)) {
                 return new Response("Элемент с id " + id + " успешно обновлен.", true);
             } else {
                 return new Response("Ошибка при обновлении элемента.", false);

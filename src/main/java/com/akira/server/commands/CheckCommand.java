@@ -18,7 +18,7 @@ public class CheckCommand implements SystemCommand, Modable {
     private ArrayList<String> args = new ArrayList<>();
     
     @Override
-    public Response execute(CollectionManager collectionManager) {
+    public Response execute(CollectionManager collectionManager, String login) {
         HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
 
         String insertKey = CommandInvoker.getCommandsMap().entrySet().stream()

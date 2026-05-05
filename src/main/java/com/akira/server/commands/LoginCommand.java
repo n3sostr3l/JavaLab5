@@ -14,7 +14,7 @@ public class LoginCommand implements Command, Modable {
     private String passwordHash;
 
     @Override
-    public Response execute(CollectionManager cm){
+    public Response execute(CollectionManager cm, String login){
         Response resp = PostgresManager.getInstance().loginUser(login, passwordHash)?new Response(String.format("Вы вошли под логином '%s'", login), true):
                 new Response("Неверный логин или пароль. Попробуйте еще раз.", false);
         return resp;
