@@ -38,7 +38,7 @@ public class ReplaceLowestCommand implements Modable, ObjectModable {
             LabWork oldLab = coll.get(key);
             if (labWork.compareTo(oldLab) < 0) {
                 labWork.setCreationDate(oldLab.getCreationDate());
-                CollectionManager.update(key, labWork);
+                CollectionManager.update(login, key, labWork);
                 return new Response("Значение успешно заменено.", true);
             } else {
                 return new Response("Новое значение не меньше старого. Замена не выполнена.", true);

@@ -40,6 +40,8 @@ public class CommandInvoker {
         commands.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommand());
         commands.put("add_random", new AddRandomCommand());
         commands.put("exit_server", new ExitServerCommand());
+        commands.put("login", new LoginCommand());
+        commands.put("reg", new RegisterCommand());
 
     }
 

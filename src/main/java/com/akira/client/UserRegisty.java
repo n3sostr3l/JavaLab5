@@ -6,10 +6,10 @@ import java.security.NoSuchAlgorithmException;
 public class UserRegisty {
     private String userLogin;
     private String passwordHash;
-    private UserRegisty instance;
+    private static UserRegisty instance;
     private MessageDigest messageDigest;
 
-    UserRegisty getInstance(){
+    public static UserRegisty getInstance(){
         return instance!=null?instance:new UserRegisty();
     }
 
@@ -48,6 +48,10 @@ public class UserRegisty {
 
     public String getUserLogin() {
         return userLogin;
+    }
+
+    public MessageDigest getMessageDigest(){
+        return messageDigest;
     }
 
 }

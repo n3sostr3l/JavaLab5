@@ -4,6 +4,7 @@ import com.akira.general.network.Response;
 import com.akira.server.commands.interfaces.Command;
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.SystemCommand;
+import com.akira.server.managers.CollectionManager;
 import com.akira.server.managers.PostgresManager;
 
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ public class LoginCommand implements Command, Modable {
     private String passwordHash;
 
     @Override
-    public Response execute(){
-
+    public Response execute(CollectionManager cm){
+        Response resp = PostgresManager.getInstance().loginUser(login, passwordHash)?new Response(String.format("Вы вошли под логином '%s'", login), true):
+                new Response("Неверный логин или пароль. Попробуйте еще раз.", false);
+        return resp;
     }
     @Override
     public String describe(){

@@ -1,5 +1,6 @@
 package com.akira.general.network;
 
+import com.akira.client.UserRegisty;
 import com.akira.general.datas.LabWork;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class Request implements Serializable {
     private boolean restore = false;
     /** Флаг системного запроса */
     private boolean isSystemRequest = false;
+
+    private String login = null;
+    private String passwordHash = null;
     /**
      * Конструктор для команд без аргументов.
      * @param commandName имя команды
@@ -146,5 +150,24 @@ public class Request implements Serializable {
     @Override
     public String toString() {
         return "Request[" + commandName + ", args=" + args + ", obj=" + (objectArgument != null ? "present" : "null") + "]";
+    }
+
+    public String getLogin(){return login;}
+    public String getPasswordHash(){return passwordHash;}
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPasswordHash(String pwh) {
+        if(pwh.length()!= UserRegisty.getInstance().getMessageDigest().getDigestLength()||(pwh == null)){
+            System.err.println("Ошибка при установке пароля.");
+            return;
+        }
+        passwordHash = pwh;
+    }
+
+    public boolean isValid(){
+    return (login!=null)&&(passwordHash!=null);
     }
 }
