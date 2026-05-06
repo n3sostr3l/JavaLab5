@@ -119,6 +119,12 @@ public class ClientSession {
             if (OBJECT_COMMANDS.contains(cmd)){
                 if (cmdArgs.size() == 1){
                     Request rq = new Request("check", new ArrayList<>(List.of(cmd, cmdArgs.get(0))), true);
+                    UserRegisty urCheck = UserRegisty.getInstance();
+                    if (urCheck.getUserLogin() != null && urCheck.getPasswordHash() != null) {
+                        rq.setLogin(urCheck.getUserLogin());
+                        rq.setPasswordHash(urCheck.getPasswordHash());
+                    }
+
                     Response response = network.sendAndReceive(rq);
                     if (!response.isSuccess()){
                         System.out.println(response.getMessage());
