@@ -3,6 +3,8 @@ package com.akira.client;
 import java.util.*;
 
 import com.akira.client.reader.LabWorkReader;
+import com.akira.client.PasswordEncryptor;
+import com.akira.client.UserRegisty;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 
@@ -149,6 +151,24 @@ public class ClientSession {
 
             if (request != null) {
                 request.setAdmin(false);
+            }
+
+            // Attach authentication credentials to the request.
+            if (cmd.equals("login") || cmd.equals("reg")) {
+                if (cmdArgs.size() >= 2) {
+                    String loginArg = cmdArgs.get(0);
+                    String passArg = cmdArgs.get(1);
+                    String hash = PasswordEncryptor.getInstance().getPasswordHash(passArg);
+                    request.setLogin(loginArg);
+                    request.setPasswordHash(hash);
+                    UserRegisty.getInstance().setUserLogin(loginArg).setPasswordHash(hash);
+                }
+            } else {
+                UserRegisty ur = UserRegisty.getInstance();
+                if (ur.getUserLogin() != null && ur.getPasswordHash() != null) {
+                    request.setLogin(ur.getUserLogin());
+                    request.setPasswordHash(ur.getPasswordHash());
+                }
             }
 
             Response response = network.sendAndReceive(request);

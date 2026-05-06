@@ -9,30 +9,41 @@ public class UserRegisty {
     private static UserRegisty instance;
     private MessageDigest messageDigest;
 
-    public static UserRegisty getInstance(){
-        return instance!=null?instance:new UserRegisty();
+    private UserRegisty() {
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-224");
+        } catch (NoSuchAlgorithmException e) {
+            messageDigest = null;
+        }
     }
 
-    public UserRegisty setMessageDigest(MessageDigest instance){
-        if(instance == null) {
-            try{
-                messageDigest = MessageDigest.getInstance("SHA-224");
-            }catch (NoSuchAlgorithmException e){
-                System.err.println("Ошибка при установке пароля. Установленного алгоритма шифрования нет. Сообщите об ошибке администраторам");
-            }
-        }
-        messageDigest = instance;
+    public static synchronized UserRegisty getInstance(){
+        if (instance == null) instance = new UserRegisty();
+        return instance;
+    }
+
+    public UserRegisty setMessageDigest(MessageDigest md){
+        if (md != null) messageDigest = md;
         return this;
     }
 
     public UserRegisty setPasswordHash(String hash){
-        if(hash.length()!=messageDigest.getDigestLength()||(hash == null)){
-            System.err.println("Ошибка при установке пароля, длина хэша не совпадает с ожидаемой. Сообщите об ошибке администраторам");
-        }else if(!hash.matches("^[0-9a-fA-F]+$")){
-            System.err.println("Ошибка при установке пароля, переданный аргумент не является хешем.");
-        }else{
-            passwordHash = hash;
+        if (hash == null) {
+            System.err.println("Ошибка при установке пароля: null");
+            return this;
         }
+        if (messageDigest != null) {
+            int expectedHexLen = messageDigest.getDigestLength() * 2;
+            if (hash.length() != expectedHexLen) {
+                System.err.println("Ошибка при установке пароля, длина хэша не совпадает с ожидаемой.");
+                return this;
+            }
+        }
+        if (!hash.matches("^[0-9a-fA-F]+$")){
+            System.err.println("Ошибка при установке пароля, переданный аргумент не является хешем.");
+            return this;
+        }
+        passwordHash = hash;
         return this;
     }
 
