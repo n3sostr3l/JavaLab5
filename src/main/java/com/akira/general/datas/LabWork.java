@@ -226,6 +226,10 @@ public class LabWork implements Comparable<LabWork>, Serializable{
         return minimalPoint;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setPerson(Person person) {
         this.author = person;
     }

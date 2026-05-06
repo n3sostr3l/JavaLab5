@@ -160,8 +160,8 @@ public class Request implements Serializable {
     }
 
     public void setPasswordHash(String pwh) {
-        if(pwh.length()!= UserRegisty.getInstance().getMessageDigest().getDigestLength()||(pwh == null)){
-            System.err.println("Ошибка при установке пароля.");
+        if (pwh == null) {
+            System.err.println("Ошибка при установке пароля: null");
             return;
         }
         passwordHash = pwh;
