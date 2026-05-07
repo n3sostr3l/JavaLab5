@@ -3,6 +3,7 @@ package com.akira.client;
 import java.util.*;
 
 import com.akira.client.reader.LabWorkReader;
+import com.akira.client.security.Sha224HashStrategy;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 
@@ -158,10 +159,12 @@ public class ClientSession {
             }
 
             // Attach authentication credentials to the request.
+            String passArg = "";
+            String loginArg = "";
             if (cmd.equals("login") || cmd.equals("reg")) {
                 if (cmdArgs.size() >= 2) {
-                    String loginArg = cmdArgs.get(0);
-                    String passArg = cmdArgs.get(1);
+                    loginArg = cmdArgs.get(0);
+                    passArg = cmdArgs.get(1);
                     String hash = PasswordEncryptor.getInstance().getPasswordHash(passArg);
                     request.setLogin(loginArg);
                     request.setPasswordHash(hash);
@@ -181,17 +184,22 @@ public class ClientSession {
 
                 if(response.getMessage().contains("изменить пароль")){
                     String line = scanner.nextLine();
-                    ArrayList<String> replaceToks = new ArrayList<>(Arrays.asList(line.trim().split("\\s+")));
-                    Request resetRequest = new Request("");
+
                     Response resetResponse;
-                    if(replaceToks.get(0).equals("y")) resetRequest = new Request(line);
+                    if(line.trim().equals("y")){
+                        String passwordHash = new Sha224HashStrategy().hash(passArg);
+
+                        Request resetRequest = new Request("reset_pwd", new ArrayList(Arrays.asList(loginArg, passArg)));
+
+                        resetRequest.setLogin(loginArg);
+                        resetRequest.setPasswordHash(passwordHash);
+                        resetResponse = network.sendAndReceive(resetRequest);
+                        System.out.println(resetResponse.getMessage());
+                    }
                     else{
-                        System.out.println("Такого ответа нет. Сброс пароля отменен.");
+                        System.out.println("Сброс пароля отменен.");
                         return;
                     }
-                    resetResponse = network.sendAndReceive(request);
-                    System.out.println(resetResponse.getMessage());
-                    return;
                 }
                 continue;
             }

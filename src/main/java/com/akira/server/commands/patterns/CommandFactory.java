@@ -38,6 +38,7 @@ public class CommandFactory {
             case "exit_server": c = new ExitServerCommand(); break;
             case "login": c = new LoginCommand(); break;
             case "reg": c = new RegisterCommand(); break;
+            case "reset_pwd": c = new ResetPasswordCommand(); break;
             default: c = null; break;
         }
 
