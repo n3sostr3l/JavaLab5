@@ -178,6 +178,16 @@ public class ClientSession {
             Response response = network.sendAndReceive(request);
             if (response != null){
                 System.out.println(response.getMessage());
+
+                if(response.getMessage().contains("изменить пароль")){
+                    String line = scanner.nextLine();
+                    ArrayList<String> replaceToks = new ArrayList<>(Arrays.asList(line.trim().split("\\s+")));
+                    Request resetRequest = new Request("");
+                    if(replaceToks.get(0).equals("reset_pwd")) resetRequest = new Request(line);
+                    Response resetResponse = network.sendAndReceive(request);
+                    System.out.println(resetResponse.getMessage());
+                    return;
+                }
                 continue;
             }
             System.out.println("Ошибка: нет ответа от сервера.");
