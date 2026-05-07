@@ -19,7 +19,7 @@ public class CommandInvoker {
 
     static{
         // Populate map lazily via factory
-        String[] names = new String[]{"check","help","info","show","insert","update","remove_key","clear","exit","execute_script","replace_if_greater","replace_if_lower","remove_lower_key","group_counting_by_maximum_point","print_unique_author","print_field_descending_difficulty","add_random","exit_server","login","reg"};
+        String[] names = new String[]{"check","help","info","show","insert","update","remove_key","clear","exit","execute_script","replace_if_greater","replace_if_lower","remove_lower_key","group_counting_by_maximum_point","print_unique_author","print_field_descending_difficulty","add_random","exit_server","login","reg","reset_pwd","resetpassword","reset_password"};
         for(String n: names) {
             com.akira.server.commands.interfaces.Command c = com.akira.server.commands.patterns.CommandFactory.create(n);
             if (c != null) commands.put(n, (Command) c);
@@ -59,7 +59,7 @@ public class CommandInvoker {
 
 
         Command command = commands.get(commandName);
-        if (!commandName.equals("login") && !commandName.equals("reg") && !commandName.equals("reset_pwd") && !request.isValid()) {
+        if (!commandName.equals("login") && !commandName.equals("reg") && !commandName.equals("reset_pwd") && !commandName.equals("resetpassword") && !commandName.equals("reset_password") && !request.isValid()) {
             return new Response("Не задан логин и пароль. Войдите или зарегистрируйтесь для работы", false);
         }
         if ((unwrap(command) instanceof SystemCommand) && !request.isSystemRequest())

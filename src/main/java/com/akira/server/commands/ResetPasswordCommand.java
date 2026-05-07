@@ -20,7 +20,8 @@ public class ResetPasswordCommand implements Modable, AuthCommand {
     @Override
     public Response execute(CollectionManager cm, String login){
         Response response = new Response("Не удалось изменить пароль, неправильный логин.", false);
-        boolean result = PostgresManager.getInstance().resetPassword(args.get(0), args.get(1));
+        String newPass = this.passwordHash != null ? this.passwordHash : args.get(1);
+        boolean result = PostgresManager.getInstance().resetPassword(args.get(0), newPass);
         if(result) response = new Response("Пароль успешно изменен.", true);
         return response;
     }
@@ -37,6 +38,6 @@ public class ResetPasswordCommand implements Modable, AuthCommand {
 
     @Override
     public void setPasswordHash(String passwordHash) {
-        this.passwordHash = args.get(1);
+        this.passwordHash = passwordHash;
     }
 }

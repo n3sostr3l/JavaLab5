@@ -69,7 +69,7 @@ public class PostgresManager {
     private final String sql_get_owner_by_id = "SELECT owner_login FROM labworks WHERE id = ?";
     private final String sql_check_labwork_id = "SELECT * FROM labworks WHERE owner_login=? AND id=?";
     private final String sql_check_labwork_key = "SELECT * FROM labworks WHERE owner_login=? AND key=?";
-    private final String sql_reset_password = "UPDATE users SET user_login=?, user_password=?";
+    private final String sql_reset_password = "UPDATE users SET user_password=? WHERE user_login=?";
 
 
     public String getOwnerLoginByKey(Integer key) {
@@ -110,8 +110,8 @@ public class PostgresManager {
             Connection connect = dataSource.getConnection();
             PreparedStatement psm = connect.prepareStatement(sql_reset_password)
         ) {
-            psm.setString(1, user_login);
-            psm.setString(2, user_password);
+            psm.setString(1, user_password);
+            psm.setString(2, user_login);
             int rows_cnt = psm.executeUpdate();
             return rows_cnt > 0;
         } catch (SQLException e) {
