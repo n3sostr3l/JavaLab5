@@ -123,8 +123,13 @@ public class ClientSession {
                         rq.setLogin(urCheck.getUserLogin());
                         rq.setPasswordHash(urCheck.getPasswordHash());
                     }
-
+                
                     Response response = network.sendAndReceive(rq);
+                    if (response.getMessage().contains("Элемент не принадлежит вашему логину")){
+                        System.out.println(response.getMessage());
+                        continue;
+                    }
+                    
                     if (!response.isSuccess()){
                         System.out.println(response.getMessage());
                         continue;
@@ -182,7 +187,7 @@ public class ClientSession {
             if (response != null){
                 System.out.println(response.getMessage());
 
-                if(response.getMessage().contains("изменить пароль")){
+                if(response.getMessage().contains("Хотите изменить пароль")){
                     String line = scanner.nextLine();
 
                     Response resetResponse;
@@ -195,6 +200,7 @@ public class ClientSession {
                         resetRequest.setPasswordHash(passwordHash);
                         resetResponse = network.sendAndReceive(resetRequest);
                         System.out.println(resetResponse.getMessage());
+                    
                     }
                     else{
                         System.out.println("Сброс пароля отменен.");
