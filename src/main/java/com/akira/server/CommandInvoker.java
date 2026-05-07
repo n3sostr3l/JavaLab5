@@ -59,7 +59,7 @@ public class CommandInvoker {
 
 
         Command command = commands.get(commandName);
-        if (!commandName.equals("login") && !commandName.equals("reg") && !request.isValid()) {
+        if (!commandName.equals("login") && !commandName.equals("reg") && !commandName.equals("reset_pwd") && !request.isValid()) {
             return new Response("Не задан логин и пароль. Войдите или зарегистрируйтесь для работы", false);
         }
         if ((unwrap(command) instanceof SystemCommand) && !request.isSystemRequest())
