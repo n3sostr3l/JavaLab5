@@ -26,8 +26,10 @@ public class CheckCommand implements SystemCommand, Modable {
             if (keys.size() >= 40000) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", false);
             try {
                 Integer key = Integer.parseInt(ident);
-                boolean taken = DatabaseFacade.getInstance().getOwnerLoginByKey(key) != null;
-                return new Response(taken?"ключ занят":"ключ свободен", true);
+                String owner = DatabaseFacade.getInstance().getOwnerLoginByKey(key);
+                if (owner == null) return new Response("ключ свободен", true);
+                if (!owner.equals(login)) return new Response("Элемент не принадлежит вашему логину", false);
+                return new Response("ключ занят", true);
             } catch (NumberFormatException e){
                 return new Response("Неверный формат ключа", false);
             }
