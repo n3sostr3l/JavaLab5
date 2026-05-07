@@ -22,16 +22,8 @@ public class RemoveLowerElementsCommand implements Modable {
         try {
             if (args.isEmpty()) return new Response("Ошибка: не указан ключ.", false);
             Integer key = Integer.parseInt(args.get(0));
-            
-            java.util.List<Integer> keysToRemove = CollectionManager.getCollection().keySet().stream()
-                    .filter(k -> k < key)
-                    .toList();
-            
-            for(Integer k: keysToRemove){
-                CollectionManager.removeByKey(login, k);
-            }
-            
-            return new Response("Удалено элементов: " + keysToRemove.size(), true);
+            int removed = CollectionManager.removeLowerKeys(login, key);
+            return new Response("Удалено элементов: " + removed, true);
         } catch (NumberFormatException e) {
             return new Response("Ошибка: ключ должен быть целым числом.", false);
         }

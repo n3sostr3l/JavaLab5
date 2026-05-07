@@ -2,7 +2,9 @@ package com.akira.server.managers;
 
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.concurrent.locks.ReentrantLock;
 import com.akira.general.datas.LabWork;
+import com.akira.server.dao.*;
 
 /**
  * Менеджер коллекции лабораторных работ.
@@ -13,6 +15,7 @@ import com.akira.general.datas.LabWork;
 public class CollectionManager {
     /** Статическое хранилище коллекции лабораторных работ. Использует Hashtable для базовой потокобезопасности. */
     private static Hashtable<Integer, LabWork> labworks = PostgresManager.getInstance().getLabWorks();
+    private static final ReentrantLock lock = new ReentrantLock(true);
     
     /** Дата и время инициализации коллекции. Используется для команды 'info'. */
     private static Date collectionCreationTime;
@@ -37,23 +40,38 @@ public class CollectionManager {
      * @return {@code true}, если объект был найден и успешно обновлен, иначе {@code false}
      */
     public static boolean update(String user_login, Integer id, LabWork lab){
-        boolean isSuccess = PostgresManager.getInstance().updateLabWork(user_login, lab, id);
-        if (isSuccess) {
-            if (labworks.containsKey(id)){
-                lab.setId(labworks.get(id).getId());
-                lab.setCreationDate(labworks.get(id).getCreationDate());
-                labworks.put(id, lab);
-                return true;
+        lock.lock();
+        try {
+            if (!labworks.containsKey(id)) {
+                return false;
             }
+            LabWork existing = labworks.get(id);
+            lab.setId(existing.getId());
+            lab.setCreationDate(existing.getCreationDate());
+            boolean isSuccess = DatabaseFacade.getInstance().updateLabWork(user_login, lab, id);
+            if (isSuccess) {
+                labworks.put(id, lab);
+            }
+            return isSuccess;
+        } finally {
+            lock.unlock();
         }
-        return false;
     }
 
     /**
      * Очищает коллекцию.
      */
-    public static void clear() {
-        labworks.clear();
+    public static boolean clear(String user_login) {
+        lock.lock();
+        try {
+            if (DatabaseFacade.getInstance().clearLabWorks(user_login)) {
+                labworks = DatabaseFacade.getInstance().getLabWorks();
+                return true;
+            }
+            return false;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -62,24 +80,37 @@ public class CollectionManager {
      * @param lab объект лабораторной работы
      * @return true, если вставка прошла успешно
      */
-    public static boolean insert(Integer key, LabWork lab) {
-        lab.setId(generateNextId());
-
-        if (lab.getCreationDate() == null) {
-            lab.setCreationDate(new Date());
+    public static boolean insert(String user_login, Integer key, LabWork lab) {
+        lock.lock();
+        try {
+            if (lab.getCreationDate() == null) {
+                lab.setCreationDate(new Date());
+            }
+            boolean isSuccess = DatabaseFacade.getInstance().addLabWork(user_login, lab, key);
+            if (isSuccess) {
+                labworks.put(key, lab);
+            }
+            return isSuccess;
+        } finally {
+            lock.unlock();
         }
-        
-        labworks.put(key, lab);
-        return true;
     }
 
     /**
      * Удаляет элемент из коллекции по ключу.
      * @param key ключ элемента
      */
-    public static void removeByKey(String user_login, Integer key){
-        PostgresManager.getInstance().deleteLabWork(user_login, key);
-        labworks.remove(key);
+    public static boolean removeByKey(String user_login, Integer key){
+        lock.lock();
+        try {
+            boolean isSuccess = DatabaseFacade.getInstance().deleteLabWork(user_login, key);
+            if (isSuccess) {
+                labworks.remove(key);
+            }
+            return isSuccess;
+        } finally {
+            lock.unlock();
+        }
     }
 
 
@@ -88,19 +119,36 @@ public class CollectionManager {
      * @param key пороговое значение ключа
      * @return количество удаленных элементов
      */
-    public static int removeLowerKeys(Integer key) {
-        java.util.List<Integer> keysToRemove = labworks.keySet().stream()
-                .filter(k -> k < key)
-                .collect(java.util.stream.Collectors.toList());
-        keysToRemove.forEach(labworks::remove);
-        return keysToRemove.size();
+    public static int removeLowerKeys(String user_login, Integer key) {
+        lock.lock();
+        try {
+            java.util.List<Integer> keysToRemove = labworks.keySet().stream()
+                    .filter(k -> k < key)
+                    .collect(java.util.stream.Collectors.toList());
+            int removed = 0;
+            for (Integer k : keysToRemove) {
+                boolean isSuccess = DatabaseFacade.getInstance().deleteLabWork(user_login, k);
+                if (isSuccess) {
+                    labworks.remove(k);
+                    removed++;
+                }
+            }
+            return removed;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
      * Перезагружает коллекцию из файла.
      */
     public static void reload() {
-        labworks = PostgresManager.getInstance().getLabWorks();
+        lock.lock();
+        try {
+            labworks = DatabaseFacade.getInstance().getLabWorks();
+        } finally {
+            lock.unlock();
+        }
     }
 
     
@@ -126,7 +174,12 @@ public class CollectionManager {
      * @return хеш-таблица объектов
      */
     public static Hashtable<Integer, LabWork> getCollection(){
-        return labworks;
+        lock.lock();
+        try {
+            return labworks;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -134,17 +187,13 @@ public class CollectionManager {
      * @return дата и время создания
      */
     public static Date getCollectionCreationTime(){
-        return collectionCreationTime;
+        lock.lock();
+        try {
+            return collectionCreationTime;
+        } finally {
+            lock.unlock();
+        }
     }
 
-    /**
-     * Генерирует следующий уникальный идентификатор для объекта коллекции.
-     * @return новый ID
-     */
-    private static Long generateNextId() {
-        return labworks.values().stream()
-                .mapToLong(LabWork::getId)
-                .max()
-                .orElse(0L) + 1;
-    }
+    
 }

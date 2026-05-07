@@ -16,7 +16,7 @@ public class RegisterCommand implements AuthCommand, Modable {
     @Override
     public Response execute(CollectionManager cm, String login){
         Response resp = PostgresManager.getInstance().registerUser(login, passwordHash)?new Response(String.format("Вы зарегистрировались с логином %s", login), true)
-                :new Response("Ошибка при регистрации. Измените логин и повторите попытку.", false);
+            :new Response("Ошибка при регистрации. Измените логин и повторите попытку.", false);
         return resp;
     }
     @Override
@@ -25,8 +25,12 @@ public class RegisterCommand implements AuthCommand, Modable {
     }
     @Override
     public void setArguments(ArrayList<String> args){
-        login = args.get(0);
-        passwordHash = args.get(1);
+        if (args != null && args.size() >= 1) login = args.get(0);
+    }
+
+    @Override
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     @Override

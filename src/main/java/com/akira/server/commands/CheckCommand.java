@@ -21,31 +21,13 @@ public class CheckCommand implements SystemCommand, Modable {
     public Response execute(CollectionManager collectionManager, String login) {
         HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
 
-        String insertKey = CommandInvoker.getCommandsMap().entrySet().stream()
-                .filter(e -> e.getValue() instanceof InsertCommand)
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .get();
-
-//        List<String> replaceKeys = CommandInvoker.getCommandsMap().entrySet().stream()
-//                .filter(e -> (e.getValue() instanceof ReplaceLowestCommand) || (e.getValue() instanceof ReplaceGreatestCommand) )
-//                .map(Map.Entry::getKey)
-//                .toList();
-
-        String updateKey = CommandInvoker.getCommandsMap().entrySet().stream()
-                .filter(e -> e.getValue() instanceof UpdateCommand )
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .get();
-
         String karg = "key";
 
-        
-        if (args.get(0).equals(insertKey)){
+        if (args.get(0).equals("insert")){
             if (keys.size() >= 40000 && !ifKeyIsTaken()) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", false);
             return new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
         }
-        if(args.get(0).equals(updateKey)) karg = "id";
+        if(args.get(0).equals("update")) karg = "id";
         return switch (karg){
             case "id" -> new Response(ifIdIsTaken()?"id занят":"id свободен", true);
             case "key" -> new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);

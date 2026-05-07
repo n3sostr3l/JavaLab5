@@ -10,7 +10,10 @@ import com.akira.general.network.Response;
 public class ClearCommand implements Command {
     @Override
     public Response execute(CollectionManager collectionManager, String login) {
-        CollectionManager.clear();
+        boolean isSuccess = CollectionManager.clear(login);
+        if (!isSuccess) {
+            return new Response("Ошибка при очистке коллекции.", false);
+        }
         return new Response("Коллекция успешно очищена.", true);
     }
 

@@ -28,7 +28,10 @@ public class InsertCommand implements Modable, ObjectModable {
             if (labWork == null) {
                 return new Response("Ошибка: объект для вставки не получен.", false);
             }
-            collectionManager.insert(key, labWork);
+            boolean isSuccess = collectionManager.insert(login, key, labWork);
+            if (!isSuccess) {
+                return new Response("Ошибка при добавлении элемента в базу данных.", false);
+            }
             return new Response(String.format("Элемент успешно добавлен/изменен с ключом %d и id= %d" , key, labWork.getId()), true);
             
         } catch (NumberFormatException e) {

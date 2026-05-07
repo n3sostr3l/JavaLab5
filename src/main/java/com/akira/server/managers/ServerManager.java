@@ -79,6 +79,7 @@ public class ServerManager {
     private static class ReadState {
         ByteBuffer sizeBuffer = ByteBuffer.allocate(4);
         ByteBuffer dataBuffer = null;
+        boolean processing = false;
     }
 
     private void handleRead(SelectionKey key) {
@@ -86,41 +87,46 @@ public class ServerManager {
         ReadState state = (ReadState) key.attachment();
 
         try {
-            // читаем размер
-            if (state.sizeBuffer.hasRemaining()) {
-                int read = client.read(state.sizeBuffer);
-                if (read == -1) {
-                    close(client, key);
-                    return;
-                }
-                if (state.sizeBuffer.hasRemaining()) return;
-            }
+            synchronized (state) {
+                if (state.processing) return;
 
-            // создаём буфер
-            if (state.dataBuffer == null) {
-                state.sizeBuffer.flip();
-                int size = state.sizeBuffer.getInt();
-
-                if (size <= 0 || size > 10_000_000) {
-                    close(client, key);
-                    return;
+                // читаем размер
+                if (state.sizeBuffer.hasRemaining()) {
+                    int read = client.read(state.sizeBuffer);
+                    if (read == -1) {
+                        close(client, key);
+                        return;
+                    }
+                    if (state.sizeBuffer.hasRemaining()) return;
                 }
 
-                state.dataBuffer = ByteBuffer.allocate(size);
-            }
+                // создаём буфер
+                if (state.dataBuffer == null) {
+                    state.sizeBuffer.flip();
+                    int size = state.sizeBuffer.getInt();
 
-            // читаем тело
-            if (state.dataBuffer.hasRemaining()) {
-                int read = client.read(state.dataBuffer);
-                if (read == -1) {
-                    close(client, key);
-                    return;
+                    if (size <= 0 || size > 10_000_000) {
+                        close(client, key);
+                        return;
+                    }
+
+                    state.dataBuffer = ByteBuffer.allocate(size);
                 }
-                if (state.dataBuffer.hasRemaining()) return;
-            }
 
-            //  ПОЛНЫЙ ЗАПРОС → ОБРАБОТКА В ПУЛЕ
-            state.dataBuffer.flip();
+                // читаем тело
+                if (state.dataBuffer.hasRemaining()) {
+                    int read = client.read(state.dataBuffer);
+                    if (read == -1) {
+                        close(client, key);
+                        return;
+                    }
+                    if (state.dataBuffer.hasRemaining()) return;
+                }
+
+                //  ПОЛНЫЙ ЗАПРОС → ОБРАБОТКА В ПУЛЕ
+                state.dataBuffer.flip();
+                state.processing = true;
+            }
 
             handlePool.execute(() -> processRequest(client, state));
 
@@ -142,8 +148,11 @@ public class ServerManager {
             sendPool.submit(() -> sendResponse(client, response));
 
             // reset state
-            state.sizeBuffer.clear();
-            state.dataBuffer = null;
+            synchronized (state) {
+                state.sizeBuffer.clear();
+                state.dataBuffer = null;
+                state.processing = false;
+            }
 
         } catch (Exception e) {
             logger.warn("Ошибка обработки: {}", e.getMessage());

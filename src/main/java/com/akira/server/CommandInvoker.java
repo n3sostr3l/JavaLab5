@@ -9,6 +9,7 @@ import com.akira.server.commands.interfaces.*;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 import com.akira.server.managers.CollectionManager;
+import com.akira.server.dao.DatabaseFacade;
 
 /**
  * Класс для управления и выполнения команд приложения на сервере.
@@ -17,29 +18,12 @@ public class CommandInvoker {
     private static final HashMap<String, Command> commands = new HashMap<>();
 
     static{
-
-        commands.put("check", new CheckCommand());
-        commands.put("help", new HelpCommand());
-        commands.put("info", new InfoCommand());
-        commands.put("show", new ShowCommand());
-        commands.put("insert", new InsertCommand());
-        commands.put("update", new UpdateCommand());
-        commands.put("remove_key", new RemoveCommand());
-        commands.put("clear", new ClearCommand());
-        // commands.put("save", new SaveCommand());
-        commands.put("exit", new ExitCommand());
-        commands.put("execute_script", new ExecuteCommand());
-        commands.put("replace_if_greater", new ReplaceGreatestCommand());
-        commands.put("replace_if_lower", new ReplaceLowestCommand());
-        commands.put("remove_lower_key", new RemoveLowerElementsCommand());
-        commands.put("group_counting_by_maximum_point", new GroupCountingByMaximumPointCommand());
-        commands.put("print_unique_author", new UniqueAuthorCommand());
-        commands.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommand());
-        commands.put("add_random", new AddRandomCommand());
-        commands.put("exit_server", new ExitServerCommand());
-        commands.put("login", new LoginCommand());
-        commands.put("reg", new RegisterCommand());
-
+        // Populate map lazily via factory
+        String[] names = new String[]{"check","help","info","show","insert","update","remove_key","clear","exit","execute_script","replace_if_greater","replace_if_lower","remove_lower_key","group_counting_by_maximum_point","print_unique_author","print_field_descending_difficulty","add_random","exit_server","login","reg"};
+        for(String n: names) {
+            com.akira.server.commands.interfaces.Command c = com.akira.server.commands.patterns.CommandFactory.create(n);
+            if (c != null) commands.put(n, (Command) c);
+        }
     }
 
     /**
@@ -51,8 +35,8 @@ public class CommandInvoker {
     public Response executeRequest(Request request, CollectionManager collectionManager) {
         if (request.isInit()) {
             return new Response(String.format("%s", CommandInvoker.getCommandsMap().entrySet().stream()
-                .filter(entry -> !(entry.getValue() instanceof SystemCommand))
-                .filter(entry -> entry.getValue() instanceof ObjectModable)
+                .filter(entry -> !(unwrap(entry.getValue()) instanceof SystemCommand))
+                .filter(entry -> unwrap(entry.getValue()) instanceof ObjectModable)
 
                 .map(Map.Entry::getKey)
                 .toList()
@@ -75,14 +59,20 @@ public class CommandInvoker {
 
 
         Command command = commands.get(commandName);
-        if(!(request.isValid() || command instanceof AuthCommand)){
+        if (!commandName.equals("login") && !commandName.equals("reg") && !request.isValid()) {
             return new Response("Не задан логин и пароль. Войдите или зарегистрируйтесь для работы", false);
         }
-        if((command instanceof SystemCommand) && !request.isSystemRequest())
+        if ((unwrap(command) instanceof SystemCommand) && !request.isSystemRequest())
             return new Response("Команда не доступна простым смертным, она системная (!)", false);
 
         if (command == null) {
             return new Response("Ошибка: команда '" + request.getCommandName() + "' не найдена.", false);
+        }
+
+        if (!commandName.equals("login") && !commandName.equals("reg")) {
+            if (!DatabaseFacade.getInstance().loginUser(request.getLogin(), request.getPasswordHash())) {
+                return new Response("Неверный логин или пароль. Выполните вход заново.", false);
+            }
         }
 
         try {
@@ -101,8 +91,23 @@ public class CommandInvoker {
             return new Response(String.format("Ошибка при задании аргументов команды. Команда требует %d арументов (см. help, anyway)", command.numberArgsRequired()), true);
         }
 
+        // If command requires auth, inject password hash from request
+        if (command instanceof AuthCommand) {
+            try {
+                ((AuthCommand) command).setPasswordHash(request.getPasswordHash());
+            } catch (Exception ignore) {}
+        }
+
         return command.execute(collectionManager, request.getLogin());
 
+    }
+
+    private static Command unwrap(Command command) {
+        Command current = command;
+        while (current instanceof DelegatingCommand delegating) {
+            current = delegating.getDelegate();
+        }
+        return current;
     }
 
     /**

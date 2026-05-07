@@ -27,8 +27,29 @@ public class PostgresManager {
     private final Logger logger = LogManager.getLogger(PostgresManager.class);
 
     // SQL запросы для таблиц
-    private final String sql_labworks = "CREATE TABLE IF NOT EXISTS lab_works (id SERIAL PRIMARY KEY, key INTEGER UNIQUE, user_login TEXT, name TEXT, coordinates_x INT, coordinates_y BIGINT NOT NULL, creation_date TIMESTAMP NOT NULL, minimal_point FLOAT4 NOT NULL, maximum_point BIGINT NOT NULL, difficulty TEXT, person_name TEXT, person_birthday TIMESTAMP, person_location_x INT, person_location_y FLOAT4, person_location_z FLOAT8)";
     private final String sql_users = "CREATE TABLE IF NOT EXISTS users (user_login TEXT PRIMARY KEY, user_password TEXT NOT NULL)";
+    
+    private final String sql_sequence = "CREATE SEQUENCE IF NOT EXISTS labwork_id_seq START 1 INCREMENT 1";
+    
+        private final String sql_labworks = "CREATE TABLE IF NOT EXISTS labworks (" +
+            "id BIGINT PRIMARY KEY DEFAULT nextval('labwork_id_seq'), " +
+            "lab_key INTEGER NOT NULL UNIQUE, " +
+            "name VARCHAR(255) NOT NULL CHECK (name <> ''), " +
+            "coord_x INTEGER NOT NULL CHECK (coord_x > -881), " +
+            "coord_y BIGINT NOT NULL, " +
+            "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+            "minimal_point FLOAT4 CHECK (minimal_point > 0), " +
+            "maximum_point BIGINT NOT NULL CHECK (maximum_point > 0), " +
+            "description TEXT, " +
+            "difficulty VARCHAR(50), " +
+            "author_name VARCHAR(255) NOT NULL CHECK (author_name <> ''), " +
+            "author_birthday TIMESTAMP, " +
+            "loc_x INTEGER, " +
+            "loc_y FLOAT4, " +
+            "loc_z DOUBLE PRECISION, " +
+            "owner_login TEXT NOT NULL, " +
+            "FOREIGN KEY (owner_login) REFERENCES users(user_login) ON DELETE CASCADE" +
+            ")";
     
     // SQL для метаданных (время создания коллекции)
     private final String sql_metadata = "CREATE TABLE IF NOT EXISTS collection_metadata (creation_time TIMESTAMP NOT NULL)";
@@ -38,19 +59,20 @@ public class PostgresManager {
     // SQL операции
     private final String sql_register_user = "INSERT INTO users (user_login, user_password) VALUES (?, ?)";
     private final String sql_login_user = "SELECT user_login FROM users WHERE user_login = ? AND user_password = ?";
-    private final String sql_add_labwork = "INSERT INTO lab_works (user_login, name, coordinates_x, coordinates_y, creation_date, minimal_point, maximum_point, difficulty, person_name, person_birthday, person_location_x, person_location_y, person_location_z, key) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String sql_update_labwork = "UPDATE lab_works SET name = ?, coordinates_x = ?, coordinates_y = ?, creation_date = ?, minimal_point = ?, maximum_point = ?, difficulty = ?, person_name = ?, person_birthday = ?, person_location_x = ?, person_location_y = ?, person_location_z = ? WHERE user_login = ? AND id = ?";
-    private final String sql_delete_labwork = "DELETE FROM lab_works WHERE user_login = ? AND key = ?";
-    private final String sql_clear_labworks = "DELETE FROM lab_works WHERE user_login = ?";
-    private static final String sql_get_labworks = "SELECT * FROM lab_works";
+    private final String sql_add_labwork = "INSERT INTO labworks (lab_key, name, coord_x, coord_y, creation_date, minimal_point, maximum_point, description, difficulty, author_name, author_birthday, loc_x, loc_y, loc_z, owner_login) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
+    private final String sql_update_labwork = "UPDATE labworks SET name=?, coord_x=?, coord_y=?, minimal_point=?, maximum_point=?, description=?, difficulty=?, author_name=?, author_birthday=?, loc_x=?, loc_y=?, loc_z=? WHERE id=? AND owner_login=?";
+    private final String sql_delete_labwork = "DELETE FROM labworks WHERE lab_key=? AND owner_login=?";
+    private final String sql_clear_labworks = "DELETE FROM labworks WHERE owner_login=?";
+    private static final String sql_get_labworks = "SELECT * FROM labworks";
 
     public boolean createTables() {
         try (
             Connection connect = dataSource.getConnection();
             Statement sm = connect.createStatement()
         ) {
-            sm.execute(sql_labworks);
+            sm.execute(sql_sequence);
             sm.execute(sql_users);
+            sm.execute(sql_labworks);
             sm.execute(sql_metadata);
             sm.execute(sql_set_creation_time);
             return true;
@@ -87,13 +109,16 @@ public class PostgresManager {
             ResultSet rs = sm.executeQuery(sql_get_labworks)
         ) {
             while (rs.next()) {
+                int labKey = rs.getInt("lab_key");
+                boolean labKeyWasNull = rs.wasNull();
+                Long id = rs.getLong("id");
                 LabWork labWork = new LabWork();
-                labWork.setId((long) rs.getInt("id"));
+                labWork.setId(id);
                 labWork.setName(rs.getString("name"));
 
                 Coordinates coordinates = new Coordinates();
-                coordinates.setX(rs.getInt("coordinates_x"));
-                coordinates.setY(rs.getLong("coordinates_y"));
+                coordinates.setX(rs.getInt("coord_x"));
+                coordinates.setY(rs.getLong("coord_y"));
                 labWork.setCoordinates(coordinates);
 
                 Timestamp creationTs = rs.getTimestamp("creation_date");
@@ -101,8 +126,14 @@ public class PostgresManager {
                     labWork.setCreationDate(new java.util.Date(creationTs.getTime()));
                 }
 
-                labWork.setMinimalPoint(rs.getFloat("minimal_point"));
+                float minPoint = rs.getFloat("minimal_point");
+                if (rs.wasNull()) {
+                    labWork.setMinimalPoint(null);
+                } else {
+                    labWork.setMinimalPoint(minPoint);
+                }
                 labWork.setMaximumPoint(rs.getLong("maximum_point"));
+                labWork.setDescription(rs.getString("description"));
 
                 String diffStr = rs.getString("difficulty");
                 if (diffStr != null) {
@@ -110,22 +141,25 @@ public class PostgresManager {
                 }
 
                 Person person = new Person();
-                person.setName(rs.getString("person_name"));
+                person.setName(rs.getString("author_name"));
 
-                Timestamp birthdayTs = rs.getTimestamp("person_birthday");
+                Timestamp birthdayTs = rs.getTimestamp("author_birthday");
                 if (birthdayTs != null) {
                     person.setBirthday(birthdayTs.toLocalDateTime().toLocalDate());
                 }
 
                 Location location = new Location();
-                location.setX(rs.getInt("person_location_x"));
-                location.setY(rs.getFloat("person_location_y"));
-                location.setZ(rs.getDouble("person_location_z"));
+                Integer locX = rs.getInt("loc_x");
+                location.setX(locX == 0 && rs.wasNull() ? 0 : locX);
+                Float locY = rs.getFloat("loc_y");
+                location.setY(locY == 0 && rs.wasNull() ? 0 : locY);
+                Double locZ = rs.getDouble("loc_z");
+                location.setZ(locZ == 0 && rs.wasNull() ? 0 : locZ);
                 person.setLocation(location);
 
                 labWork.setPerson(person);
-                Integer key = rs.getInt("key");
-                labWorks.put(key, labWork);
+                int mapKey = labKeyWasNull ? Math.toIntExact(id) : labKey;
+                labWorks.put(mapKey, labWork);
             }
             return labWorks;
         } catch (SQLException e) {
@@ -172,37 +206,67 @@ public class PostgresManager {
     public boolean addLabWork(String user_login, LabWork labWork, Integer key) {
         try (
             Connection connect = dataSource.getConnection();
-            PreparedStatement psm = connect.prepareStatement(sql_add_labwork)
+            PreparedStatement psm = connect.prepareStatement(sql_add_labwork, Statement.RETURN_GENERATED_KEYS)
         ) {
-            psm.setString(1, user_login);
+            psm.setInt(1, key);
             psm.setString(2, labWork.getName());
             psm.setInt(3, labWork.getCoordinates().getX());
             psm.setLong(4, labWork.getCoordinates().getY());
             psm.setTimestamp(5, new Timestamp(labWork.getCreationDate().getTime()));
-            psm.setFloat(6, labWork.getMinimalPoint());
+            Float minPoint = labWork.getMinimalPoint();
+            if (minPoint != null && minPoint > 0) {
+                psm.setFloat(6, minPoint);
+            } else {
+                psm.setNull(6, java.sql.Types.FLOAT);
+            }
             psm.setLong(7, labWork.getMaximumPoint());
-            psm.setString(8, labWork.getDifficulty() != null ? labWork.getDifficulty().name() : null);
-            psm.setString(9, labWork.getAuthor().getName());
+            psm.setString(8, labWork.getDescription());
+            psm.setString(9, labWork.getDifficulty() != null ? labWork.getDifficulty().name() : null);
+            psm.setString(10, labWork.getAuthor().getName());
 
             if (labWork.getAuthor().getBirthday() != null) {
-                psm.setTimestamp(10, Timestamp.valueOf(labWork.getAuthor().getBirthday().atStartOfDay()));
+                psm.setTimestamp(11, Timestamp.valueOf(labWork.getAuthor().getBirthday().atStartOfDay()));
             } else {
-                psm.setNull(10, java.sql.Types.TIMESTAMP);
+                psm.setNull(11, java.sql.Types.TIMESTAMP);
             }
 
-            psm.setInt(11, labWork.getAuthor().getLocation().getX());
-            psm.setFloat(12, labWork.getAuthor().getLocation().getY());
-            psm.setDouble(13, labWork.getAuthor().getLocation().getZ());
-            psm.setInt(14, key);
+            Location location = labWork.getAuthor().getLocation();
+            if (location != null) {
+                psm.setInt(12, location.getX());
+                psm.setFloat(13, location.getY());
+                psm.setDouble(14, location.getZ());
+            } else {
+                psm.setNull(12, java.sql.Types.INTEGER);
+                psm.setNull(13, java.sql.Types.FLOAT);
+                psm.setNull(14, java.sql.Types.DOUBLE);
+            }
+            psm.setString(15, user_login);
 
-            psm.executeUpdate();
-            return true;
+            boolean hasResultSet = psm.execute();
+            if (hasResultSet) {
+                try (ResultSet rs = psm.getResultSet()) {
+                    if (rs != null && rs.next()) {
+                        labWork.setId(rs.getLong(1));
+                        return true;
+                    }
+                }
+                return false;
+            }
+            int rows = psm.getUpdateCount();
+            if (rows > 0) {
+                try (ResultSet keys = psm.getGeneratedKeys()) {
+                    if (keys != null && keys.next()) {
+                        labWork.setId(keys.getLong(1));
+                    }
+                }
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             logger.error("Ошибка добавления лабораторной: " + e.getMessage());
             return false;
         }
     }
-    // Говно с перепутанным айди и ключом лабы
     public boolean updateLabWork(String user_login, LabWork labWork, Integer key) {
         try (
             Connection connect = dataSource.getConnection();
@@ -211,9 +275,14 @@ public class PostgresManager {
             psm.setString(1, labWork.getName());
             psm.setInt(2, labWork.getCoordinates().getX());
             psm.setLong(3, labWork.getCoordinates().getY());
-            psm.setTimestamp(4, new Timestamp(labWork.getCreationDate().getTime()));
-            psm.setFloat(5, labWork.getMinimalPoint());
-            psm.setLong(6, labWork.getMaximumPoint());
+            Float minPoint = labWork.getMinimalPoint();
+            if (minPoint != null && minPoint > 0) {
+                psm.setFloat(4, minPoint);
+            } else {
+                psm.setNull(4, java.sql.Types.FLOAT);
+            }
+            psm.setLong(5, labWork.getMaximumPoint());
+            psm.setString(6, labWork.getDescription());
             psm.setString(7, labWork.getDifficulty() != null ? labWork.getDifficulty().name() : null);
             psm.setString(8, labWork.getAuthor().getName());
 
@@ -223,11 +292,18 @@ public class PostgresManager {
                 psm.setNull(9, java.sql.Types.TIMESTAMP);
             }
 
-            psm.setInt(10, labWork.getAuthor().getLocation().getX());
-            psm.setFloat(11, labWork.getAuthor().getLocation().getY());
-            psm.setDouble(12, labWork.getAuthor().getLocation().getZ());
-            psm.setString(13, user_login);
-            psm.setLong(14, labWork.getId());
+            Location location = labWork.getAuthor().getLocation();
+            if (location != null) {
+                psm.setInt(10, location.getX());
+                psm.setFloat(11, location.getY());
+                psm.setDouble(12, location.getZ());
+            } else {
+                psm.setNull(10, java.sql.Types.INTEGER);
+                psm.setNull(11, java.sql.Types.FLOAT);
+                psm.setNull(12, java.sql.Types.DOUBLE);
+            }
+            psm.setLong(13, labWork.getId());
+            psm.setString(14, user_login);
 
             int rowsAffected = psm.executeUpdate();
             return rowsAffected > 0;
@@ -242,8 +318,8 @@ public class PostgresManager {
             Connection connect = dataSource.getConnection();
             PreparedStatement psm = connect.prepareStatement(sql_delete_labwork)
         ) {
-            psm.setString(1, user_login);
-            psm.setInt(2, key);
+            psm.setInt(1, key);
+            psm.setString(2, user_login);
             int rowsAffected = psm.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

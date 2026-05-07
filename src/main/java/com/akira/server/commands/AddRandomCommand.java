@@ -39,16 +39,19 @@ public class AddRandomCommand implements Modable {
 
         HashSet<Integer> keys = new HashSet<>();
         ArrayList<LabWork> randomLabWork = generateRandomLabWork();
+        int added = 0;
         for (LabWork labWork : randomLabWork) {
             Integer key = generateUniqueKey();
             while (keys.contains(key)) {
                 key = generateUniqueKey();
             }
             keys.add(key);
-            CollectionManager.insert(key, labWork);
+            if (CollectionManager.insert(login, key, labWork)) {
+                added++;
+            }
         }
-        if (number > 5000) return new Response("Ключи: " + keys.toString() + "\nСлучайные лабораторные работы добавлены в размере 5000 (лимит)", true);
-        return new Response("Ключи: " + keys.toString() + "\nСлучайные лабораторные работы добавлены. ", true);
+        if (number > 5000) return new Response("Ключи: " + keys.toString() + "\nСлучайные лабораторные работы добавлены в размере 5000 (лимит). Успешно: " + added, true);
+        return new Response("Ключи: " + keys.toString() + "\nСлучайные лабораторные работы добавлены. Успешно: " + added, true);
     }
 
     @Override

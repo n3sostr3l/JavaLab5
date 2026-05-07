@@ -222,7 +222,7 @@ public class LabWork implements Comparable<LabWork>, Serializable{
         return coordinates;
     }
 
-    public float getMinimalPoint() {
+    public Float getMinimalPoint() {
         return minimalPoint;
     }
 

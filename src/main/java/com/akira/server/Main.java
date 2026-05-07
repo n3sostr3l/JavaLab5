@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.akira.server.managers.ServerManager;
+import com.akira.server.managers.PostgresManager;
 
 /**
  * Главный класс серверного приложения.
@@ -21,6 +22,10 @@ public class Main {
      * @param args аргументы командной строки (не используются)
      */
     public static void main(String[] args) {
+        if (!PostgresManager.getInstance().createTables()) {
+            logger.error("Не удалось создать таблицы в БД. Сервер не будет запущен.");
+            return;
+        }
         ServerManager serverManager = new ServerManager(PORT);
         logger.info("Сервер запускается на порту: {}", PORT);
         serverManager.start();
