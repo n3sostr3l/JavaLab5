@@ -40,6 +40,14 @@ public class DatabaseFacade {
         return dao.clearLabWorks(userLogin);
     }
 
+    public String getOwnerLoginByKey(Integer key){
+        return dao.getOwnerLoginByKey(key);
+    }
+
+    public String getOwnerLoginById(Long id){
+        return dao.getOwnerLoginById(id);
+    }
+
     public Hashtable<Integer, LabWork> getLabWorks(){
         return dao.getLabWorks();
     }

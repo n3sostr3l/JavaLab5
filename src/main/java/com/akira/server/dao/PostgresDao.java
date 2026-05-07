@@ -38,6 +38,16 @@ public class PostgresDao implements UserDao, LabWorkDao {
     }
 
     @Override
+    public String getOwnerLoginByKey(Integer key) {
+        return pm.getOwnerLoginByKey(key);
+    }
+
+    @Override
+    public String getOwnerLoginById(Long id) {
+        return pm.getOwnerLoginById(id);
+    }
+
+    @Override
     public Hashtable<Integer, LabWork> getLabWorks() {
         return pm.getLabWorks();
     }

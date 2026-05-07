@@ -64,26 +64,47 @@ public class PostgresManager {
     private final String sql_delete_labwork = "DELETE FROM labworks WHERE lab_key=? AND owner_login=?";
     private final String sql_clear_labworks = "DELETE FROM labworks WHERE owner_login=?";
     private static final String sql_get_labworks = "SELECT * FROM labworks";
+    
+    private final String sql_get_owner_by_key = "SELECT owner_login FROM labworks WHERE lab_key = ?";
+    private final String sql_get_owner_by_id = "SELECT owner_login FROM labworks WHERE id = ?";
     private final String sql_check_labwork_id = "SELECT * FROM labworks WHERE owner_login=? AND id=?";
     private final String sql_check_labwork_key = "SELECT * FROM labworks WHERE owner_login=? AND key=?";
     private final String sql_reset_password = "UPDATE users SET user_login=?, user_password=?";
 
-    // public boolean checkLabwork(String user_login, boolean isId, key){
-    //     try (
-    //         Connection connect = dataSource.getConnection();
-    //         if (isId){
-    //             PreparedStatement psm = connect.prepareStatement(sql_check_labwork)
-    //         }
-    //         PreparedStatement psm = connect.prepareStatement(sql_check_labwork)
-    //     ) {
-    //         psm.setString(1, user_login);
-    //         int rows_cnt = psm.executeUpdate();
-    //         return rows_cnt > 0;
-    //     } catch (SQLException e) {
-    //         logger.error("Ошибка с работой базы данных: " + e.getMessage());
-    //         return false;
-    //     }
-    // }
+
+    public String getOwnerLoginByKey(Integer key) {
+        try (
+            Connection connect = dataSource.getConnection();
+            PreparedStatement psm = connect.prepareStatement(sql_get_owner_by_key)
+        ) {
+            psm.setInt(1, key);
+            try (ResultSet rs = psm.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("owner_login");
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Ошибка получения владельца по ключу: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public String getOwnerLoginById(Long id) {
+        try (
+            Connection connect = dataSource.getConnection();
+            PreparedStatement psm = connect.prepareStatement(sql_get_owner_by_id)
+        ) {
+            psm.setLong(1, id);
+            try (ResultSet rs = psm.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("owner_login");
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Ошибка получения владельца по id: " + e.getMessage());
+        }
+        return null;
+    }
     public boolean resetPassword(String user_login, String user_password){
         try (
             Connection connect = dataSource.getConnection();

@@ -4,7 +4,7 @@ import com.akira.general.network.Response;
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.SystemCommand;
 import com.akira.server.managers.CollectionManager;
-import com.akira.server.managers.PostgresManager;
+import com.akira.server.dao.DatabaseFacade;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,23 +18,43 @@ public class CheckCommand implements SystemCommand, Modable {
     
     @Override
     public Response execute(CollectionManager collectionManager, String login) {
-        HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
+        String cmd = args.get(0);
+        String ident = args.get(1);
 
-        String karg = "key";
-
-        if (args.get(0).equals("insert")){
-            if (keys.size() >= 40000 && !ifKeyIsTaken()) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", false);
-            return new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
+        if (cmd.equals("insert")){
+            HashSet<Integer> keys = new HashSet<>(collectionManager.getCollection().keySet());
+            if (keys.size() >= 40000) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", false);
+            try {
+                Integer key = Integer.parseInt(ident);
+                boolean taken = DatabaseFacade.getInstance().getOwnerLoginByKey(key) != null;
+                return new Response(taken?"ключ занят":"ключ свободен", true);
+            } catch (NumberFormatException e){
+                return new Response("Неверный формат ключа", false);
+            }
         }
-        // if (!(PostgresManager.getInstance().checkLabwork(login))){
-        //     return new Response("Это не ваша лабораторная", false)
-        // }
-        if(args.get(0).equals("update")) karg = "id";
-        return switch (karg){
-            case "id" -> new Response(ifIdIsTaken()?"id занят":"id свободен", true);
-            case "key" -> new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
-            default -> new Response("",true);
-        };
+
+        if (cmd.equals("update")){
+            try {
+                Long id = Long.parseLong(ident);
+                String owner = DatabaseFacade.getInstance().getOwnerLoginById(id);
+                if (owner == null) return new Response("id свободен", true);
+                if (!owner.equals(login)) return new Response("Элемент не принадлежит вашему логину", false);
+                return new Response("id занят", true);
+            } catch (NumberFormatException e){
+                return new Response("Неверный формат id", false);
+            }
+        }
+
+        // default: work with key (remove/replace/etc.)
+        try {
+            Integer key = Integer.parseInt(ident);
+            String owner = DatabaseFacade.getInstance().getOwnerLoginByKey(key);
+            if (owner == null) return new Response("ключ свободен", true);
+            if (!owner.equals(login)) return new Response("Элемент не принадлежит вашему логину", false);
+            return new Response("ключ занят", true);
+        } catch (NumberFormatException e){
+            return new Response("Неверный формат ключа", false);
+        }
     }
 
     @Override
