@@ -17,7 +17,7 @@ public class LoginCommand implements AuthCommand, Modable {
     @Override
     public Response execute(CollectionManager cm, String login){
         Response resp = PostgresManager.getInstance().loginUser(login, passwordHash)?new Response(String.format("Вы вошли под логином '%s'", login), true):
-            new Response("Неверный логин или пароль. Попробуйте еще раз.", false);
+            new Response("Неверный логин или пароль. Хотите изменить пароль (y or n) (по умолчанию n)", false);
         return resp;
     }
     @Override

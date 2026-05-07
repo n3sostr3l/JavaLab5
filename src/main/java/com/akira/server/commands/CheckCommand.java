@@ -1,13 +1,12 @@
 package com.akira.server.commands;
 
 import com.akira.general.network.Response;
-import com.akira.server.CommandInvoker;
 import com.akira.server.commands.interfaces.Modable;
 import com.akira.server.commands.interfaces.SystemCommand;
 import com.akira.server.managers.CollectionManager;
+import com.akira.server.managers.PostgresManager;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashSet;
 
 /**
@@ -27,6 +26,9 @@ public class CheckCommand implements SystemCommand, Modable {
             if (keys.size() >= 40000 && !ifKeyIsTaken()) return new Response("Добавление не удалось, переполнение памяти, удалите лабораторные", false);
             return new Response(ifKeyIsTaken()?"ключ занят":"ключ свободен", true);
         }
+        // if (!(PostgresManager.getInstance().checkLabwork(login))){
+        //     return new Response("Это не ваша лабораторная", false)
+        // }
         if(args.get(0).equals("update")) karg = "id";
         return switch (karg){
             case "id" -> new Response(ifIdIsTaken()?"id занят":"id свободен", true);

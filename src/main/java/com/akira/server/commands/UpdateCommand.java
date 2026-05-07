@@ -45,7 +45,7 @@ public class UpdateCommand implements Modable, ObjectModable {
             if (CollectionManager.update(login, key, labWork)) {
                 return new Response("Элемент с id " + id + " успешно обновлен.", true);
             } else {
-                return new Response("Ошибка при обновлении элемента.", false);
+                return new Response("Ошибка при обновлении элемента. Не Ваш элемент.", false);
             }
         } catch (NumberFormatException e) {
             return new Response("Ошибка: id должен быть числом.", false);

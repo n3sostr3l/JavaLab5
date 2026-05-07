@@ -64,7 +64,40 @@ public class PostgresManager {
     private final String sql_delete_labwork = "DELETE FROM labworks WHERE lab_key=? AND owner_login=?";
     private final String sql_clear_labworks = "DELETE FROM labworks WHERE owner_login=?";
     private static final String sql_get_labworks = "SELECT * FROM labworks";
+    private final String sql_check_labwork_id = "SELECT * FROM labworks WHERE owner_login=? AND id=?";
+    private final String sql_check_labwork_key = "SELECT * FROM labworks WHERE owner_login=? AND key=?";
+    private final String sql_reset_password = "UPDATE users SET user_login=?, user_password=?";
 
+    // public boolean checkLabwork(String user_login, boolean isId, key){
+    //     try (
+    //         Connection connect = dataSource.getConnection();
+    //         if (isId){
+    //             PreparedStatement psm = connect.prepareStatement(sql_check_labwork)
+    //         }
+    //         PreparedStatement psm = connect.prepareStatement(sql_check_labwork)
+    //     ) {
+    //         psm.setString(1, user_login);
+    //         int rows_cnt = psm.executeUpdate();
+    //         return rows_cnt > 0;
+    //     } catch (SQLException e) {
+    //         logger.error("Ошибка с работой базы данных: " + e.getMessage());
+    //         return false;
+    //     }
+    // }
+    public boolean resetPassword(String user_login, String user_password){
+        try (
+            Connection connect = dataSource.getConnection();
+            PreparedStatement psm = connect.prepareStatement(sql_reset_password)
+        ) {
+            psm.setString(1, user_login);
+            psm.setString(2, user_password);
+            int rows_cnt = psm.executeUpdate();
+            return rows_cnt > 0;
+        } catch (SQLException e) {
+            logger.error("Ошибка регистрации пользователя: " + e.getMessage());
+            return false;
+        }
+    }
     public boolean createTables() {
         try (
             Connection connect = dataSource.getConnection();
