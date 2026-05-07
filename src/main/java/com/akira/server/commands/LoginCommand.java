@@ -31,7 +31,7 @@ public class LoginCommand implements AuthCommand, Modable {
 
     @Override
     public void setArguments(ArrayList<String> args) {
-        if (args != null && args.size() >= 1) {
+        if (args != null && args.size() == numberArgsRequired()) {
             this.login = args.get(0);
         }
     }

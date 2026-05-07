@@ -25,7 +25,7 @@ public class RegisterCommand implements AuthCommand, Modable {
     }
     @Override
     public void setArguments(ArrayList<String> args){
-        if (args != null && args.size() >= 1) login = args.get(0);
+        if (args != null && args.size() == numberArgsRequired()) login = args.get(0);
     }
 
     @Override
