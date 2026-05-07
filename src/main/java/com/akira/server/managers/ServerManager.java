@@ -22,8 +22,8 @@ public class ServerManager {
     private Selector selector;
 
     //  Пулы потоков
-    private final ForkJoinPool readPool = new ForkJoinPool();
-    private final ForkJoinPool handlePool = new ForkJoinPool();
+    private final ForkJoinPool readPool = ForkJoinPool.commonPool();
+    private final ForkJoinPool handlePool = ForkJoinPool.commonPool();
     private final ExecutorService sendPool = Executors.newFixedThreadPool(8);
 
     //  Новая архитектура
