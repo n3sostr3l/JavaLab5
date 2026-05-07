@@ -183,8 +183,13 @@ public class ClientSession {
                     String line = scanner.nextLine();
                     ArrayList<String> replaceToks = new ArrayList<>(Arrays.asList(line.trim().split("\\s+")));
                     Request resetRequest = new Request("");
-                    if(replaceToks.get(0).equals("reset_pwd")) resetRequest = new Request(line);
-                    Response resetResponse = network.sendAndReceive(request);
+                    Response resetResponse;
+                    if(replaceToks.get(0).equals("y")) resetRequest = new Request(line);
+                    else{
+                        System.out.println("Такого ответа нет. Сброс пароля отменен.");
+                        return;
+                    }
+                    resetResponse = network.sendAndReceive(request);
                     System.out.println(resetResponse.getMessage());
                     return;
                 }
