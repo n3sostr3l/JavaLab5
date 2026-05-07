@@ -50,7 +50,7 @@ public class NetworkManager {
      */
     public Response sendAndReceive(Request request) {
         final int MAX_RETRIES = 3;
-        final long RETRY_DELAY_MS = 2000;
+        final long RETRY_DELAY_MS = 4000;
 
         for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
@@ -86,7 +86,7 @@ public class NetworkManager {
             } catch (IOException e) {
                 close();
                 if (attempt < MAX_RETRIES) {
-                    System.out.println("Соединение прервано. Повтор через 2 сек... (попытка " + attempt + "/" + MAX_RETRIES + ")");
+                    System.out.println("Соединение прервано. Повтор через 4 сек... (попытка " + attempt + "/" + MAX_RETRIES + ")");
                     try { Thread.sleep(RETRY_DELAY_MS); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); break; }
                 } else {
                     System.out.println("Ошибка: не удалось связаться с сервером после " + MAX_RETRIES + " попытки.");
