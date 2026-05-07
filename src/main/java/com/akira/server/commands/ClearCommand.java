@@ -12,7 +12,7 @@ public class ClearCommand implements Command {
     public Response execute(CollectionManager collectionManager, String login) {
         boolean isSuccess = CollectionManager.clear(login);
         if (!isSuccess) {
-            return new Response("Ошибка при очистке коллекции.", false);
+            return new Response("Ошибка при очистке коллекции. В вашей коллекции нет элементов", false);
         }
         return new Response("Коллекция успешно очищена.", true);
     }

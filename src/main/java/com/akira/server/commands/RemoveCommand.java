@@ -27,7 +27,7 @@ public class RemoveCommand implements Modable {
             if (CollectionManager.getCollection().containsKey(key)) {
                 boolean isSuccess = CollectionManager.removeByKey(login, key);
                 if (!isSuccess) {
-                    return new Response("Ошибка при удалении элемента.", false);
+                    return new Response("Ошибка при удалении элемента. Не Ваш элемент", false);
                 }
                 return new Response("Элемент с ключом " + key + " успешно удален.", true);
             } else {

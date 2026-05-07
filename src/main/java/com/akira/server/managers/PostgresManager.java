@@ -334,8 +334,8 @@ public class PostgresManager {
             PreparedStatement psm = connect.prepareStatement(sql_clear_labworks)
         ) {
             psm.setString(1, user_login);
-            psm.executeUpdate();
-            return true;
+            int res = psm.executeUpdate();
+            return res > 0;
         } catch (SQLException e) {
             logger.error("Ошибка очистки лабораторных: " + e.getMessage());
             return false;

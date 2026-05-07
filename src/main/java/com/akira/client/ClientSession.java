@@ -3,8 +3,6 @@ package com.akira.client;
 import java.util.*;
 
 import com.akira.client.reader.LabWorkReader;
-import com.akira.client.PasswordEncryptor;
-import com.akira.client.UserRegisty;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 
