@@ -194,7 +194,7 @@ public class ClientSession {
                     if(line.trim().equals("y")){
                         String passwordHash = new Sha224HashStrategy().hash(passArg);
 
-                        Request resetRequest = new Request("reset_pwd", new ArrayList(Arrays.asList(loginArg, passArg)));
+                        Request resetRequest = new Request("reset_pwd", new ArrayList(Arrays.asList(loginArg, passwordHash)));
 
                         resetRequest.setLogin(loginArg);
                         resetRequest.setPasswordHash(passwordHash);

@@ -212,6 +212,7 @@ public class PostgresManager {
                 person.setLocation(location);
 
                 labWork.setPerson(person);
+                labWork.setOwnerLogin(rs.getString("owner_login"));
                 int mapKey = labKeyWasNull ? Math.toIntExact(id) : labKey;
                 labWorks.put(mapKey, labWork);
             }

@@ -34,6 +34,8 @@ public class LabWork implements Comparable<LabWork>, Serializable{
     private Difficulty difficulty;
     /** Автор лабораторной работы. Не может быть null */
     private Person author;
+    /** Владелец лабораторной работы (логин пользователя из БД) */
+    private String ownerLogin;
 
     /**
      * Создаёт новый объект LabWork с автоматически генерируемым id.
@@ -60,9 +62,10 @@ public class LabWork implements Comparable<LabWork>, Serializable{
                 maximumPoint = %d,
                 description = %s,
                 difficulty = %s,
-                author = %s
+                author = %s,
+                owner = %s
                 }
-                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author);
+                """, id.longValue(), name, coordinates, creationDate, minimalPoint, maximumPoint, description, difficulty, author, ownerLogin);
     }
 
     /**
@@ -232,5 +235,13 @@ public class LabWork implements Comparable<LabWork>, Serializable{
 
     public void setPerson(Person person) {
         this.author = person;
+    }
+
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String ownerLogin) {
+        this.ownerLogin = ownerLogin;
     }
 }
