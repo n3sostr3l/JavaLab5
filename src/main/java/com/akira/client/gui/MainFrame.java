@@ -330,6 +330,7 @@ public class MainFrame extends JFrame {
             if (row >= 0) {
                 Integer key = tableModel.getKeyAtRow(row);
                 CommandDialogs.removeSelected(this, network, tableModel.getLabWorkAt(row), key);
+                visualizationPanel.animateDisappearance(tableModel.getLabWorkAt(row), null);
                 loadCollection();
             } else {
                 JOptionPane.showMessageDialog(this, getMsg("msg.select.item"));
@@ -365,7 +366,10 @@ public class MainFrame extends JFrame {
         for (Map.Entry<String, String> entry : commandKeys.entrySet()) {
             JButton btn = new JButton(getMsg(entry.getKey()));
             styleFooterButton(btn);
-            btn.addActionListener(e -> executeCommand(entry.getValue()));
+            btn.addActionListener(e -> {
+                executeCommand(entry.getValue());
+                if(entry.getValue().equals("clear")) visualizationPanel.setItems(new ArrayList<>());
+            });
             leftCol.add(btn, gbc);
             commandButtons.put(entry.getKey(), btn);
             gbc.gridx++;
