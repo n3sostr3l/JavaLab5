@@ -1,0 +1,3 @@
+add_random 100
+help
+info

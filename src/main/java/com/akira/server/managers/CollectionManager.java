@@ -45,6 +45,7 @@ public class CollectionManager {
             if (!labworks.containsKey(id)) {
                 return false;
             }
+            lab.setOwnerLogin(user_login);
             LabWork existing = labworks.get(id);
             lab.setId(existing.getId());
             lab.setCreationDate(existing.getCreationDate());
@@ -85,6 +86,9 @@ public class CollectionManager {
         try {
             if (lab.getCreationDate() == null) {
                 lab.setCreationDate(new Date());
+            }
+            if (lab.getOwnerLogin() == null){
+                lab.setOwnerLogin(user_login);
             }
             boolean isSuccess = DatabaseFacade.getInstance().addLabWork(user_login, lab, key);
             if (isSuccess) {

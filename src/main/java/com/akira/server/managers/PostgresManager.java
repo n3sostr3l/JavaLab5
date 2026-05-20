@@ -195,7 +195,9 @@ public class PostgresManager {
                 }
 
                 Person person = new Person();
-                person.setName(rs.getString("author_name"));
+                String authorName = rs.getString("author_name");
+                if (authorName == null || authorName.trim().isEmpty()) authorName = "Unknown";
+                person.setName(authorName);
 
                 Timestamp birthdayTs = rs.getTimestamp("author_birthday");
                 if (birthdayTs != null) {

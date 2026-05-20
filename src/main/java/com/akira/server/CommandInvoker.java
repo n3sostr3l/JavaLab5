@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.akira.server.commands.*;
 import com.akira.server.commands.interfaces.*;
+import com.akira.server.commands.patterns.CommandFactory;
 import com.akira.general.network.Request;
 import com.akira.general.network.Response;
 import com.akira.server.managers.CollectionManager;
@@ -21,7 +22,7 @@ public class CommandInvoker {
         // Populate map lazily via factory
         String[] names = new String[]{"check","help","info","show","insert","update","remove_key","clear","exit","execute_script","replace_if_greater","replace_if_lower","remove_lower_key","group_counting_by_maximum_point","print_unique_author","print_field_descending_difficulty","add_random","exit_server","login","reg","reset_pwd"};
         for(String n: names) {
-            com.akira.server.commands.interfaces.Command c = com.akira.server.commands.patterns.CommandFactory.create(n);
+            Command c = CommandFactory.create(n);
             if (c != null) commands.put(n, (Command) c);
         }
     }

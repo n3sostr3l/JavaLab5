@@ -31,6 +31,10 @@ public class UpdateCommand implements Modable, ObjectModable {
             if (labWork == null) {
                 return new Response("Ошибка: объект для обновления не получен.", false);
             }
+            if (labWork.getAuthor() == null || labWork.getAuthor().getName() == null
+                || labWork.getAuthor().getName().trim().isEmpty()) {
+                return new Response("Ошибка: автор обязателен для лабораторной работы.", false);
+            }
             
             Integer key = CollectionManager.getCollection().entrySet().stream()
                     .filter(entry -> entry.getValue().getId().equals(id))
